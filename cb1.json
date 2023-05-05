@@ -1,0 +1,20 @@
+{
+  "single":{
+    "merhaba":["Merhaba Bura İyi Mi?","Merhaba Burayı Sevdin Mi?"],
+    "iyi":["Teşekkürler"],
+    "sevdim":["Harika"],
+    "evet":["ok"],
+    "selam":["As"]
+  },
+  "multi" : {
+    "set1": "merhaba/nasılsın/iyimisin/naber=$sc1",
+    "sc1": "İyiyim Sen Nasılsın?/Naaptın?/Bugün Keyifler Nasıl?",
+    "set2": "ad/adın/soyadın+ne=$sc2",
+    "sc2": "Bilmiyorum",
+    "set3": "hava/yağış+durumu/bekleniyormu,yağış+bekleniyor+mu=$sc3",
+    "sc3": "Google da ara bana sorma",
+    "set4": "burası/server+güvenli/secure/security+mi/mu/test=$sc4",
+    "sc4": "Evet",
+    "default": ["Anlamadım"]
+  }
+}
