@@ -142,15 +142,14 @@ function base64_decode(str) {
             if(safe_retry_rsa==true){
               safe_retry_rsa=false;
               div.innerHTML = firstKey;
+              var encryptedMsg = dataasdasdas.slice(0, startIndex).replaceAll("___text___", "<textarea style='color:grey;overflow: hidden;resize: vertical;'>").replaceAll("___end_text___", "</textarea>").replaceAll("___PUBLICKEY___", "") + "Public Key Successful" + dataasdasdas.slice(endIndex).replaceAll("___text___", "<textarea style='color:grey;overflow: hidden;resize: vertical;'>").replaceAll("___end_text___", "</textarea>").replaceAll("___END_PUBLICKEY___", "");
+              var messages = document.querySelector('#messages');
+              message.innerHTML = encryptedMsg;
+              messages.insertBefore(message, messages.firstChild);
             }
-          
-            var encryptedMsg = "__ENCRYPTED__<br>" + dataasdasdas.slice(0, startIndex).replaceAll("___text___", "<textarea style='color:grey;overflow: hidden;resize: vertical;'>").replaceAll("___end_text___", "</textarea>") + "Alındı" + dataasdasdas.slice(endIndex).replaceAll("___text___", "<textarea style='color:grey;overflow: hidden;resize: vertical;'>").replaceAll("___end_text___", "</textarea>") + "__END_ENCRYPTED__";
-
-            message.innerHTML = encryptedMsg;
-            messages.insertBefore(message, messages.firstChild);            
-            
             dataasdasdas="";
           } else {
+            var messages = document.querySelector('#messages');
             message.innerHTML = dataasdasdas;
             messages.insertBefore(message, messages.firstChild);
             dataasdasdas="";
@@ -368,7 +367,7 @@ function str_splitx (string, splitLength) {
 
 
 
-function key_gen_main(){
+function key_gen_main(mode=false){
     var crypt9 = new JSEncrypt({default_key_size: 2048});
     new Promise((resolve)=>{
     setTimeout(resolve, 100);
@@ -378,6 +377,9 @@ function key_gen_main(){
       var publicasdasdas=crypt9.getPublicKey();
         $('myprivate').html(crypt9.getPrivateKey());
         $('mypublic').html(publicasdasdas);
+        if(mode==false){
         sendMessage("___PUBLICKEY___"+publicasdasdas, "a", server_key,0);
+        return true;          
+        }
     });
 }
