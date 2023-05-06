@@ -1071,15 +1071,15 @@ def get_youtube_keyword(link):
         data = {}
         data[keyword] = {}
         data[keyword]["n"] = encoded.decode()
-        data[keyword]["q"] = 0
-        data[keyword]["l"] = 0
-        data[keyword]["b"] = 0
-        data[keyword]["p"] = 0
-        data[keyword]["r"] = 0
-        data[keyword]["e"] = 0
-        data[keyword]["y"] = 0
-        data[keyword]["c"] = 0
-        data[keyword]["s"] = 0
+        #data[keyword]["q"] = 0
+        #data[keyword]["l"] = 0
+        #data[keyword]["b"] = 0
+        #data[keyword]["p"] = 0
+        #data[keyword]["r"] = 0
+        #data[keyword]["e"] = 0
+        #data[keyword]["y"] = 0
+        #data[keyword]["c"] = 0
+        #data[keyword]["s"] = 0
 
         # Keyword'ü global_list["youtube-keywords"] sözlüğüne ekle
         global_list['youtube-keywords'][keyword] = data[keyword]
@@ -1109,15 +1109,15 @@ def change_youtube_keyword_link(link):
     keyword = link.split('watch?v=')[1].split('&')[0]
     if keyword in global_list['youtube-keywords']:
         global_list["youtube-keywords"][keyword]["n"] = base64.b64encode(input("Video Adı: ").encode("utf-8")).decode("utf-8")
-        global_list["youtube-keywords"][keyword]["q"] = int(input("Kalite 0-10: "))
-        global_list["youtube-keywords"][keyword]["l"] = int(input("Dinlenilebilirlik 0-10: "))
-        global_list["youtube-keywords"][keyword]["b"] = int(input("Zaman Geçiricilik 0-10: "))
-        global_list["youtube-keywords"][keyword]["r"] = int(input("Hatıra 0-10: "))
-        global_list["youtube-keywords"][keyword]["e"] = int(input("Duygusal 0-10: "))
-        global_list["youtube-keywords"][keyword]["y"] = int(input("Enerjik 0-10: "))
-        global_list["youtube-keywords"][keyword]["c"] = int(input("Cringe 0-10: "))
-        global_list["youtube-keywords"][keyword]["s"] = int(input("Çekicilik 0-10: "))
-        global_list["youtube-keywords"][keyword]["p"] = int(input("Puan 0-10: "))
+        #global_list["youtube-keywords"][keyword]["q"] = int(input("Kalite 0-10: "))
+        #global_list["youtube-keywords"][keyword]["l"] = int(input("Dinlenilebilirlik 0-10: "))
+        #global_list["youtube-keywords"][keyword]["b"] = int(input("Zaman Geçiricilik 0-10: "))
+        #global_list["youtube-keywords"][keyword]["r"] = int(input("Hatıra 0-10: "))
+        #global_list["youtube-keywords"][keyword]["e"] = int(input("Duygusal 0-10: "))
+        #global_list["youtube-keywords"][keyword]["y"] = int(input("Enerjik 0-10: "))
+        #global_list["youtube-keywords"][keyword]["c"] = int(input("Cringe 0-10: "))
+        #global_list["youtube-keywords"][keyword]["s"] = int(input("Çekicilik 0-10: "))
+        #global_list["youtube-keywords"][keyword]["p"] = int(input("Puan 0-10: "))
         with open("data.json", "w") as file:
             json.dump(global_list, file)
         print("İşlem başarılı")
@@ -1153,9 +1153,9 @@ async def stop_server():
     server_memory_encrypt_key_Hash = None
     server_memory_encrypt_iv_Hash = None
 
-start_keyword=['güzel','tatlı','yt','youtube','harika','bir','bana','play','playing','için']
-music_keyword=['musık','musik','musıc','music','şarkı', 'sarkı','müzik', 'muzik','muzık', 'sarki','song','kpop']
-ac_keyword=['ac','aç','söyle','soyle','link','lınk','ver','hemen','yonlendir','yönlendir','yonlendır','yolla','at','goster','göster','youtube','open']
+start_keyword=['güzel','tatlı','yt','youtube','harika','bir','bana','play','playing','için','song']
+music_keyword=['musık','musik','musıc','music','şarkı', 'sarkı','müzik', 'muzik','muzık', 'sarki','song','kpop','play']
+ac_keyword=['play','ac','aç','söyle','soyle','link','lınk','ver','hemen','yonlendir','yönlendir','yonlendır','yolla','at','goster','göster','youtube','open','song','music']
 
 if __name__ == '__main__':
     banner()
@@ -1183,6 +1183,9 @@ if __name__ == '__main__':
             if '-p' in sys.argv:
                 port_index = sys.argv.index('-p') + 1
                 port = int(sys.argv[port_index])
+            if '-wp' in args:
+                wpport_index = args.index('-wp') + 1
+                WEBSOCKET_PORT = int(args[wpport_index])
             if check_port(host, port):
                 server_thread = threading.Thread(target=run_server, args=(host, port))
                 server_thread.start()
@@ -1211,6 +1214,9 @@ if __name__ == '__main__':
                 if '-p' in args:
                     port_index = args.index('-p') + 1
                     port = int(args[port_index])
+                if '-wp' in args:
+                    wpport_index = args.index('-wp') + 1
+                    WEBSOCKET_PORT = int(args[wpport_index])
                 if check_port(host, port):
                     server_thread = threading.Thread(target=run_server, args=(host, port))
                     server_thread.start()
