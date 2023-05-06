@@ -11,7 +11,7 @@ pip install websockets
 pip install requests
 pip install beautifulsoup4
 ```
-### 3- Start Run cmd or Powershell
+### 3- Run cmd or Powershell
 ```cmd
 cd Desktop
 cd Server
