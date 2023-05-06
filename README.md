@@ -28,6 +28,8 @@ exit
 inv -add
 inv
 reskey
+play music
+play music -s 3
 youtube
 youtube -s 3
 cls
