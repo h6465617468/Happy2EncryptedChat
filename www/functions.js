@@ -61,7 +61,7 @@ function base64_decode(str) {
     for (var i = 0; i < 64; i++) {
       randomPassword += possibleChars.charAt(Math.floor(Math.random() * possibleChars.length));
     }
-    var token = year + month + day + hour + minute + second + randomPassword;
+    var token = year + month + day + hour + minute + second + randomPassword + "x";
     return token;
   }
   
@@ -128,6 +128,7 @@ function base64_decode(str) {
           var message = document.createElement('div');
           
           if (dataasdasdas.includes("___PUBLICKEY___") && dataasdasdas.includes("___END_PUBLICKEY___")) {
+            closeloading();
             var startIndex = dataasdasdas.indexOf("___PUBLICKEY___") + "___PUBLICKEY___".length;
             var endIndex = dataasdasdas.indexOf("___END_PUBLICKEY___");
             var messagexx = dataasdasdas.slice(startIndex, endIndex);
@@ -141,7 +142,6 @@ function base64_decode(str) {
             if(safe_retry_rsa==true){
               safe_retry_rsa=false;
               div.innerHTML = firstKey;
-              closeloading()
             }
           
             var encryptedMsg = "__ENCRYPTED__<br>" + dataasdasdas.slice(0, startIndex).replaceAll("___text___", "<textarea style='color:grey;overflow: hidden;resize: vertical;'>").replaceAll("___end_text___", "</textarea>") + "Alındı" + dataasdasdas.slice(endIndex).replaceAll("___text___", "<textarea style='color:grey;overflow: hidden;resize: vertical;'>").replaceAll("___end_text___", "</textarea>") + "__END_ENCRYPTED__";
