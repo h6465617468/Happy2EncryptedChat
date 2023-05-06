@@ -6,8 +6,7 @@ It has end-to-end encryption. It doesn't save the incoming message anywhere, it 
 | Happy2EncryptedChat | Yes | RSA,AES-256-CBC | Memory | Chat Bot(can be messaged) | I recommend the Tor browser. Brave is pretty cool too. Please use DoD 5220.22-M.
 
 # Setup
-## There is no need to deal with the database, it is very easy to set up because the data is in memory.
-
+## No need to mess with the database, it's very easy to set up as the data is in the computer memory.
 ### 1- Install Python
 ### 2- Run cmd as Administrator
 ```cmd
