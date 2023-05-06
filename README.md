@@ -37,5 +37,7 @@ key
 token
 ```
 # Usage
+### This link provides a direct link. It cannot be reused.
+### Example : http://(host):(port)/?inv=Kr9CBrwYElMND8cEHdUL5r5OWY5coXNMQzto1O_EWlods51yTmN7gzhexG7fvU03
 ![alt text](https://raw.githubusercontent.com/h6465617468/Happy2EncryptedChat/main/Screenshot_5.png?raw=true)
 ![alt text](https://raw.githubusercontent.com/h6465617468/Happy2EncryptedChat/main/Screenshot_4.png?raw=true)
