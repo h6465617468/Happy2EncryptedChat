@@ -1,9 +1,9 @@
 # Happy 2 Encrypted Chat
 It has end-to-end encryption. It doesn't save the incoming message anywhere, it just memorizes it, encrypts it, sends it and deletes it back. Not suitable for illegal or personal use. It also has a Chatbot feature. Finally the software uses websocket.
 
-| Name | End-To-End Encryption | Encryption Algorithms | Storage | Fake Theme
-| :---: | :---: | :---: | :---: | :---: |
-| Happy2EncryptedChat | Yes | RSA,AES-256-CBC | Memory | Chat Bot(can be messaged)
+| Name | End-To-End Encryption | Encryption Algorithms | Storage | Fake Theme | Fun
+| :---: | :---: | :---: | :---: | :---: | :---: |
+| Happy2EncryptedChat | Yes | RSA,AES-256-CBC | Memory | Chat Bot(can be messaged) | A little
 
 # Setup
 ### 1- Install Python
