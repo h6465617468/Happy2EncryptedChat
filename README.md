@@ -1,5 +1,5 @@
 # Happy 2 Encrypted Chat
-It has end-to-end encryption. It doesn't save the incoming message anywhere, it just memorizes it, encrypts it, sends it and deletes it back. Not suitable for illegal or personal use. It also has a Chatbot feature.
+It has end-to-end encryption. It doesn't save the incoming message anywhere, it just memorizes it, encrypts it, sends it and deletes it back. Not suitable for illegal or personal use. It also has a Chatbot feature. Finally the software uses websocket.
 
 # Setup
 ### 1- Install Python
@@ -38,12 +38,13 @@ data -k (decrypt key)
 key
 token
 ```
+-auto Quick Start
 ```cmd
 py index.py -auto
 ```
 | Command | Description |
 | --- | --- |
-| `start` | Starts the server, -p ( server port ), -s ( host ), -wp ( Websocket Port ) -auto Quick Start |
+| `start` | Starts the server, -p ( server port ), -s ( host ), -wp ( Websocket Port ) |
 | `stop` | Stops the server |
 | `exit` | Force close |
 | `inv` | Send a link to your friend and message 2 people. Don't forget to change the host part -add new invite link |
