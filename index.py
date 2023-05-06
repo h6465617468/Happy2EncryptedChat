@@ -595,6 +595,7 @@ socket.onmessage = function(event) {{
   var message = document.createElement('div');
   message.style.display = "block";
   if (event.data.startsWith("___PUBLICKEY___") && event.data.includes("___END_PUBLICKEY___")) {{ // başlangıç ve bitiş kısmının varlığını kontrol et
+closeloading();
   var startIndex = event.data.indexOf("___PUBLICKEY___") + "___PUBLICKEY___".length; // başlangıç kısmının sonundaki indeksi bul
   var endIndex = event.data.indexOf("___END_PUBLICKEY___"); // bitiş kısmının başındaki indeksi bul
   var messagexx = event.data.slice(startIndex, endIndex); // aradaki kısmı al
@@ -602,7 +603,6 @@ socket.onmessage = function(event) {{
   if(safe_retry_rsa==true){{
               safe_retry_rsa=false;
 div.innerHTML = messagexx;
-  closeloading()
             }}
   
 }}
