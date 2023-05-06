@@ -18,9 +18,8 @@ pip install beautifulsoup4
 ```
 ### 3- Run cmd or Powershell
 ```cmd
-cd Desktop
-cd Server
 py index.py
+py index.py -auto
 ```
 
 # Commands
