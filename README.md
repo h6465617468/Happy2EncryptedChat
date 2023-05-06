@@ -33,4 +33,7 @@ youtube -s 3
 cls
 data
 data -k (decrypt key)
+key
+token
 ```
+
