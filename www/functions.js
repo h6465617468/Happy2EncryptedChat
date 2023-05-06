@@ -40,6 +40,29 @@ function base64_decode(str) {
     }
     return new Uint8Array(buffer);
   }
+
+
+
+  function promptUser(message) {
+    return new Promise((resolve, reject) => {
+      function prompt() {
+        const input = window.prompt(message);
+        if (input === null) {
+          killpage();
+          reject('User cancelled prompt');
+        } else {
+          resolve(input);
+        }
+      }
+  
+      prompt();
+    });
+  }
+  
+  
+
+
+
   function getCurrentTime() {
     var date = new Date();
     var timeString = date.toLocaleTimeString();
