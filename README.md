@@ -43,17 +43,17 @@ py index.py -auto
 ```
 | Command | Description |
 | --- | --- |
-| start | Starts the server, -p ( server port ), -s ( host ), -wp ( Websocket Port ) -auto Quick Start |
-| stop | Stops the server |
-| exit | Force close |
-| inv | Send a link to your friend and message 2 people. Don't forget to change the host part -add new invite link |
-| reskey | Reset server key |
-| play music | Youtube video play -s ( count ) |
-| youtube | Add Music -s ( count ) |
-| cls | Clear command prompt |
-| data | Display Encrypted Messages ( It will return null because it is deleted instantly. ) -k ( decrypt key ) |
-| key | View Server Key |
-| token | ( It will return null because it is deleted instantly. ) |
+| `start` | Starts the server, -p ( server port ), -s ( host ), -wp ( Websocket Port ) -auto Quick Start |
+| `stop` | Stops the server |
+| `exit` | Force close |
+| `inv` | Send a link to your friend and message 2 people. Don't forget to change the host part -add new invite link |
+| `reskey` | Reset server key |
+| `play music` | Youtube video play -s ( count ) |
+| `youtube` | Add Music -s ( count ) |
+| `cls` | Clear command prompt |
+| `data` | Display Encrypted Messages ( It will return null because it is deleted instantly. ) -k ( decrypt key ) |
+| `key` | View Server Key |
+| `token` | ( It will return null because it is deleted instantly. ) |
 
 # Usage
 ### This link provides a direct link. It cannot be reused.
