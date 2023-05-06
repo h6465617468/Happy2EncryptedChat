@@ -18,7 +18,7 @@ cd Server
 py index.py
 ```
 
-Commands
+# Commands
 ```
 start
 start -auto
@@ -36,4 +36,6 @@ data -k (decrypt key)
 key
 token
 ```
-
+# Usage
+![alt text](https://raw.githubusercontent.com/h6465617468/Happy2EncryptedChat/main/Screenshot_5.png?raw=true)
+![alt text](https://raw.githubusercontent.com/h6465617468/Happy2EncryptedChat/main/Screenshot_4.png?raw=true)
