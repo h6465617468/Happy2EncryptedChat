@@ -45,7 +45,7 @@ py index.py -auto
 | --- | --- |
 | start | Starts the server, -p ( server port ), -s ( host ), -wp ( Websocket Port ) -auto Quick Start |
 | stop | Stops the server |
-| exit | - |
+| exit | Force close |
 | inv | Send a link to your friend and message 2 people. Don't forget to change the host part -add new invite link |
 | reskey | Reset server key |
 | play music | Youtube video play -s ( count ) |
