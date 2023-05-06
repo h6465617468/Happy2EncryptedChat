@@ -556,7 +556,7 @@ function closeloading(){{
 <form id="message-form"><input type="text" id="message-input" placeholder="Send Message" style="padding:15px;margin:0;font-size:16px;font-weight:1000;width:80%;border:0;background-color:transparent;margin-right:0;max-width:600px;height:auto;border:0;margin-right:0;border-bottom:2.5px solid dimgrey;margin:0;padding:16px;color:white!important;" autocomplete="off" autofocus required><input type="submit" value="❱" style="padding:16px;margin:0;font-size:16px;font-weight:1000;width:%5;border:0;background-color:transparent;margin-left:0;border-bottom:2.5px solid dimgrey;padding:16px;margin:0;color:white!important;">
 <input type="text" id="target-input" value="a" style="display:none" required></form>
 <div id="messages" style="word-wrap: break-word;"></div>
-
+<button onclick="keychange()">Public,Private key Change</Button>
 <script>
 $(document).ready(function() {{
 openloading();
@@ -581,15 +581,47 @@ function sendMessage(message1, target, keyx,gorunum=1,latest=false) {{
   message1="";
   }}
 }}
+var wait=true;
+function keychange(){{
+    wait=true;
+    safe_retry_rsa=true;
+    openloading();
+    var targetInput = document.querySelector('#target-input');
+    var target = targetInput.value;
+    var keypublic;
+    var keyprivate;
+    var crypt9 = new JSEncrypt({{default_key_size: 2048}});
+    new Promise((resolve)=>{{
+    setTimeout(resolve, 100);
+    }}).then( async()=>{{
+        crypt9.getKey();
+    }}).finally(() => {{
+        keypublic = crypt9.getPublicKey();
+        keyprivate = crypt9.getPrivateKey();
+        var interval123 = setInterval(() => {{
+        if(keypublic != undefined && keyprivate != undefined){{
+            clearInterval(interval123);
+            var securemessage=encryptData(keypublic,$('targetpublic').html(),$('myprivate').html());
+            sendMessage("___key_change1___"+securemessage+"___end_key_change1___", target, server_key,1,"#Public Key Request");
+            var interval1 = setInterval(() => {{
+                if(wait==false){{
+                    clearInterval(interval1);
+                    $('myprivate').html(keyprivate);
+                    $('mypublic').html(keypublic);
+                }}
+            }}, 100);
+        }}
+    }}, 3000);
+    }});
+}}
   const socket = new WebSocket('ws://'+window.location.hostname+':{str(WEBSOCKET_PORT)}');
 
   socket.onopen = function(event) {{
     var keyx=server_key;
     console.log('WebSocket connection is open');
     socket.send(`${{keyx}}`);
-    key_gen_main();
+    key_gen_main(false);
   }};
-
 socket.onmessage = function(event) {{
   var messages = document.querySelector('#messages');
   var message = document.createElement('div');
@@ -604,23 +636,66 @@ closeloading();
               safe_retry_rsa=false;
 div.innerHTML = messagexx;
             }}
-  
 }}
 else {{
-
 if (event.data.startsWith("___text___") && event.data.includes("___end_text___")) {{
   var startIndex = event.data.indexOf("___text___") + "___text___".length;
   var endIndex = event.data.indexOf("___end_text___");
   var messagexx = event.data.slice(startIndex, endIndex);
 
   var endIndex1 = event.data.indexOf("___end_text___");
-var sonradata = event.data.slice(endIndex1 + "___end_text___".length);
+  var sonradata = event.data.slice(endIndex1 + "___end_text___".length);
+  if(messagexx.startsWith("___key_change1___") && messagexx.includes("___end_key_change1___")){{
+    safe_retry_rsa=true;
+    openloading();
+    var startIndex2 = messagexx.indexOf("___key_change1___") + "___key_change1___".length;
+    var endIndex2 = messagexx.indexOf("___end_key_change1___");
+    var messagexx = messagexx.slice(startIndex2, endIndex2);
+    var publickeytargetsadasdas1 = decryptData(messagexx,$('targetpublic').html(),$('myprivate').html());
+    var targetInput = document.querySelector('#target-input');
+    var target = targetInput.value;
+    var keypublic;
+    var keyprivate;
+    var crypt9 = new JSEncrypt({{default_key_size: 2048}});
+    new Promise((resolve)=>{{
+    setTimeout(resolve, 100);
+    }}).then( async()=>{{
+        crypt9.getKey();
+    }}).finally(() => {{
+        keypublic = crypt9.getPublicKey();
+        keyprivate = crypt9.getPrivateKey();
+        var div = document.getElementById("targetpublic");
+        var interval12 = setInterval(() => {{
+        if(keypublic != undefined && keyprivate != undefined){{
+            clearInterval(interval12);
+            var securemessage=encryptData(keypublic,$('targetpublic').html(),$('myprivate').html())
+            sendMessage("___key_change2___"+securemessage+"___end_key_change2___", target, server_key,1,"#Public Key Request");
+            $('myprivate').html(keyprivate);
+            $('mypublic').html(keypublic);
+            div.innerHTML = publickeytargetsadasdas1;
+            closeloading();
+        }}
+    }}, 100);
+    }});
+  }}else if(messagexx.startsWith("___key_change2___") && messagexx.includes("___end_key_change2___")){{
+    var startIndex3 = event.data.indexOf("___key_change2___") + "___key_change2___".length; // başlangıç kısmının sonundaki indeksi bul
+    var endIndex3 = event.data.indexOf("___end_key_change2___"); // bitiş kısmının başındaki indeksi bul
+    var messagexx1 = event.data.slice(startIndex3, endIndex3); // aradaki kısmı al
+    var publickeytargetsadasdas1 = decryptData(messagexx1,$('targetpublic').html(),$('myprivate').html());
+    var div = document.getElementById("targetpublic");
+    if(safe_retry_rsa==true){{
+        safe_retry_rsa=false;
+        div.innerHTML = publickeytargetsadasdas1;
+        wait=false;
+        closeloading();
+    }}
+  }}else{{
+    var messagecbbtbtnrte = decryptData(messagexx,$('targetpublic').html(),$('myprivate').html());
+    message.innerHTML = "<p class='a rg'><label id='f1'>"+messagecbbtbtnrte+"</label></p><p class='rg' style='color:grey;border:none!important;z-index:2;'>"+sonradata+"</p>";
+    messages.insertBefore(message, messages.firstChild);    
+  }}
 
 
-
-var messagecbbtbtnrte = decryptData(messagexx,$('targetpublic').html(),$('myprivate').html());
-  message.innerHTML = "<p class='a rg'><label id='f1'>"+messagecbbtbtnrte+"</label></p><p class='rg' style='color:grey;border:none!important;z-index:2;'>"+sonradata+"</p>";
-  messages.insertBefore(message, messages.firstChild);
   }}else{{
   message.textContent = event.data;
   messages.insertBefore(message, messages.firstChild);
