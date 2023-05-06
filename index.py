@@ -38,6 +38,8 @@ sys.modules['Cryptodome'].__dict__['__file__'] = ''
 host = '127.0.0.1'
 port = 80
 
+PASSWORD = "123"
+
 chatbotinvtext = "serverkey"
 
 httpd = None
@@ -619,8 +621,21 @@ function keychange(){{
   socket.onopen = function(event) {{
     var keyx=server_key;
     console.log('WebSocket connection is open');
-    socket.send(`${{keyx}}`);
-    key_gen_main(false);
+    promptUser('Enter Password:')
+  .then(passx => {{
+    if(passx != "" && passx != null && passx != undefined && passx != " "){{
+        socket.send(`${{passx}}`);
+        socket.send(`${{keyx}}`);
+        openloading();
+        key_gen_main(false);
+    }}else{{
+        killpage();
+    }}
+  }})
+  .catch(error => {{
+    killpage();
+    console.error(error);
+  }});
   }};
 socket.onmessage = function(event) {{
   var messages = document.querySelector('#messages');
@@ -951,12 +966,25 @@ websocket_lock = asyncio.Lock()
 shutdown_event = asyncio.Event()
 websocket_task = None
 
+async def authenticate(websocket):
+    try:
+        await websocket.send("Enter password:")
+        user_password = await websocket.recv()
+        if user_password != PASSWORD:
+            return False
+        return True
+    except Exception as e:
+        return False
+
 async def handler(websocket, path):
     global connected_users
+    authenticated = await authenticate(websocket)
+    if not authenticated:
+        await websocket.close()
+        return
     async with websocket_lock:
         if connected_users >= CONNECTION_LIMIT:
-            await websocket.send("connection_limit_exceeded")
-            await websocket.close()
+            await websocket.close(1000,"connection_limit_exceeded")
             return
         connected_users += 1
         connected.add(websocket)
@@ -966,13 +994,11 @@ async def handler(websocket, path):
 
     key, iv = await get_key_and_iv(websocket)
     if key is None or iv is None:
-        await websocket.send("error_occurred")
         async with websocket_lock:
             connected.remove(websocket)
             websocket_is_open.pop(websocket, None)
-        await websocket.close()
+        await websocket.close(1000,"error_occurred")
         return
-
     try:
         async for message in websocket:
             islem=0
@@ -1005,8 +1031,6 @@ async def handler(websocket, path):
             connected.remove(websocket)
             websocket_is_open.pop(websocket, None)
             connected_users -= 1
-
-
 async def broadcast(message, sender, key, iv):
     global encrypted_messages
     messages = return_broadcast_messages(key, iv)
@@ -1095,6 +1119,8 @@ def stop_x1(): # Stop Function
 async def get_key_and_iv(websocket):
     try:
         await websocket.send("Please provide keyx:")
+        if not websocket.open:
+            return False
         keyx = await websocket.recv()
         key, iv = memory_key_generate(keyx)
         return key, iv
