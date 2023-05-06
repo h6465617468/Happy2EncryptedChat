@@ -58,7 +58,7 @@ py index.py -auto
 | `cls` | Clear command prompt |
 | `data` | Display Encrypted Messages ( It will return null because it is deleted instantly. ) -k ( decrypt key ) |
 | `key` | View Server Key |
-| `token` | ( It will return null because it is deleted instantly. ) |
+| `token` | Display Tokens ( It will return null because it is deleted instantly. ) |
 
 # Usage
 ### This link provides a direct link. It cannot be reused.
