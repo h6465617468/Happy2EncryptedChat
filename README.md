@@ -1,5 +1,5 @@
 # Happy2 Encrypted Chat
-It has end-to-end encryption. The message is instantly destroyed on the server side. Not suitable for illegal use. It also has a Chatbot feature. Only 2 people can message. Finally the software uses websocket.
+This is a secure app that encrypts your messages. No one can see your messages except you and the person you are talking to. The messages are deleted from the server as soon as they are sent. Please use this app responsibly. You can also talk to a Chatbot if you want. This app only allows 2 people to chat at a time. The app works with websocket technology.
 
 | Name | End-To-End Encryption | Encryption Algorithms | Storage | Fake Theme | Security
 | :---: | :---: | :---: | :---: | :---: | :---: |
