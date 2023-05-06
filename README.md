@@ -3,7 +3,7 @@ It has end-to-end encryption. It doesn't save the incoming message anywhere, it 
 
 | Name | End-To-End Encryption | Encryption Algorithms | Storage | Fake Theme | Security
 | :---: | :---: | :---: | :---: | :---: | :---: |
-| Happy2EncryptedChat | Yes | RSA,AES-256-CBC | Memory | Chat Bot(can be messaged) | I recommend the Tor browser. Brave is pretty cool too. Please use DoD 5220.22-M.
+| Happy2EncryptedChat | Yes | RSA,AES-256 | Memory | Chat Bot(can be messaged) | I recommend the Tor browser. Brave is pretty cool too. Please use DoD 5220.22-M.
 
 # Setup
 ## No need to mess with the database, it's very easy to set up as the data is in the computer memory.
