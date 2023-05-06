@@ -11,9 +11,26 @@ pip install websockets
 pip install requests
 pip install beautifulsoup4
 ```
-### 3- Start 
+### 3- Start Run cmd or Powershell
 ```cmd
 cd Desktop
 cd Server
 py index.py
+```
+
+Commands
+```
+start
+start -auto
+start -s 127.0.0.1 -p 80 -wp 5678
+stop
+exit
+inv -add
+inv
+reskey
+youtube
+youtube -s 3
+cls
+data
+data -k (decrypt key)
 ```
