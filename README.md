@@ -6,7 +6,7 @@ This is a secure messaging app that uses end-to-end encryption. Your messages ar
 | Happy2EncryptedChat | Yes | RSA,AES-256 | Memory | Chat Bot(can be messaged) | I recommend the Tor browser. Brave is pretty cool too. Please use DoD 5220.22-M.
 
 # Setup
-## No need to mess with the database, it's very easy to set up as the data is in the computer memory. The estimated memory processing time of the encrypted message is 0.1 seconds, and it is deleted immediately after processing.
+No need to mess with the database, it's very easy to set up as the data is in the computer memory. The estimated memory processing time of the encrypted message is 0.1 seconds, and it is deleted immediately after processing.
 ### 1- Install Python
 ### 2- Run cmd as Administrator
 ```cmd
