@@ -1,5 +1,5 @@
 # Happy2 Encrypted Chat
-It has end-to-end encryption. It doesn't save the incoming message anywhere, it just memorizes it, encrypts it, sends it and deletes it back. Not suitable for illegal or personal use. It also has a Chatbot feature. Only 2 people can message. Finally the software uses websocket.
+It has end-to-end encryption. It doesn't save the incoming message anywhere, it just memorizes it, encrypts it, sends it and deletes it back. Not suitable for illegal use. It also has a Chatbot feature. Only 2 people can message. Finally the software uses websocket.
 
 | Name | End-To-End Encryption | Encryption Algorithms | Storage | Fake Theme | Security
 | :---: | :---: | :---: | :---: | :---: | :---: |
