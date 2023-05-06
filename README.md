@@ -1,5 +1,5 @@
 # Happy 2 Encrypted Chat
-Happy 2 Encrypted Chat
+It has end-to-end encryption. It doesn't save the incoming message anywhere, it just memorizes it, encrypts it, sends it and deletes it back. Not suitable for illegal or personal use.
 
 # Setup
 ### 1- Install Python
@@ -38,8 +38,20 @@ data -k (decrypt key)
 key
 token
 ```
+```cmd
+py index.py -auto
+```
+| Command | Description |
+| --- | --- |
+| start | Starts the server, -p ( server port ), -s ( host ), -wp ( Websocket Port ) -auto Quick Start |
+| stop | Stops the server |
+| exit | - |
+| inv | Send a link to your friend and message 2 people. Don't forget to change the host part -add new invite link |
+| exit | - |
+
 # Usage
 ### This link provides a direct link. It cannot be reused.
+
 http://(host):(port)/?inv=Kr9CBrwYElMND8cEHdUL5r5OWY5coXNMQzto1O_EWlods51yTmN7gzhexG7fvU03
-![alt text](https://raw.githubusercontent.com/h6465617468/Happy2EncryptedChat/main/Screenshot_5.png?raw=true)
-![alt text](https://raw.githubusercontent.com/h6465617468/Happy2EncryptedChat/main/Screenshot_4.png?raw=true)
+![alt text](https://raw.githubusercontent.com/h6465617468/Happy2EncryptedChat/main/1.png?raw=true)
+![alt text](https://raw.githubusercontent.com/h6465617468/Happy2EncryptedChat/main/2.png?raw=true)
