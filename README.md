@@ -47,7 +47,13 @@ py index.py -auto
 | stop | Stops the server |
 | exit | - |
 | inv | Send a link to your friend and message 2 people. Don't forget to change the host part -add new invite link |
-| exit | - |
+| reskey | Reset server key |
+| play music | Youtube video play -s ( count ) |
+| youtube | Add Music -s ( count ) |
+| cls | Clear command prompt |
+| data | Display Encrypted Messages ( It will return null because it is deleted instantly. ) -k ( decrypt key ) |
+| key | View Server Key |
+| token | ( It will return null because it is deleted instantly. ) |
 
 # Usage
 ### This link provides a direct link. It cannot be reused.
