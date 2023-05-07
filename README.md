@@ -3,7 +3,7 @@ This is a secure messaging app that uses end-to-end encryption. Your messages ar
 
 | Name | End-To-End Encryption | Encryption Algorithms | Storage | Security
 | :---: | :---: | :---: | :---: | :---: |
-| Happy2EncryptedChat | Yes | RSA,AES-256 | Memory | I recommend the Tor browser. Brave is pretty cool too. Please use DoD 5220.22-M.
+| Happy2EncryptedChat | Yes | RSA,AES-256 | Memory | I recommend the Tor browser.
 
 # Setup
 No need to mess with the database, it's very easy to set up as the data is in the computer memory. The estimated memory processing time of the encrypted message is 0.1 seconds, and it is deleted immediately after processing.
