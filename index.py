@@ -38,8 +38,6 @@ sys.modules['Cryptodome'].__dict__['__file__'] = ''
 host = '127.0.0.1'
 port = 80
 
-PASSWORD = "123"
-
 chatbotinvtext = "serverkey"
 
 httpd = None
@@ -105,6 +103,10 @@ def generateToken_str():
     randomPassword = ''.join(random.choices(string.ascii_letters + string.digits, k=64))
     token = year + month + day + hour + minute + second + randomPassword
     return hashlib.sha256(token.encode()).hexdigest()
+
+PASSWORD = generateToken_str()
+
+SALT = generateToken_str()
 
 # Global file_token list
 file_token = {generateToken_str():"crypto-js.min.js",generateToken_str():"jquery-3.6.4.min.js",generateToken_str():"jsencrypt.min.js",generateToken_str():"abc.css",generateToken_str():"a.css",generateToken_str():"a1b.css",generateToken_str():"functions.js"}
@@ -222,6 +224,10 @@ def set_memory_hash(text):
     iv = hashlib.md5(text.encode()).digest()
     server_memory_encrypt_key_Hash = hashlib.sha512(key).hexdigest()
     server_memory_encrypt_iv_Hash = hashlib.sha512(iv).hexdigest()
+    return True
+def set_password(text):
+    global PASSWORD
+    PASSWORD = text
     return True
 
 def print_server_key():
@@ -369,29 +375,32 @@ def return_decrypted_messages(decrypted_messages):
 def return_broadcast_messages(key, iv):
     global encrypted_messages
     messages = []
-    messages.append(encrypted_messages[0])
-    cache_asdas_012302 = ""
-    try:
-        for message in messages:
-            if message['text'].startswith("___PUBLICKEY___"):
-                messagexx = message['text'].split("___PUBLICKEY___")[1]
-                decrypted_message = decrypt(key, iv, base64.b64decode(messagexx))
-                if message['crc32b'] != crc32bhash(decrypted_message.encode()):
-                    cache_asdas_012302 += '(!) CRC32B Error: Message changed\n'
+    if encrypted_messages:
+        messages.append(encrypted_messages[0])
+        cache_asdas_012302 = ""
+        try:
+            for message in messages:
+                if message['text'].startswith("___PUBLICKEY___"):
+                    messagexx = message['text'].split("___PUBLICKEY___")[1]
+                    decrypted_message = decrypt(key, iv, base64.b64decode(messagexx))
+                    if message['crc32b'] != crc32bhash(decrypted_message.encode()):
+                        cache_asdas_012302 += '(!) CRC32B Error: Message changed\n'
+                    else:
+                        cache_asdas_012302 += f"___PUBLICKEY___{decrypted_message}___END_PUBLICKEY___ {message['time']} ID:{message['id']} CRC32B:{message['crc32b']} {message['type']}\n"
                 else:
-                    cache_asdas_012302 += f"___PUBLICKEY___{decrypted_message}___END_PUBLICKEY___ {message['time']} ID:{message['id']} CRC32B:{message['crc32b']} {message['type']}\n"
-            else:
-                messagexx = message['text']
-                decrypted_message = decrypt(key, iv, base64.b64decode(messagexx))
-                if message['crc32b'] != crc32bhash(decrypted_message.encode()):
-                    cache_asdas_012302 += '(!) CRC32B Error: Message changed\n'
-                else:
-                    cache_asdas_012302 += f"___text___{decrypted_message}___end_text___ {message['time']} ID:{message['id']} CRC32B:{message['crc32b']} {message['type']}\n"
-    except Exception as e:
-        cache_asdas_012302 += f"Decrypt Error: {e}\n"
-    if not messages:
-        cache_asdas_012302 = "None"
-    return cache_asdas_012302
+                    messagexx = message['text']
+                    decrypted_message = decrypt(key, iv, base64.b64decode(messagexx))
+                    if message['crc32b'] != crc32bhash(decrypted_message.encode()):
+                        cache_asdas_012302 += '(!) CRC32B Error: Message changed\n'
+                    else:
+                        cache_asdas_012302 += f"___text___{decrypted_message}___end_text___ {message['time']} ID:{message['id']} CRC32B:{message['crc32b']} {message['type']}\n"
+        except Exception as e:
+            cache_asdas_012302 += f"Decrypt Error: {e}\n"
+        if not messages:
+            cache_asdas_012302 = "None"
+        return cache_asdas_012302
+    else:
+        return None
 
 def get_token_variables(file_token):
     tokens = list(file_token.keys())
@@ -561,7 +570,6 @@ function closeloading(){{
 <button onclick="keychange()">Public,Private key Change</Button>
 <script>
 $(document).ready(function() {{
-openloading();
 }});
 
 
@@ -916,7 +924,8 @@ form.addEventListener('submit', function(event) {{
                 post_data = self.rfile.read(content_length)
                 post_data = parse_qs(post_data.decode())
                 new_server_key = post_data.get('server_key', [''])[0]
-                set_memory_hash(new_server_key)
+                set_password(new_server_key)
+                set_memory_hash(new_server_key + SALT)
                 random_token = None
                 message = f'OK'
                 content = f'''
@@ -1012,9 +1021,23 @@ async def handler(websocket, path):
             else:
                 target = None
             if islem==0:
-                await mesajat(message1, key, iv, target,0)
+                if hashlib.sha512(key).hexdigest() == server_memory_encrypt_key_Hash and hashlib.sha512(iv).hexdigest() == server_memory_encrypt_iv_Hash:
+                    await mesajat(message1, key, iv, target,0)
+                else:
+                    async with websocket_lock:
+                        websocket_is_open.pop(websocket, None)
+                        connected_users -= 1
+                        await websocket.close(1000,"Key_ERROR")
+                        return
             else:
-                await mesajat(message1, key, iv, target,1)
+                if hashlib.sha512(key).hexdigest() == server_memory_encrypt_key_Hash and hashlib.sha512(iv).hexdigest() == server_memory_encrypt_iv_Hash:
+                    await mesajat(message1, key, iv, target,1)
+                else:
+                    async with websocket_lock:
+                        websocket_is_open.pop(websocket, None)
+                        connected_users -= 1
+                        await websocket.close(1000,"Key_ERROR")
+                        return
             await broadcast(message, websocket, key, iv)
     except websockets.exceptions.ConnectionClosed:
         async with websocket_lock:
@@ -1034,17 +1057,18 @@ async def handler(websocket, path):
 async def broadcast(message, sender, key, iv):
     global encrypted_messages
     messages = return_broadcast_messages(key, iv)
-    tasks = []
-    if connected.__len__() % 2 == 0:
-        encrypted_messages = []
-    for websocket in list(connected):
-        try:
-            if websocket != sender and websocket_is_open.get(websocket, False):
-                task = websocket.send(messages)
-                tasks.append(task)
-        except:
-            pass
-    await asyncio.gather(*tasks, return_exceptions=True)
+    if messages != None:
+        tasks = []
+        if connected.__len__() % 2 == 0:
+            encrypted_messages = []
+        for websocket in list(connected):
+            try:
+                if websocket != sender and websocket_is_open.get(websocket, False):
+                    task = websocket.send(messages)
+                    tasks.append(task)
+            except:
+                pass
+        await asyncio.gather(*tasks, return_exceptions=True)
 
 async def some_coroutine(websocket):
     async with websocket_lock:
@@ -1239,7 +1263,7 @@ def run_server(host, port):
     httpd.serve_forever()
 
 async def stop_server():
-    global httpd,tokens,invs, encrypted_messages, server_memory_encrypt_key_Hash, server_memory_encrypt_iv_Hash
+    global httpd,tokens,invs, encrypted_messages, server_memory_encrypt_key_Hash, server_memory_encrypt_iv_Hash,PASSWORD,SALT,server_key
     print(' ⟫ Stopping server...')
     httpd.shutdown()
     #time.sleep(1)
@@ -1253,6 +1277,9 @@ async def stop_server():
     invs = []
     server_memory_encrypt_key_Hash = None
     server_memory_encrypt_iv_Hash = None
+    PASSWORD = generateToken_str()
+    SALT = generateToken_str()
+    server_key = None
 
 start_keyword=['güzel','tatlı','yt','youtube','harika','bir','bana','play','playing','için','song']
 music_keyword=['musık','musik','musıc','music','şarkı', 'sarkı','müzik', 'muzik','muzık', 'sarki','song','kpop','play']
