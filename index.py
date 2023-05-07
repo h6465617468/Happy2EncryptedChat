@@ -40,6 +40,8 @@ port = 80
 
 chatbotinvtext = "serverkey"
 
+x1iv = ''.join(random.choices(string.ascii_letters + string.digits, k=16))
+
 httpd = None
 server_thread = None
 
@@ -77,7 +79,7 @@ def encrypt(key, iv, plaintext):
         ciphertext = cipher.encrypt(pad(plaintext.encode(), AES.block_size))
         return ciphertext
     except Exception as e:
-        #print("Encryption error:", e)
+        print("Encryption error:", e)
         return None
 
 def decrypt(key, iv, ciphertext):
@@ -89,8 +91,46 @@ def decrypt(key, iv, ciphertext):
         plaintext = unpad(cipher.decrypt(ciphertext), AES.block_size)
         return plaintext.decode()
     except Exception as e:
-        #print("Decryption error:", e)
+        print("Decryption error:", e)
         return None
+
+aes256_token = {}
+
+def generatekeyAES256():
+    global aes256_token
+    key = ''.join(random.choices(string.ascii_letters + string.digits, k=32))
+    name = ''.join(random.choices(string.ascii_letters + string.digits, k=64))
+    aes256_token[name] = key.encode()
+    if len(aes256_token) > 32:
+        oldest_name = next(iter(aes256_token))
+        del aes256_token[oldest_name]
+    return name, key
+
+def aes256_token_exists(name):
+    global aes256_token
+    return name in aes256_token
+
+def delete_aes256_token(token):
+    global aes256_token
+    if token in aes256_token:
+        del aes256_token[token]
+        return True
+    else:
+        return False
+
+def test_decrypt_aes256_token(token, ciphertext):
+    global aes256_token, x1iv
+    if not aes256_token_exists(token):
+        return False
+    try:
+        decoded_ciphertext = base64.b64decode(ciphertext.encode())
+        value = str(decrypt(aes256_token[token], x1iv.encode(), decoded_ciphertext))
+        if delete_aes256_token(token):
+            return value
+        else:
+            return False
+    except:
+        return False
 
 def generateToken_str():
     now = datetime.datetime.now()
@@ -484,6 +524,18 @@ class StaticServer(BaseHTTPRequestHandler):
             inv = self.path.split('=')[1]
             if inv_login(inv):
                 token1, token2, token3, token4, token5, token6, token7 = get_token_variables(file_token)
+                namex89, keyx98 = generatekeyAES256()
+                #print(x1iv)
+                #print("KEY:"+keyx98)
+                #asdasdas = base64.b64encode(encrypt(keyx98.encode(), x1iv.encode(), "123")).decode()
+                #print(asdasdas)
+                #print(decrypt(keyx98.encode(), x1iv.encode(), base64.b64decode(asdasdas)))
+                keyx98 = keyx98.encode().hex()
+                namex89 = namex89
+                namexserver_key, keyxserver_key = generatekeyAES256()
+                server_key_token_encrypted = namexserver_key + "#" + base64.b64encode(encrypt(keyxserver_key.encode(), x1iv.encode(), server_key)).decode()
+                #asdasdas = base64.b64encode(encrypt(keyxserver_key.encode(), x1iv.encode(), server_key)).decode()
+                #print(decrypt(keyxserver_key.encode(), x1iv.encode(), base64.b64decode(asdasdas)))
                 content = f'''
 <!DOCTYPE html>
 <html>
@@ -535,6 +587,7 @@ class StaticServer(BaseHTTPRequestHandler):
 </div><br><loading-durum style='color:white;margin:0 auto;font-size:24px;'>Bağlantı Bekleniyor</loading-durum></div></div>
 <script>
 var server_key = "{server_key}";
+var encrypt_1_iv = "{x1iv.encode().hex()}";
 var safe_retry_rsa=true;
 function changedurum(asdasdasdadasd){{
     $("loading-durum").html(asdasdasdadasd);
@@ -622,12 +675,15 @@ function keychange(){{
   const socket = new WebSocket('ws://'+window.location.hostname+':{str(WEBSOCKET_PORT)}');
 
   socket.onopen = function(event) {{
-    var keyx=server_key;
+    var keyx="{server_key_token_encrypted}";
     console.log('WebSocket connection is open');
     promptUser('Enter Password:')
   .then(passx => {{
     if(passx != "" && passx != null && passx != undefined && passx != " "){{
-        socket.send(`${{passx}}`);
+        var encrypted_name = "{namex89}";
+        var encrypt_key ="{keyx98}";
+        var text12123213 = encrypted_name+"#"+encrypt_1(encrypt_key,encrypt_1_iv,passx);
+        socket.send(`${{text12123213}}`);
         socket.send(`${{keyx}}`);
         openloading();
         key_gen_main(false);
@@ -974,9 +1030,17 @@ async def authenticate(websocket):
     try:
         await websocket.send("Enter password:")
         user_password = await websocket.recv()
-        if user_password != PASSWORD:
+        if "#" in user_password:
+            parts = user_password.split("#")
+            if len(parts) == 2:
+                user_password = test_decrypt_aes256_token(parts[0],parts[1])
+                if user_password != PASSWORD:
+                    return False
+                return True
+            else:
+                return False
+        else:
             return False
-        return True
     except Exception as e:
         return False
 
@@ -1055,7 +1119,8 @@ async def broadcast(message, sender, key, iv):
     if messages != None:
         tasks = []
         if connected.__len__() % 2 == 0:
-            encrypted_messages = []
+            if not messages.startswith("___PUBLICKEY___"):
+                encrypted_messages = []
         for websocket in list(connected):
             try:
                 if websocket != sender and websocket_is_open.get(websocket, False):
@@ -1141,8 +1206,19 @@ async def get_key_and_iv(websocket):
         if not websocket.open:
             return False
         keyx = await websocket.recv()
-        key, iv = memory_key_generate(keyx)
-        return key, iv
+        if "#" in keyx:
+            parts = keyx.split("#")
+            if len(parts) == 2:
+                keyx1 = test_decrypt_aes256_token(parts[0],parts[1])
+                if keyx1:
+                    key, iv = memory_key_generate(keyx1)
+                    return key, iv
+                else:
+                    return None, None
+            else:
+                return None, None
+        else:
+            return None, None
     except Exception as e:
         logging.error(f"Error generating key and iv: {e}")
         return None, None
@@ -1258,7 +1334,7 @@ def run_server(host, port):
     httpd.serve_forever()
 
 async def stop_server():
-    global httpd,tokens,invs, encrypted_messages, server_memory_encrypt_key_Hash, server_memory_encrypt_iv_Hash,PASSWORD,SALT,server_key
+    global httpd,tokens,invs, encrypted_messages, server_memory_encrypt_key_Hash, server_memory_encrypt_iv_Hash,PASSWORD,SALT,server_key,x1iv
     print(' ⟫ Stopping server...')
     httpd.shutdown()
     #time.sleep(1)
@@ -1275,6 +1351,7 @@ async def stop_server():
     PASSWORD = generateToken_str()
     SALT = generateToken_str()
     server_key = None
+    x1iv = ''.join(random.choices(string.ascii_letters + string.digits, k=16))
 
 start_keyword=['güzel','tatlı','yt','youtube','harika','bir','bana','play','playing','için','song']
 music_keyword=['musık','musik','musıc','music','şarkı', 'sarkı','müzik', 'muzik','muzık', 'sarki','song','kpop','play']
