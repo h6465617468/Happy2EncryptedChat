@@ -1023,7 +1023,6 @@ async def handler(websocket, path):
                         connected.remove(websocket)
                         websocket_is_open.pop(websocket, None)
                         connected_users -= 1
-                        await websocket.close(1000,"Key_ERROR")
                         return
             else:
                 if hashlib.sha512(key).hexdigest() == server_memory_encrypt_key_Hash and hashlib.sha512(iv).hexdigest() == server_memory_encrypt_iv_Hash:
@@ -1033,7 +1032,6 @@ async def handler(websocket, path):
                         connected.remove(websocket)
                         websocket_is_open.pop(websocket, None)
                         connected_users -= 1
-                        await websocket.close(1000,"Key_ERROR")
                         return
             await broadcast(message, websocket, key, iv)
     except websockets.exceptions.ConnectionClosed:
