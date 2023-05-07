@@ -68,6 +68,8 @@ If you don't know exactly what it does, don't use it.
 ```cmd
 cipher /w:C:\ /h:0
 ```
+# Browser To Server
+![alt text](https://raw.githubusercontent.com/h6465617468/Happy2EncryptedChat/main/Screenshot_7.png?raw=true)
 
 # Usage
 ### This link provides a direct link. It cannot be reused.
