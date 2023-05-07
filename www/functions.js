@@ -406,3 +406,40 @@ function key_gen_main(mode=false){
         }
     });
 }
+
+function encrypt_1(key, iv, plaintext) {
+  try {
+    console.log(CryptoJS.enc.Hex.parse(key).toString(CryptoJS.enc.Utf8));
+    console.log(CryptoJS.enc.Hex.parse(iv).toString(CryptoJS.enc.Utf8));
+    const keyHex = CryptoJS.enc.Hex.parse(key);
+    const ivHex = CryptoJS.enc.Hex.parse(iv);
+    const encrypted = CryptoJS.AES.encrypt(plaintext, keyHex, {
+      iv: ivHex,
+      mode: CryptoJS.mode.CBC,
+      padding: CryptoJS.pad.Pkcs7,
+    });
+    console.log(encrypted.ciphertext.toString(CryptoJS.enc.Base64));
+    return encrypted.ciphertext.toString(CryptoJS.enc.Base64);
+  } catch (e) {
+    console.error("Encryption error:", e);
+    return null;
+  }
+}
+
+function decrypt_1(key, iv, ciphertext) {
+  try {
+    const keyHex = CryptoJS.enc.Hex.parse(key);
+    const ivHex = CryptoJS.enc.Hex.parse(iv);
+    const decrypted = CryptoJS.AES.decrypt({
+      ciphertext: CryptoJS.enc.Base64.parse(ciphertext),
+    }, keyHex, {
+      iv: ivHex,
+      mode: CryptoJS.mode.CBC,
+      padding: CryptoJS.pad.Pkcs7,
+    });
+    return decrypted.toString(CryptoJS.enc.Utf8);
+  } catch (e) {
+    console.error("Decryption error:", e);
+    return null;
+  }
+}
