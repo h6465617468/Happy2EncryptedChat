@@ -569,9 +569,6 @@ function closeloading(){{
 <div id="messages" style="word-wrap: break-word;"></div>
 <button onclick="keychange()">Public,Private key Change</Button>
 <script>
-$(document).ready(function() {{
-}});
-
 
 function sendMessage(message1, target, keyx,gorunum=1,latest=false) {{
   var payload = `${{message1}}:${{target}}:${{keyx}}`;
