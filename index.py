@@ -562,8 +562,6 @@ function closeloading(){{
 <mypublic style='display:none'></mypublic>
 <myprivate style='display:none'></myprivate>
 <targetpublic id='targetpublic' style='display:none'></targetpublic>
-<script>
-</script>
 <form id="message-form"><input type="text" id="message-input" placeholder="Send Message" style="padding:15px;margin:0;font-size:16px;font-weight:1000;width:80%;border:0;background-color:transparent;margin-right:0;max-width:600px;height:auto;border:0;margin-right:0;border-bottom:2.5px solid dimgrey;margin:0;padding:16px;color:white!important;" autocomplete="off" autofocus required><input type="submit" value="❱" style="padding:16px;margin:0;font-size:16px;font-weight:1000;width:%5;border:0;background-color:transparent;margin-left:0;border-bottom:2.5px solid dimgrey;padding:16px;margin:0;color:white!important;">
 <input type="text" id="target-input" value="a" style="display:none" required></form>
 <div id="messages" style="word-wrap: break-word;"></div>
@@ -1022,6 +1020,7 @@ async def handler(websocket, path):
                     await mesajat(message1, key, iv, target,0)
                 else:
                     async with websocket_lock:
+                        connected.remove(websocket)
                         websocket_is_open.pop(websocket, None)
                         connected_users -= 1
                         await websocket.close(1000,"Key_ERROR")
@@ -1031,6 +1030,7 @@ async def handler(websocket, path):
                     await mesajat(message1, key, iv, target,1)
                 else:
                     async with websocket_lock:
+                        connected.remove(websocket)
                         websocket_is_open.pop(websocket, None)
                         connected_users -= 1
                         await websocket.close(1000,"Key_ERROR")
