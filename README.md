@@ -64,6 +64,7 @@ py index.py -auto
 | `token` | Display Tokens ( It will return null because it is deleted instantly. ) |
 
 ### When you're done, you can run the command that shreds the free space on this disk
+If you don't know exactly what it does, don't use it.
 ```cmd
 cipher /w:C:\ /h:0
 ```
