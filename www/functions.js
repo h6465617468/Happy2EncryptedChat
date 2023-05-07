@@ -119,7 +119,7 @@ function base64_decode(str) {
   // Gönderilecek veri
   let data1 = {
       token: token1,
-      key: server_key
+      key: decrypt_server_key_x
     };
     
     // Fetch ile post işlemi
@@ -140,7 +140,7 @@ function base64_decode(str) {
       // Her saniye verinin gelip gelmediğini kontrol et
       var interval = setInterval(() => {
         // Eğer dataasdasdas içinde veri varsa
-        if (dataasdasdas) {
+        if (dataasdasdas.length > 4) {
           // Ekrana merhaba yazdır
           console.log("Bağlandı");
           // Verinin geldiğini belirt
@@ -172,6 +172,8 @@ function base64_decode(str) {
             }
             dataasdasdas="";
           } else {
+            console.log("TARGET PUBLIC KEY ERROR:")
+            console.log(dataasdasdas)
             var messages = document.querySelector('#messages');
             message.innerHTML = dataasdasdas;
             messages.insertBefore(message, messages.firstChild);
