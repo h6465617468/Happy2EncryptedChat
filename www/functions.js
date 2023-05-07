@@ -140,7 +140,7 @@ function base64_decode(str) {
       // Her saniye verinin gelip gelmediğini kontrol et
       var interval = setInterval(() => {
         // Eğer dataasdasdas içinde veri varsa
-        if (dataasdasdas.length > 4) {
+        if (dataasdasdas.length > 10) {
           // Ekrana merhaba yazdır
           console.log("Bağlandı");
           // Verinin geldiğini belirt
