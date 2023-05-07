@@ -63,7 +63,7 @@ py index.py -auto
 | `key` | View Server Key |
 | `token` | Display Tokens ( It will return null because it is deleted instantly. ) |
 
-# When you're done, you can run the command that shreds the free space on this disk
+### When you're done, you can run the command that shreds the free space on this disk
 ```cmd
 cipher /w:C:\ /h:0
 ```
