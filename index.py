@@ -934,8 +934,6 @@ form.addEventListener('submit', function(event) {{
                     if len(parts) == 2:
                         keyx = test_decrypt_aes256_token(parts[0],parts[1])
                         if keyx:
-                            print("bug 1 ?")
-                            print(keyx)
                             #print("Keyx:"+keyx)
                             key,iv=memory_key_generate(keyx)
                             dec_server_data=return_decrypted_messages(mesajlari_oku(key, iv))
