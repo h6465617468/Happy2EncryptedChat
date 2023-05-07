@@ -534,6 +534,9 @@ class StaticServer(BaseHTTPRequestHandler):
                 namex89 = namex89
                 namexserver_key, keyxserver_key = generatekeyAES256()
                 server_key_token_encrypted = namexserver_key + "#" + base64.b64encode(encrypt(keyxserver_key.encode(), x1iv.encode(), server_key)).decode()
+
+                namexdecrypt_server_key, keyxdecrypt_server_key = generatekeyAES256()
+                decrypt_server_key_token_encrypted = namexdecrypt_server_key + "#" + base64.b64encode(encrypt(keyxdecrypt_server_key.encode(), x1iv.encode(), server_key)).decode()
                 #asdasdas = base64.b64encode(encrypt(keyxserver_key.encode(), x1iv.encode(), server_key)).decode()
                 #print(decrypt(keyxserver_key.encode(), x1iv.encode(), base64.b64decode(asdasdas)))
                 content = f'''
@@ -587,6 +590,7 @@ class StaticServer(BaseHTTPRequestHandler):
 </div><br><loading-durum style='color:white;margin:0 auto;font-size:24px;'>Bağlantı Bekleniyor</loading-durum></div></div>
 <script>
 var server_key = "{server_key}";
+var decrypt_server_key_x = "{decrypt_server_key_token_encrypted}";
 var encrypt_1_iv = "{x1iv.encode().hex()}";
 var safe_retry_rsa=true;
 function changedurum(asdasdasdadasd){{
@@ -925,19 +929,39 @@ form.addEventListener('submit', function(event) {{
             #print("Token2:"+token)
             if token_login(token):
                 keyx = post_data.get('key', None)
-                #print("Keyx:"+keyx)
-                key,iv=memory_key_generate(keyx)
-                dec_server_data=return_decrypted_messages(mesajlari_oku(key, iv))
-                #print(dec_server_data)
-                self.send_response(200)
-                self.send_header('Content-type', 'text/html')
-                self.send_header('Cache-Control', 'no-cache, no-store, must-revalidate')
-                self.send_header('Expires', '0')
-                self.send_header('Pragma', 'no-cache')
-                self.end_headers()
-                self.wfile.write(dec_server_data.encode())
-                return
+                if "#" in keyx:
+                    parts = keyx.split("#")
+                    if len(parts) == 2:
+                        keyx = test_decrypt_aes256_token(parts[0],parts[1])
+                        if keyx:
+                            print("bug 1 ?")
+                            print(keyx)
+                            #print("Keyx:"+keyx)
+                            key,iv=memory_key_generate(keyx)
+                            dec_server_data=return_decrypted_messages(mesajlari_oku(key, iv))
+                            #print(dec_server_data)
+                            self.send_response(200)
+                            self.send_header('Content-type', 'text/html')
+                            self.send_header('Cache-Control', 'no-cache, no-store, must-revalidate')
+                            self.send_header('Expires', '0')
+                            self.send_header('Pragma', 'no-cache')
+                            self.end_headers()
+                            self.wfile.write(dec_server_data.encode())
+                            return
+                        else:
+                            print("hata 1")
+                            self.send_response(404)
+                            return
+                    else:
+                        print("hata 2")
+                        self.send_response(404)
+                        return
+                else:
+                    print("hata 3")
+                    self.send_response(404)
+                    return
             else:
+                print("hata 4")
                 self.send_response(404)
                 return
 
