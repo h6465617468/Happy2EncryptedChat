@@ -19,11 +19,6 @@ UseBridges 1
 - Chatbot can be integrated into the project
 - Uses Websocket
 
-
-| Name | End-To-End Encryption | Encryption Algorithms | Storage | Security
-| :---: | :---: | :---: | :---: | :---: |
-| Happy2EncryptedChat | Yes | RSA,AES-256 | Memory | I recommend the Tor browser.
-
 # Note
 ### I wrote these codes with the help of ChatGPT
 
