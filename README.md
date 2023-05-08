@@ -1,6 +1,23 @@
 # Happy2 Encrypted Chat
 This is a secure messaging app that uses end-to-end encryption. Your messages are deleted from the server as soon as they are sent. Please do not use this app for illegal purposes. You can also chat with a Chatbot if you want. This app allows only 2 people to chat at a time. The app works with websocket technology.
 
+# Features
+- End-To-End Encryption
+- RSA Key Exchange, RSA Signature, RSA Encryption, AES 256 Encryption
+- Data is kept in memory
+- Provides high security if used mirrored on the Tor network
+Tor torrc file
+```
+HiddenServiceDir C:\Users\(name)\Desktop\Tor Browser\hidden_service
+HiddenServicePort 80 127.0.0.1:80
+HiddenServicePort 5678 127.0.0.1:5678
+UseBridges 1
+```
+- No logs
+- Provides security even without https://
+- Chatbot can be integrated into the project
+
+
 | Name | End-To-End Encryption | Encryption Algorithms | Storage | Security
 | :---: | :---: | :---: | :---: | :---: |
 | Happy2EncryptedChat | Yes | RSA,AES-256 | Memory | I recommend the Tor browser.
