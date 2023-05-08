@@ -1,6 +1,6 @@
 # Happy2EncryptedChat Beta Release
 ![SM](https://raw.githubusercontent.com/h6465617468/Happy2EncryptedChat/main/Screenshot_8.gif)
-### This is a secure messaging app that uses end-to-end encryption. Your messages are deleted from the server as soon as they are sent. Please do not use this app for illegal purposes. You can also chat with a Chatbot if you want. This app allows only 2 people to chat at a time. The app works with websocket technology.
+#### This is a secure messaging app that uses end-to-end encryption. Your messages are deleted from the server as soon as they are sent. Please do not use this app for illegal purposes. You can also chat with a Chatbot if you want. This app allows only 2 people to chat at a time. The app works with websocket technology.
 
 # Features
 - End-To-End Encryption
