@@ -16,6 +16,7 @@ UseBridges 1
 - No logs
 - Provides security even without https://
 - Chatbot can be integrated into the project
+- Uses Websocket
 
 
 | Name | End-To-End Encryption | Encryption Algorithms | Storage | Security
