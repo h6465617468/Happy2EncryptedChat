@@ -85,7 +85,7 @@ py index.py -auto
 If you don't know exactly what it does, don't use it.
 [ https://learn.microsoft.com/en-us/windows-server/administration/windows-commands/cipher](https://learn.microsoft.com/en-us/windows-server/administration/windows-commands/cipher)
 ```cmd
-cipher /w:C:\ /h:0
+cipher /w:C:\
 ```
 
 # Usage
