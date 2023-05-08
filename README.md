@@ -6,7 +6,6 @@ This is a secure messaging app that uses end-to-end encryption. Your messages ar
 - RSA Key Exchange, RSA Signature, RSA Encryption, AES 256 Encryption
 - Data is kept in memory
 - Provides high security if used mirrored on the Tor network
-Tor torrc file
 ```
 HiddenServiceDir C:\Users\(name)\Desktop\Tor Browser\hidden_service
 HiddenServicePort 80 127.0.0.1:80
