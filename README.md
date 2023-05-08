@@ -7,6 +7,7 @@ This is a secure messaging app that uses end-to-end encryption. Your messages ar
 - Data is kept in memory
 - Provides high security if used mirrored on the Tor network
 ```
+# C:\Users\(name)\Desktop\Tor Browser\Browser\TorBrowser\Data\Tor\torrc
 HiddenServiceDir C:\Users\(name)\Desktop\Tor Browser\hidden_service
 HiddenServicePort 80 127.0.0.1:80
 HiddenServicePort 5678 127.0.0.1:5678
