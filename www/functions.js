@@ -98,7 +98,7 @@ function base64_decode(str) {
     };
     
     // Fetch ile post işlemi
-    fetch("/token", {
+    fetch(token_location, {
       method: "POST",
       headers: {
         "Content-Type": "application/json"
@@ -123,7 +123,7 @@ function base64_decode(str) {
     };
     
     // Fetch ile post işlemi
-    fetch("/decrypt", {
+    fetch(decrypt_location, {
       method: "POST",
       headers: {
         "Content-Type": "application/json"
@@ -207,7 +207,7 @@ function base64_decode(str) {
   
     function sendToken() {
       var token = generateToken();
-      fetch('/token', {
+      fetch(token_location, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
@@ -228,7 +228,7 @@ function base64_decode(str) {
   var target = document.getElementById('target').value;
   var token = generateToken();
 
-  fetch('/token', {
+  fetch(token_location, {
   method: 'POST',
   headers: {
     'Content-Type': 'application/json'
@@ -263,7 +263,7 @@ function base64_decode(str) {
   function decrypt() {
   var serverkey = document.getElementById('serverkey').value;
   var token = generateToken();
-  fetch('/token', {
+  fetch(token_location, {
   method: 'POST',
   headers: {
     'Content-Type': 'application/json'
@@ -404,6 +404,7 @@ function key_gen_main(mode=false){
         $('mypublic').html(publicasdasdas);
         if(mode==false){
         sendMessage("___PUBLICKEY___"+publicasdasdas, "a", server_key,0);
+        safe_thread_ok=true;
         return true;          
         }
     });
