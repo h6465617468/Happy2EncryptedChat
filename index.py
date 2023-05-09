@@ -94,6 +94,25 @@ def decrypt(key, iv, ciphertext):
         print("Decryption error:", e)
         return None
 
+general_token = {}
+
+def generatekey_general_token(key):
+    global general_token
+    name = ''.join(random.choices(string.ascii_letters + string.digits, k=256))
+    general_token[name] = key.encode()
+    if len(general_token) > 32:
+        oldest_name = next(iter(general_token))
+        del general_token[oldest_name]
+    return name, key
+
+def delete_general_token(token):
+    global general_token
+    if token in general_token:
+        del general_token[token]
+        return True
+    else:
+        return False
+
 aes256_token = {}
 
 def generatekeyAES256():
@@ -207,8 +226,7 @@ def inv_exists(token):
     return False
 def generate_inv():
     # Generate sha256 hash of the input string
-    random_inv = base64.urlsafe_b64encode(os.urandom(48)).decode()
-    random_inv = random_inv.replace('-', 'x')
+    random_inv = base64.urlsafe_b64encode(os.urandom(48)).decode().replace('-', 'x').replace('_', 'a')
     
     # Check if token already exists in the list
     if inv_exists(random_inv):
@@ -454,6 +472,7 @@ class StaticServer(BaseHTTPRequestHandler):
         super().__init__(*args, **kwargs)
         self.directory = 'www'
     def do_GET(self):
+        global random_token
         token1 = self.path[1:]
         if token1 in file_token:
             file_name = file_token[token1]
@@ -503,7 +522,7 @@ class StaticServer(BaseHTTPRequestHandler):
                 <html>
                     <body>
                         <h2>{message}</h2>
-                        <form method="post">
+                        <form method="post" action="/{nametoken_cache}">
                             <input type="text" name="server_key" id="server_key" autocomplete="off">
                             <input type="submit">
                         </form>
@@ -560,6 +579,16 @@ class StaticServer(BaseHTTPRequestHandler):
     <meta http-equiv="content-language" content="en">
     <meta http-equiv="expires" content="">
     <meta http-equiv="revisit-after" content="">
+    <script>
+    var decrypt_location = "/{namedecrypt_cache}";
+    var token_location = "/{nametokenpost_cache}";
+
+    var server_key = "{server_key}";
+    var decrypt_server_key_x = "{decrypt_server_key_token_encrypted}";
+    var encrypt_1_iv = "{x1iv.encode().hex()}";
+
+    safe_thread_ok=false;
+    </script>
     <script src="/{token1}"></script>
     <script src="/{token2}"></script>
     <script type="text/javascript" src="/{token3}"></script>
@@ -589,9 +618,6 @@ class StaticServer(BaseHTTPRequestHandler):
   </div>
 </div><br><loading-durum style='color:white;margin:0 auto;font-size:24px;'>Bağlantı Bekleniyor</loading-durum></div></div>
 <script>
-var server_key = "{server_key}";
-var decrypt_server_key_x = "{decrypt_server_key_token_encrypted}";
-var encrypt_1_iv = "{x1iv.encode().hex()}";
 var safe_retry_rsa=true;
 function changedurum(asdasdasdadasd){{
     $("loading-durum").html(asdasdasdadasd);
@@ -624,7 +650,6 @@ function closeloading(){{
 <div id="messages" style="word-wrap: break-word;"></div>
 <button onclick="keychange()">Public,Private key Change</Button>
 <script>
-
 function sendMessage(message1, target, keyx,gorunum=1,latest=false) {{
   var payload = `${{message1}}:${{target}}:${{keyx}}`;
   socket.send(payload);
@@ -701,6 +726,10 @@ function keychange(){{
   }});
   }};
 socket.onmessage = function(event) {{
+var intervalonm = setInterval(() => {{
+    if(safe_thread_ok == true){{
+        clearInterval(intervalonm);
+// start-3
   var messages = document.querySelector('#messages');
   var message = document.createElement('div');
   message.style.display = "block";
@@ -779,6 +808,10 @@ if (event.data.startsWith("___text___") && event.data.includes("___end_text___")
   messages.insertBefore(message, messages.firstChild);
   }}
 }}
+
+// end-3
+    }}
+}}, 100);
 }};
 
   socket.onerror = function(error) {{
@@ -869,101 +902,145 @@ form.addEventListener('submit', function(event) {{
             self.send_response(404)
             return
     def do_POST(self):
-        if self.path == '/submit':
-            #self.send_error(404)
-            content_length = int(self.headers.get('Content-Length', 0))
-            post_data = self.rfile.read(content_length)
-            post_data = parse_qs(post_data.decode())
-            token = post_data.get('token', [''])[0]
-            if token_login(token):
-                message = post_data.get('message', [''])[0]
-                keyx = post_data.get('key', [''])[0]
-                key,iv=memory_key_generate(keyx)
-                target = post_data.get('target', [''])[0]
-                if target not in ['m2a', 'm2b']:
-                    error_message = "Invalid Target. The Target parameter must have a value of either 'm2a' or 'm2b'."
+        global random_token
+        token1 = self.path[1:]
+        if token1 in general_token:
+            g_name = general_token[token1].decode()
+            if g_name == "#submit":
+                content_length = int(self.headers.get('Content-Length', 0))
+                post_data = self.rfile.read(content_length)
+                post_data = parse_qs(post_data.decode())
+                token = post_data.get('token', [''])[0]
+                if token_login(token):
+                    message = post_data.get('message', [''])[0]
+                    keyx = post_data.get('key', [''])[0]
+                    key,iv=memory_key_generate(keyx)
+                    target = post_data.get('target', [''])[0]
+                    if target not in ['m2a', 'm2b']:
+                        error_message = "Invalid Target. The Target parameter must have a value of either 'm2a' or 'm2b'."
+                        self.send_response(200)
+                        self.send_header('Content-type', 'text/html')
+                        self.send_header('Cache-Control', 'no-cache, no-store, must-revalidate')
+                        self.send_header('Expires', '0')
+                        self.send_header('Pragma', 'no-cache')
+                        self.end_headers()
+                        self.wfile.write(error_message.encode())
+                        return
+                    if target == 'm2a':
+                        asyncio.run(mesajat(message,key,iv,"a",0))
+                    elif target == 'm2b':
+                        asyncio.run(mesajat(message,key,iv,"b",0))
+                    else:
+                        text = 'Target Invalid'
                     self.send_response(200)
                     self.send_header('Content-type', 'text/html')
                     self.send_header('Cache-Control', 'no-cache, no-store, must-revalidate')
                     self.send_header('Expires', '0')
                     self.send_header('Pragma', 'no-cache')
                     self.end_headers()
-                    self.wfile.write(error_message.encode())
+                    self.wfile.write("Mesaj Gönderildi".encode())
                     return
-                if target == 'm2a':
-                    asyncio.run(mesajat(message,key,iv,"a",0))
-                elif target == 'm2b':
-                    asyncio.run(mesajat(message,key,iv,"b",0))
                 else:
-                    text = 'Target Invalid'
+                    self.send_response(404)
+                return
+            if g_name == "#tokenpost":
+                content_length = int(self.headers.get('Content-Length', 0))
+                post_data = self.rfile.read(content_length)
+                post_data = json.loads(post_data)
+                token = post_data.get('token', None)
+                #print("Token:"+token)
+                text = generate_token(token)
                 self.send_response(200)
                 self.send_header('Content-type', 'text/html')
                 self.send_header('Cache-Control', 'no-cache, no-store, must-revalidate')
                 self.send_header('Expires', '0')
                 self.send_header('Pragma', 'no-cache')
                 self.end_headers()
-                self.wfile.write("Mesaj Gönderildi".encode())
-                return
-            else:
-                self.send_response(404)
-                return
-        elif self.path == '/token':
-            content_length = int(self.headers.get('Content-Length', 0))
+                self.wfile.write(text.encode())
+            if g_name == "#decrypt":
+                content_length = int(self.headers.get('Content-Length', 0))
+                post_data = self.rfile.read(content_length)
+                post_data = json.loads(post_data)
+                token = post_data.get('token', None)
+                #print("Token2:"+token)
+                if token_login(token):
+                    keyx = post_data.get('key', None)
+                    if "#" in keyx:
+                        parts = keyx.split("#")
+                        if len(parts) == 2:
+                            keyx = test_decrypt_aes256_token(parts[0],parts[1])
+                            if keyx:
+                                #print("Keyx:"+keyx)
+                                key,iv=memory_key_generate(keyx)
+                                dec_server_data=return_decrypted_messages(mesajlari_oku(key, iv))
+                                #print(dec_server_data)
+                                self.send_response(200)
+                                self.send_header('Content-type', 'text/html')
+                                self.send_header('Cache-Control', 'no-cache, no-store, must-revalidate')
+                                self.send_header('Expires', '0')
+                                self.send_header('Pragma', 'no-cache')
+                                self.end_headers()
+                                self.wfile.write(dec_server_data.encode())
+                                return
+                            else:
+                                print("hata 1")
+                                self.send_response(404)
+                                return
+                        else:
+                            print("hata 2")
+                            self.send_response(404)
+                            return
+                    else:
+                        print("hata 3")
+                        self.send_response(404)
+                        return
+                else:
+                    print("hata 4")
+                    self.send_response(404)
+                    return
+        if token1 == random_token:
+            content_length = int(self.headers['Content-Length'])
             post_data = self.rfile.read(content_length)
-            post_data = json.loads(post_data)
-            token = post_data.get('token', None)
-            #print("Token:"+token)
-            text = generate_token(token)
+            post_data = parse_qs(post_data.decode())
+            new_server_key = post_data.get('server_key', [''])[0]
+            set_password(new_server_key)
+            set_memory_hash(new_server_key + SALT)
+            random_token = None
+            message = f'OK'
+            content = f'''
+                <html>
+                    <head>
+                        <title>Success</title>
+                        <meta charset="UTF-8">
+                    </head>
+                    <body onclick="location.reload();">
+                        <h2>{message}</h2>
+                        <h2>{server_memory_encrypt_key_Hash}{server_memory_encrypt_iv_Hash}</h2>
+                        <button onclick="location.reload();">Sayfayı Kapat</button>
+                        <script>
+                        window.addEventListener('click', function() {{
+                            location.reload();
+                        }});
+                        var asdasd=0;
+                        window.addEventListener('mousemove', function() {{
+                            if(asdasd==0){{
+                                location.reload();
+                                asdasd++;
+                            }}
+                        }});
+                        </script>
+                    </body>
+                </html>
+            '''
             self.send_response(200)
-            self.send_header('Content-type', 'text/html')
+            self.send_header('Content-Type', 'text/html')
             self.send_header('Cache-Control', 'no-cache, no-store, must-revalidate')
             self.send_header('Expires', '0')
             self.send_header('Pragma', 'no-cache')
             self.end_headers()
-            self.wfile.write(text.encode())
-        elif self.path == '/decrypt':
-            content_length = int(self.headers.get('Content-Length', 0))
-            post_data = self.rfile.read(content_length)
-            post_data = json.loads(post_data)
-            token = post_data.get('token', None)
-            #print("Token2:"+token)
-            if token_login(token):
-                keyx = post_data.get('key', None)
-                if "#" in keyx:
-                    parts = keyx.split("#")
-                    if len(parts) == 2:
-                        keyx = test_decrypt_aes256_token(parts[0],parts[1])
-                        if keyx:
-                            #print("Keyx:"+keyx)
-                            key,iv=memory_key_generate(keyx)
-                            dec_server_data=return_decrypted_messages(mesajlari_oku(key, iv))
-                            #print(dec_server_data)
-                            self.send_response(200)
-                            self.send_header('Content-type', 'text/html')
-                            self.send_header('Cache-Control', 'no-cache, no-store, must-revalidate')
-                            self.send_header('Expires', '0')
-                            self.send_header('Pragma', 'no-cache')
-                            self.end_headers()
-                            self.wfile.write(dec_server_data.encode())
-                            return
-                        else:
-                            print("hata 1")
-                            self.send_response(404)
-                            return
-                    else:
-                        print("hata 2")
-                        self.send_response(404)
-                        return
-                else:
-                    print("hata 3")
-                    self.send_response(404)
-                    return
-            else:
-                print("hata 4")
-                self.send_response(404)
-                return
-
-        elif self.path == '/speech':
+            self.wfile.write(content.encode())
+            return
+        if self.path == '/speech':
             global host,port
             content_length = int(self.headers.get('Content-Length', 0))
             post_data = self.rfile.read(content_length)
@@ -989,53 +1066,7 @@ form.addEventListener('submit', function(event) {{
                 self.end_headers()
                 self.wfile.write(textx.encode())
                 return
-        elif self.path.startswith('/?token='):
-            global random_token
-            token = self.path.split('=')[1]
-            if token == random_token:
-                content_length = int(self.headers['Content-Length'])
-                post_data = self.rfile.read(content_length)
-                post_data = parse_qs(post_data.decode())
-                new_server_key = post_data.get('server_key', [''])[0]
-                set_password(new_server_key)
-                set_memory_hash(new_server_key + SALT)
-                random_token = None
-                message = f'OK'
-                content = f'''
-                    <html>
-                        <head>
-                            <title>Success</title>
-                            <meta charset="UTF-8">
-                        </head>
-                        <body onclick="location.reload();">
-                            <h2>{message}</h2>
-                            <h2>{server_memory_encrypt_key_Hash}{server_memory_encrypt_iv_Hash}</h2>
-                            <button onclick="location.reload();">Sayfayı Kapat</button>
-                            <script>
-                            window.addEventListener('click', function() {{
-                                location.reload();
-                            }});
-                            var asdasd=0;
-                            window.addEventListener('mousemove', function() {{
-                                if(asdasd==0){{
-                                    location.reload();
-                                    asdasd++;
-                                }}
-                            }});
-                            </script>
-                        </body>
-                    </html>
-                '''
-                self.send_response(200)
-                self.send_header('Content-Type', 'text/html')
-                self.send_header('Cache-Control', 'no-cache, no-store, must-revalidate')
-                self.send_header('Expires', '0')
-                self.send_header('Pragma', 'no-cache')
-                self.end_headers()
-                self.wfile.write(content.encode())
-                return
-            else:
-                return
+            
 
 host = '127.0.0.1'
 WEBSOCKET_PORT = 5678
@@ -1067,7 +1098,7 @@ async def authenticate(websocket):
         return False
 
 async def handler(websocket, path):
-    global connected_users
+    global connected_users, encrypted_messages
     authenticated = await authenticate(websocket)
     if not authenticated:
         await websocket.close()
@@ -1091,6 +1122,7 @@ async def handler(websocket, path):
         return
     try:
         async for message in websocket:
+            #print(str(websocket) + " => "+ message)
             islem=0
             message_data = message.split(":")
             if len(message_data) >= 2:
@@ -1125,16 +1157,52 @@ async def handler(websocket, path):
             connected.remove(websocket)
             websocket_is_open.pop(websocket, None)
             connected_users -= 1
+            # Tüm soketleri kapatmak için önce kapatılabileceklerini kapatın
+            tasks = [websocket.close() for websocket in connected if not websocket.closed]
+            await asyncio.gather(*tasks, return_exceptions=True)
+            # Kapatılamayan soketler için bekleyin
+            for websocket in connected:
+                if not websocket.closed:
+                    try:
+                        await asyncio.wait_for(websocket.wait_closed(), timeout=2)
+                    except asyncio.TimeoutError:
+                        await websocket.close()
+            encrypted_messages = []
+            return
     except asyncio.TimeoutError:
         async with websocket_lock:
             connected.remove(websocket)
             websocket_is_open.pop(websocket, None)
             connected_users -= 1
+            # Tüm soketleri kapatmak için önce kapatılabileceklerini kapatın
+            tasks = [websocket.close() for websocket in connected if not websocket.closed]
+            await asyncio.gather(*tasks, return_exceptions=True)
+            # Kapatılamayan soketler için bekleyin
+            for websocket in connected:
+                if not websocket.closed:
+                    try:
+                        await asyncio.wait_for(websocket.wait_closed(), timeout=2)
+                    except asyncio.TimeoutError:
+                        await websocket.close()
+            encrypted_messages = []
+            return
     finally:
         async with websocket_lock:
             connected.remove(websocket)
             websocket_is_open.pop(websocket, None)
             connected_users -= 1
+            # Tüm soketleri kapatmak için önce kapatılabileceklerini kapatın
+            tasks = [websocket.close() for websocket in connected if not websocket.closed]
+            await asyncio.gather(*tasks, return_exceptions=True)
+            # Kapatılamayan soketler için bekleyin
+            for websocket in connected:
+                if not websocket.closed:
+                    try:
+                        await asyncio.wait_for(websocket.wait_closed(), timeout=2)
+                    except asyncio.TimeoutError:
+                        await websocket.close()
+            encrypted_messages = []
+            return
 async def broadcast(message, sender, key, iv):
     global encrypted_messages
     messages = return_broadcast_messages(key, iv)
@@ -1155,7 +1223,6 @@ async def broadcast(message, sender, key, iv):
 async def some_coroutine(websocket):
     async with websocket_lock:
         websocket_is_open[websocket] = True
-
 
 async def start_websocket_server(shutdown_event):
     async with websockets.serve(handler, host, WEBSOCKET_PORT):
@@ -1342,14 +1409,18 @@ def change_youtube_keyword_link(link):
     else:
         return colored_write(" ⟫ Keyword Bulunamadı : " + keyword)
 
-
-
 def check_port(host, port):
     with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
         return s.connect_ex((host, port)) != 0
 
 def run_server(host, port):
-    global httpd
+    global httpd, namedecrypt_cache, namesubmit_cache, nametokenpost_cache
+    a1, keyabc = generatekey_general_token("#decrypt")
+    namedecrypt_cache = a1
+    a2, keyabc = generatekey_general_token("#submit")
+    namesubmit_cache = a2
+    a3, keyabc = generatekey_general_token("#tokenpost")
+    nametokenpost_cache = a3
     server_address = (host, port)
     httpd = HTTPServer(server_address, StaticServer)
     httpd.logRequests = False
@@ -1388,7 +1459,8 @@ if __name__ == '__main__':
             if check_port(host, port):
                 server_thread = threading.Thread(target=run_server, args=(host, port))
                 server_thread.start()
-                random_token = base64.urlsafe_b64encode(os.urandom(48)).decode()
+                nametoken_cache, keyabc = generatekey_general_token("#123")
+                random_token = nametoken_cache
                 print(colored_write_ok(f" ⟫ Set Key: http://{host}:{port}/?token=" + random_token))
                 webbrowser.open_new_tab(f"http://{host}:{port}/?token=" + random_token)
                 print(colored_write_ok(f" ⟫ Serving on http://{host}:{port} ..."))
@@ -1411,7 +1483,8 @@ if __name__ == '__main__':
             if check_port(host, port):
                 server_thread = threading.Thread(target=run_server, args=(host, port))
                 server_thread.start()
-                random_token = base64.urlsafe_b64encode(os.urandom(48)).decode()
+                nametoken_cache, keyabc = generatekey_general_token("#123")
+                random_token = nametoken_cache
                 print(colored_write_ok(f" ⟫ Set Key: http://{host}:{port}/?token=" + random_token))
                 webbrowser.open_new_tab(f"http://{host}:{port}/?token=" + random_token)
                 print(colored_write_ok(f" ⟫ Serving on http://{host}:{port} ..."))
@@ -1442,7 +1515,8 @@ if __name__ == '__main__':
                 if check_port(host, port):
                     server_thread = threading.Thread(target=run_server, args=(host, port))
                     server_thread.start()
-                    random_token = base64.urlsafe_b64encode(os.urandom(48)).decode()
+                    nametoken_cache, keyabc = generatekey_general_token("#123")
+                    random_token = nametoken_cache
                     print(colored_write_ok(f" ⟫ Set Key: http://{host}:{port}/?token=" + random_token))
                     webbrowser.open_new_tab(f"http://{host}:{port}/?token=" + random_token)
                     print(colored_write_ok(f" ⟫ Serving on http://{host}:{port} ..."))
@@ -1477,7 +1551,8 @@ if __name__ == '__main__':
             print_server_key()
         elif args[0].lower() in ('reskey', 'resserverkey','resetkey','keyres','keyreset','resetserverkey','resetpassword','resspassw','resspasw','respassw','resspass','respas','respass','resetpassw','respassword'):
             if server_thread is not None:
-                random_token = base64.urlsafe_b64encode(os.urandom(48)).decode()
+                nametoken_cache, keyabc = generatekey_general_token("#123")
+                random_token = nametoken_cache
                 print(colored_write_ok(f" ⟫ Set Key: http://{host}:{port}/?token=" + random_token))
                 webbrowser.open_new_tab(f"http://{host}:{port}/?token=" + random_token)
             else:
