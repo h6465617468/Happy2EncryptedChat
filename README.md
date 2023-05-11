@@ -18,6 +18,9 @@ UseBridges 1
 - Chatbot can be integrated into the project
 - Uses Websocket
 
+# Public/Private Keys
+![alt text](https://raw.githubusercontent.com/h6465617468/Happy2EncryptedChat/main/Screenshot_16.png?raw=true)
+
 # Note
 ### I wrote these codes with the help of ChatGPT
 
