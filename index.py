@@ -113,6 +113,7 @@ x1iv = ''.join(random.choices(string.ascii_letters + string.digits, k=16))
 
 httpd = None
 server_thread = None
+__process_close__ = 0
 
 def banner():
     print('''
@@ -1307,7 +1308,7 @@ async def authenticate(websocket,public_key):
         return False
 
 async def handler(websocket, path):
-    global connected_users, encrypted_messages
+    global connected_users, encrypted_messages,__process_close__
     public_key = await public_key_request_test(websocket)
     if not public_key:
         await websocket.close()
@@ -1370,52 +1371,61 @@ async def handler(websocket, path):
             connected.remove(websocket)
             websocket_is_open.pop(websocket, None)
             connected_users -= 1
-            # Tüm soketleri kapatmak için önce kapatılabileceklerini kapatın
-            tasks = [websocket.close() for websocket in connected if not websocket.closed]
-            await asyncio.gather(*tasks, return_exceptions=True)
-            # Kapatılamayan soketler için bekleyin
-            for websocket in connected:
-                if not websocket.closed:
-                    try:
-                        await asyncio.wait_for(websocket.wait_closed(), timeout=2)
-                    except asyncio.TimeoutError:
-                        await websocket.close()
-            encrypted_messages = []
-            return
+            if __process_close__ == 0:
+                __process_close__ = 1
+                # Tüm soketleri kapatmak için önce kapatılabileceklerini kapatın
+                tasks = [websocket.close() for websocket in connected if not websocket.closed]
+                await asyncio.gather(*tasks, return_exceptions=True)
+                # Kapatılamayan soketler için bekleyin
+                for websocket in connected:
+                    if not websocket.closed:
+                        try:
+                            await asyncio.wait_for(websocket.wait_closed(), timeout=2)
+                        except asyncio.TimeoutError:
+                            await websocket.close()
+                encrypted_messages = []
+                __process_close__ = 0
+                return
     except asyncio.TimeoutError:
         async with websocket_lock:
             connected.remove(websocket)
             websocket_is_open.pop(websocket, None)
             connected_users -= 1
-            # Tüm soketleri kapatmak için önce kapatılabileceklerini kapatın
-            tasks = [websocket.close() for websocket in connected if not websocket.closed]
-            await asyncio.gather(*tasks, return_exceptions=True)
-            # Kapatılamayan soketler için bekleyin
-            for websocket in connected:
-                if not websocket.closed:
-                    try:
-                        await asyncio.wait_for(websocket.wait_closed(), timeout=2)
-                    except asyncio.TimeoutError:
-                        await websocket.close()
-            encrypted_messages = []
-            return
+            if __process_close__ == 0:
+                __process_close__ = 1
+                # Tüm soketleri kapatmak için önce kapatılabileceklerini kapatın
+                tasks = [websocket.close() for websocket in connected if not websocket.closed]
+                await asyncio.gather(*tasks, return_exceptions=True)
+                # Kapatılamayan soketler için bekleyin
+                for websocket in connected:
+                    if not websocket.closed:
+                        try:
+                            await asyncio.wait_for(websocket.wait_closed(), timeout=2)
+                        except asyncio.TimeoutError:
+                            await websocket.close()
+                encrypted_messages = []
+                __process_close__ = 0
+                return
     finally:
         async with websocket_lock:
             connected.remove(websocket)
             websocket_is_open.pop(websocket, None)
             connected_users -= 1
-            # Tüm soketleri kapatmak için önce kapatılabileceklerini kapatın
-            tasks = [websocket.close() for websocket in connected if not websocket.closed]
-            await asyncio.gather(*tasks, return_exceptions=True)
-            # Kapatılamayan soketler için bekleyin
-            for websocket in connected:
-                if not websocket.closed:
-                    try:
-                        await asyncio.wait_for(websocket.wait_closed(), timeout=2)
-                    except asyncio.TimeoutError:
-                        await websocket.close()
-            encrypted_messages = []
-            return
+            if __process_close__ == 0:
+                __process_close__ = 1
+                # Tüm soketleri kapatmak için önce kapatılabileceklerini kapatın
+                tasks = [websocket.close() for websocket in connected if not websocket.closed]
+                await asyncio.gather(*tasks, return_exceptions=True)
+                # Kapatılamayan soketler için bekleyin
+                for websocket in connected:
+                    if not websocket.closed:
+                        try:
+                            await asyncio.wait_for(websocket.wait_closed(), timeout=2)
+                        except asyncio.TimeoutError:
+                            await websocket.close()
+                encrypted_messages = []
+                __process_close__ = 0
+                return
 async def broadcast(message, sender, key, iv):
     global encrypted_messages
     messages = return_broadcast_messages(key, iv)
@@ -1438,6 +1448,7 @@ async def some_coroutine(websocket):
         websocket_is_open[websocket] = True
 
 async def start_websocket_server(shutdown_event):
+    global __process_close__
     async with websockets.serve(handler, host, WEBSOCKET_PORT):
         async with websocket_lock:
             for websocket in connected:
@@ -1450,15 +1461,18 @@ async def start_websocket_server(shutdown_event):
                         websocket_is_open[websocket] = True
             if shutdown_event.is_set():
                 # Tüm soketleri kapatmak için önce kapatılabileceklerini kapatın
-                tasks = [websocket.close() for websocket in connected if not websocket.closed]
-                await asyncio.gather(*tasks, return_exceptions=True)
-                # Kapatılamayan soketler için bekleyin
-                for websocket in connected:
-                    if not websocket.closed:
-                        try:
-                            await asyncio.wait_for(websocket.wait_closed(), timeout=2)
-                        except asyncio.TimeoutError:
-                            await websocket.close()
+                if __process_close__ == 0:
+                    __process_close__ = 1
+                    tasks = [websocket.close() for websocket in connected if not websocket.closed]
+                    await asyncio.gather(*tasks, return_exceptions=True)
+                    # Kapatılamayan soketler için bekleyin
+                    for websocket in connected:
+                        if not websocket.closed:
+                            try:
+                                await asyncio.wait_for(websocket.wait_closed(), timeout=2)
+                            except asyncio.TimeoutError:
+                                await websocket.close()
+                    __process_close__ = 0
                 async with websocket_lock:
                     connected.clear()
                     websocket_is_open.clear()
@@ -1641,7 +1655,7 @@ def run_server(host, port):
     httpd.serve_forever()
 
 async def stop_server():
-    global httpd,tokens,invs, encrypted_messages, server_memory_encrypt_key_Hash, server_memory_encrypt_iv_Hash,PASSWORD,SALT,server_key,x1iv
+    global httpd,tokens,invs, encrypted_messages, server_memory_encrypt_key_Hash, server_memory_encrypt_iv_Hash,PASSWORD,SALT,server_key,x1iv,__process_close__
     print(' ⟫ Stopping server...')
     httpd.shutdown()
     #time.sleep(1)
@@ -1659,6 +1673,7 @@ async def stop_server():
     SALT = generateToken_str()
     server_key = None
     x1iv = ''.join(random.choices(string.ascii_letters + string.digits, k=16))
+    __process_close__ = 0
 
 start_keyword=['güzel','tatlı','yt','youtube','harika','bir','bana','play','playing','için','song']
 music_keyword=['musık','musik','musıc','music','şarkı', 'sarkı','müzik', 'muzik','muzık', 'sarki','song','kpop','play']
