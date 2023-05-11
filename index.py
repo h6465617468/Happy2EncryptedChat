@@ -184,7 +184,7 @@ def encryptDataserver(cache_x_RSA, target_public_x_key,ec_private_key):
     crypted0193.append(base64.b64encode(json.dumps(cryptedasdasdas1111).encode()).decode()) # Convert the list to JSON string and base64 encode and append to the list
     return base64.b64encode(json.dumps(crypted0193).encode()).decode() # Convert the list to JSON string and base64 encode and return as string
 
-def decryptDataserver(encryptedData, myprivate,ec_public_key):
+async def decryptDataserver(encryptedData, myprivate,ec_public_key):
     decryptedData = ""
     try:
         crypted0193 = json.loads(base64.urlsafe_b64decode(encryptedData)) # Decode and parse the JSON string
@@ -1291,7 +1291,7 @@ async def authenticate(websocket,public_key):
     try:
         await websocket.send("Enter password:")
         user_password = await websocket.recv()
-        user_password = decryptDataserver(user_password,private_key_pem,public_key.encode())
+        user_password = await decryptDataserver(user_password,private_key_pem,public_key.encode())
         if "#" in user_password:
             parts = user_password.split("#")
             if len(parts) == 2:
@@ -1336,7 +1336,7 @@ async def handler(websocket, path):
         async for message in websocket:
             #print(str(websocket) + " => "+ message)
             islem=0
-            message = decryptDataserver(message,private_key_pem,public_key.encode())
+            message = await decryptDataserver(message,private_key_pem,public_key.encode())
             message_data = message.split(":")
             if len(message_data) >= 2:
                 message1 = message_data[0]
@@ -1508,7 +1508,7 @@ async def get_key_and_iv(websocket,public_key):
         if not websocket.open:
             return False
         keyx = await websocket.recv()
-        keyx = decryptDataserver(keyx,private_key_pem,public_key.encode())
+        keyx = await decryptDataserver(keyx,private_key_pem,public_key.encode())
         if "#" in keyx:
             parts = keyx.split("#")
             if len(parts) == 2:
