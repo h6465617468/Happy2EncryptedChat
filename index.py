@@ -480,7 +480,7 @@ async def mesajat(message,key,iv, target,islem=0):
     else:
         return " (!) Server Key Error"
 
-def mesajlari_oku(key,iv):
+def mesajlari_oku(key,iv,encrypted_messages_cache):
     global server_memory_encrypt_key_Hash, server_memory_encrypt_iv_Hash
     if hashlib.sha512(key).hexdigest() == server_memory_encrypt_key_Hash and hashlib.sha512(iv).hexdigest() == server_memory_encrypt_iv_Hash:
         if len(key) != 32:
@@ -488,7 +488,7 @@ def mesajlari_oku(key,iv):
         if len(iv) != 16:
             return "IV size is not appropriate, must be 16 bytes"
         decrypted_messages = []
-        for message in encrypted_messages:
+        for message in encrypted_messages_cache:
             try:
                 if message['text'].startswith("___PUBLICKEY___"):
                     messagexx = message['text'].split("___PUBLICKEY___")[1]
@@ -954,7 +954,7 @@ if (event.data.startsWith("___text___") && event.data.includes("___end_text___")
     var keyprivate;
     var crypt9 = new JSEncrypt({{default_key_size: 2048}});
     new Promise((resolve)=>{{
-    setTimeout(resolve, 100);
+    setTimeout(resolve, 500);
     }}).then( async()=>{{
         crypt9.getKey();
     }}).finally(() => {{
@@ -971,7 +971,7 @@ if (event.data.startsWith("___text___") && event.data.includes("___end_text___")
             div.innerHTML = publickeytargetsadasdas1;
             closeloading();
         }}
-    }}, 100);
+    }}, 500);
     }});
   }}else if(messagexx.startsWith("___key_change2___") && messagexx.includes("___end_key_change2___")){{
     var startIndex3 = event.data.indexOf("___key_change2___") + "___key_change2___".length; // başlangıç kısmının sonundaki indeksi bul
@@ -1000,7 +1000,7 @@ if (event.data.startsWith("___text___") && event.data.includes("___end_text___")
 
 // end-3
     }}
-}}, 100);
+}}, 500);
 }};
 
   socket.onerror = function(error) {{
@@ -1161,7 +1161,7 @@ form.addEventListener('submit', function(event) {{
                             if keyx:
                                 #print("Keyx:"+keyx)
                                 key,iv=memory_key_generate(keyx)
-                                dec_server_data=return_decrypted_messages(mesajlari_oku(key, iv))
+                                dec_server_data=return_decrypted_messages(mesajlari_oku(key, iv,encrypted_messages))
                                 #print(dec_server_data)
                                 self.send_response(200)
                                 self.send_header('Content-type', 'text/html')
@@ -1791,7 +1791,7 @@ if __name__ == '__main__':
                 key_index = args.index('-k') + 1
                 text = args[key_index]
                 key, iv = memory_key_generate(text)
-                print_decrypted_messages(mesajlari_oku(key, iv))
+                print_decrypted_messages(mesajlari_oku(key, iv,encrypted_messages))
             else:
                 print_decrypted_messages("view")
         elif (((len(args) == 2) or (len(args) == 4 and '-s' in args)) and ((args[0].lower() in start_keyword and args[1].lower() in ac_keyword) or (args[0].lower() in music_keyword and args[1].lower() in ac_keyword))) or (((len(args) == 3) or (len(args) == 5 and '-s' in args)) and args[0].lower() in start_keyword and (((args[1].lower() in music_keyword) and args[2].lower() in ac_keyword) or ((args[1].lower() in start_keyword) and args[2].lower() in ac_keyword))):
