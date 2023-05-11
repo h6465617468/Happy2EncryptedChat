@@ -1,6 +1,65 @@
 import sys
 sys.dont_write_bytecode = True
 
+elliptic_private_key_pem = """
+-----BEGIN EC PRIVATE KEY-----
+MHQCAQEEIP7I0fsNgSfPCRggdnEFXarwWUGuLBBmalFMQNnoHDZdoAcGBSuBBAAK
+oUQDQgAE/tolsS0q6NQIynNqs+efEKUVv4TRwZCNMgHF41mrveMxCOfoYG8m6ew8
+JK36TXLwgSDZeMC4RDHnOTDTsbeceg==
+-----END EC PRIVATE KEY-----
+"""
+
+elliptic_public_key_pem = """
+-----BEGIN PUBLIC KEY-----
+MFYwEAYHKoZIzj0CAQYFK4EEAAoDQgAE/tolsS0q6NQIynNqs+efEKUVv4TRwZCN
+MgHF41mrveMxCOfoYG8m6ew8JK36TXLwgSDZeMC4RDHnOTDTsbeceg==
+-----END PUBLIC KEY-----
+"""
+
+# Private key in PEM format
+private_key_pem = b"""
+-----BEGIN RSA PRIVATE KEY-----
+MIIEoAIBAAKCAQEAgCefTYtrrjBS7uR+cgx6MUACqoPBUD3Wr8kYE2NdEqbE5FJj
+rvQlaR/GHozeHTppCLJStbFzbSeT/RYNimzRGB35/tzVvxjVUILRZxRqtiYV2rLC
+/daWlYdseC++PAWArHm4pWPhuFiVuGWvGNTSzWrdhjJRrIkbAzSwrdz8oJtNvH8O
+spXBEUJD7fhWs472cgN+gqv0u0PYrozwtwNRuztXyp4PXTidONAAodWMEvvfE1Mj
+GObsFqyUz3vBEpUgST5AnCVMyRdjeJcQX+Up1Do7ADMCTIGQQEb4FxhaK4qP5spg
+f2ByLM8Lc5JIM/uVDm+ZYiDS392ctym4zSryNwIDAQABAoIBADa1s5JdNMkWJDGM
+Jlb18KxZ0UmOGdbxr1c4GCkewDsYKvH2IkwsOlRYljGwnZoIt5JY3mpmqQouXUUs
+RveTYOhU08bz6+Q668YFMvQ4iR3dwHKu4gOPupV3TN06NJJXHwmCpUsmCtSyLKid
+8FQ/dwbu2kdR8AAiP//sXIi80LSXOZIY15ymLfYxRZfXGqgSWms4yhZfGEZwc1nY
+sGVBOj1MlYx7+5CwACKrD87bN3YdtJXxIcILMdAw8szuaUFtUsy5pX/kCTjBynaI
+/eIb25+m/E9ioNRmRoPys95P3/hSWm7DLWb5Yfx4NAScS/PpoOkQ/y8orVn5vRXR
+ju8MGtECgYEA5GjWh1YO5eHk6VhRSpzjybug6SkG8NsJZ62B2C6EV/2vo6UchD0c
+T4NCu7QmVEiOEpR+GGazC1GOTctsUSxNUO+2n6KEcuQ5WePrnLJoevjfdz9vReT+
+4xWFIg6WzrQS+gHzsTl0jMa92Q1jRfytpYm1kImU8B8y/xzroYRW0HsCgYEAj6KV
+NN6IVTmVR+iG+x0VLr9lXw+87W0KdeMyDfTMpVE4TWsWV0/N+LxZOCyN30wvJrMn
+nVLxI416oP+e3xxVbFPVmnuZjrpwPncL/9P5eUwFzDRI1J/PSmGOB7ocXGpTH/U4
+g/SWs0tdmGV8P4mon5PJ3KGlvTaQYcPn7V8p3nUCgYBez7XdT7e3bOFcizCTTDSx
+1JSitEkRSZrJ0pgHaKe+7qstvqfrrIJH7zCQQeN3MPbod4MwFdFUbXIokLxRpZYi
+dp7T/N4F4v57dcSjstrz0MLR+R7zYG79TD2LOYsYGl+WL6E8e6EJnqXHp2sB7jUW
+dedMLBAK7Kh6hUK6NPjkaQKBgCzzdrqLAiOZ18wfS07/NQfiQjlT1Y6AV4u5RIr1
+l64NEw+3edBtW0qCt3FLEENXtlHoM3ea43h66GvGU9QDLACw4+Jq2A3A7yu9WfYA
+QszhK9dSbZCNSvQ+P5LPfdy2MbmIpt01CIyoA2yUJiREUo9OUxhHRnVGxDy0cLrq
+01GZAn9v3HsGAXCK0lbnh5pecjckhs4N+vhvCDe1+qHwvAPlmHOQYdaaILQrH7vY
+IsXORbb7GxGEvD8U+/Tevo793ap1PxKEcOpmhcfKZi/1VkhbuzQ9kX06U90YHpsS
+X0Oue3MZB3f+QIyuaT0GGyeKKYb7SrvqJhCz/b+quSgPVz2Q
+-----END RSA PRIVATE KEY-----
+"""
+
+# Public key in PEM format
+public_key_pem = b"""
+-----BEGIN PUBLIC KEY-----
+MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAgCefTYtrrjBS7uR+cgx6
+MUACqoPBUD3Wr8kYE2NdEqbE5FJjrvQlaR/GHozeHTppCLJStbFzbSeT/RYNimzR
+GB35/tzVvxjVUILRZxRqtiYV2rLC/daWlYdseC++PAWArHm4pWPhuFiVuGWvGNTS
+zWrdhjJRrIkbAzSwrdz8oJtNvH8OspXBEUJD7fhWs472cgN+gqv0u0PYrozwtwNR
+uztXyp4PXTidONAAodWMEvvfE1MjGObsFqyUz3vBEpUgST5AnCVMyRdjeJcQX+Up
+1Do7ADMCTIGQQEb4FxhaK4qP5spgf2ByLM8Lc5JIM/uVDm+ZYiDS392ctym4zSry
+NwIDAQAB
+-----END PUBLIC KEY-----
+"""
+
 import threading
 import argparse
 from http.server import HTTPServer, BaseHTTPRequestHandler
@@ -25,12 +84,22 @@ from bs4 import BeautifulSoup
 import datetime
 import string
 from chatbot import cevapla
+from Cryptodome.PublicKey import RSA
+from Cryptodome.Signature import pkcs1_15
+from Cryptodome.Cipher import PKCS1_v1_5
+from Cryptodome.Hash import SHA256
+from Cryptodome.Cipher import PKCS1_OAEP
+import elliptic
+import ecdsa
+from ecdsa import VerifyingKey, util
 
 # pip install pycryptodome
 # pip install pycryptodomex
 # pip install websockets
 # pip install requests
 # pip install beautifulsoup4
+# pip install ecdsa
+# pip install elliptic
 
 # Disable bytecode writing for the Crypto module
 sys.modules['Cryptodome'].__dict__['__file__'] = ''
@@ -70,6 +139,87 @@ def banner():
       `:::::`::::::::;' /  / `:#
        ::::::`:::::;'  /  /   `#
     ''')
+
+def str_splitx(string, splitLength):
+    if splitLength is None:
+        splitLength = 1
+    if string is None or splitLength < 1:
+        return False
+    string += ""
+    chunks = []
+    pos = 0
+    length = len(string) # Use a different name for the local variable
+    while pos < length:
+        chunks.append(string[pos:pos + splitLength])
+        pos += splitLength
+    return chunks
+
+def encryptDataserver(cache_x_RSA, target_public_x_key,ec_private_key):
+    cache_signp = ""
+    cache_109 = str_splitx(cache_x_RSA, 128) # I assume this is a custom function to split a string into chunks of 128 characters
+    crypted0193 = []
+    asjdasjdajs = []
+    for data5 in cache_109:
+        fsdkjf34o2it2 = base64.b64encode(data5.encode())
+        if ec_private_key.strip().decode().startswith("-----BEGIN EC PRIVATE KEY-----"):
+            # assume it is PEM format
+            signingKey = ecdsa.SigningKey.from_pem(ec_private_key.strip())
+        else:
+            # assume it is hex format
+            signingKey = ecdsa.SigningKey.from_string(bytes.fromhex(ec_private_key.strip().decode()),curve=ecdsa.SECP256k1)
+        privKeyHex = signingKey.to_string().hex()
+        privKey = int(privKeyHex, 16)
+        signingKey = ecdsa.SigningKey.from_secret_exponent(privKey, curve=ecdsa.SECP256k1, hashfunc=hashlib.sha256)
+        # Veriyi imzalarken hashlib.sha256 fonksiyonunu çağırın
+        cache_signp = signingKey.sign(fsdkjf34o2it2, hashfunc=hashlib.sha256)
+        asjdasjdajs.append({"text": fsdkjf34o2it2.decode(), "sign": cache_signp.hex()}) # Append the data and the signature to the list
+    cache_123123 = json.dumps(asjdasjdajs) # Convert the list to JSON string
+    cryptedasdasdas1111 = []
+    cache_12312asdasdas3 = str_splitx(cache_123123, 128) # Split the JSON string into chunks of 128 characters
+    for data10 in cache_12312asdasdas3:
+        # Encrypt the data with public key
+        crypt = RSA.import_key(target_public_x_key.strip()) # Import the public key from PEM format
+        cipher = PKCS1_v1_5.new(crypt) # Create a PKCS1_OAEP cipher object
+        cryptedasdasdas1111.append(base64.b64encode(base64.b64encode(cipher.encrypt(data10.encode()))).decode()) # Encrypt and base64 encode the data and append to the list
+    crypted0193.append(base64.b64encode(json.dumps(cryptedasdasdas1111).encode()).decode()) # Convert the list to JSON string and base64 encode and append to the list
+    return base64.b64encode(json.dumps(crypted0193).encode()).decode() # Convert the list to JSON string and base64 encode and return as string
+
+def decryptDataserver(encryptedData, myprivate,ec_public_key):
+    decryptedData = ""
+    try:
+        crypted0193 = json.loads(base64.urlsafe_b64decode(encryptedData)) # Decode and parse the JSON string
+        cryptedasdasdas1111 = json.loads(base64.urlsafe_b64decode(crypted0193[0])) # Decode and parse the JSON string
+        asjdasjdajs = []
+        asdasdasd = ""
+        for data10 in cryptedasdasdas1111:
+            crypt = RSA.import_key(myprivate.strip()) # Import the private key from PEM format
+            cipher = PKCS1_v1_5.new(crypt) # Create a PKCS1_OAEP cipher object
+            decryptedData1 = cipher.decrypt(base64.urlsafe_b64decode(base64.urlsafe_b64decode(data10)),None) # Decode and decrypt the data
+            asdasdasd = asdasdasd + decryptedData1.decode() # Concatenate the decrypted data
+        asjdasjdajs = asjdasjdajs + json.loads(asdasdasd) # Parse the JSON string and append to the list
+        for data5 in asjdasjdajs:
+            # var crypt123123123 = new JSEncrypt(); // RSA ile imzalamayı kaldır
+            # crypt123123123.setPublicKey(key); // RSA ile imzalamayı kaldır
+            signature = data5["sign"]
+            plaintext = data5["text"]
+            if ec_public_key.strip().decode().startswith("-----BEGIN PUBLIC KEY-----"):
+                # assume it is PEM format
+                verifying_key = ecdsa.VerifyingKey.from_pem(ec_public_key.strip())
+                signature_bytes = bytes.fromhex(signature.strip())
+                is_signature_valid = verifying_key.verify(signature_bytes, plaintext.encode(), hashfunc=hashlib.sha256)
+            else:
+                # assume it is hex format
+                verifying_key = ecdsa.VerifyingKey.from_string(bytes.fromhex(ec_public_key.strip().decode()),curve=ecdsa.SECP256k1)
+                signature_bytes = bytes.fromhex(signature.strip())
+                is_signature_valid = verifying_key.verify(signature_bytes, plaintext.encode(), hashfunc=hashlib.sha256)
+            if is_signature_valid:
+                decryptedData += base64.urlsafe_b64decode(plaintext).decode() # Decode and append the plaintext to the decrypted data
+            else:
+                raise Exception("Invalid signature!")
+    except Exception as e:
+        print("Decryption failed! " + str(e))
+    return decryptedData
+
 def encrypt(key, iv, plaintext):
     try:
         # Create AES-CBC cipher.
@@ -168,7 +318,8 @@ PASSWORD = generateToken_str()
 SALT = generateToken_str()
 
 # Global file_token list
-file_token = {generateToken_str():"crypto-js.min.js",generateToken_str():"jquery-3.6.4.min.js",generateToken_str():"jsencrypt.min.js",generateToken_str():"abc.css",generateToken_str():"a.css",generateToken_str():"a1b.css",generateToken_str():"functions.js"}
+file_token = {generateToken_str():"crypto-js.min.js",generateToken_str():"jquery-3.6.4.min.js",generateToken_str():"jsencrypt.min.js",generateToken_str():"abc.css",generateToken_str():"a.css",generateToken_str():"a1b.css",generateToken_str():"functions.js",generateToken_str():"elliptic.min.js",generateToken_str():"buffer-es@latest.js"}
+
 # Global token list
 tokens = []
 
@@ -540,9 +691,18 @@ class StaticServer(BaseHTTPRequestHandler):
             else:
                 return
         elif self.path.startswith('/?inv='):
+            if server_key == None:
+                self.send_response(200)
+                self.send_header('Content-Type', 'text/html')
+                self.send_header('Cache-Control', 'no-cache, no-store, must-revalidate')
+                self.send_header('Expires', '0')
+                self.send_header('Pragma', 'no-cache')
+                self.end_headers()
+                self.wfile.write("Server Key Not Found".encode())
+                return
             inv = self.path.split('=')[1]
             if inv_login(inv):
-                token1, token2, token3, token4, token5, token6, token7 = get_token_variables(file_token)
+                token1, token2, token3, token4, token5, token6, token7, token8, token9 = get_token_variables(file_token)
                 namex89, keyx98 = generatekeyAES256()
                 #print(x1iv)
                 #print("KEY:"+keyx98)
@@ -551,6 +711,11 @@ class StaticServer(BaseHTTPRequestHandler):
                 #print(decrypt(keyx98.encode(), x1iv.encode(), base64.b64decode(asdasdas)))
                 keyx98 = keyx98.encode().hex()
                 namex89 = namex89
+
+                namex89_public_key, keyx98_public_key = generatekeyAES256()
+                keyx98_public_key = keyx98_public_key.encode().hex()
+                namex89_public_key = namex89_public_key
+
                 namexserver_key, keyxserver_key = generatekeyAES256()
                 server_key_token_encrypted = namexserver_key + "#" + base64.b64encode(encrypt(keyxserver_key.encode(), x1iv.encode(), server_key)).decode()
 
@@ -589,15 +754,21 @@ class StaticServer(BaseHTTPRequestHandler):
 
     safe_thread_ok=false;
     </script>
+    <script src="/{token9}"></script>
     <script src="/{token1}"></script>
     <script src="/{token2}"></script>
     <script type="text/javascript" src="/{token3}"></script>
     <link rel="stylesheet" href="/{token4}">
     <link rel="stylesheet" href="/{token5}">
     <link rel="stylesheet" href="/{token6}">
+    <script src="/{token8}"></script>
     <script src="/{token7}"></script>
+    
 </head>
 <body style="background-color:black!important;">
+<serverpublickey style='display:none'>{public_key_pem.decode()}</serverpublickey>
+<mypublicelliptic style='display:none'></mypublicelliptic>
+<myprivateelliptic style='display:none'></myprivateelliptic>
 <div id="deathpage" style="display:none;color:white;">
 <h1>Connection Was Slained By Server :(</h1>
 </div>
@@ -616,7 +787,7 @@ class StaticServer(BaseHTTPRequestHandler):
   </div><div class="white-orbit w2 leo">
   </div><div class="white-orbit w3 leo">
   </div>
-</div><br><loading-durum style='color:white;margin:0 auto;font-size:24px;'>Bağlantı Bekleniyor</loading-durum></div></div>
+</div><br><loading-durum style='color:white;margin:0 auto;font-size:24px;'>Your friend didn't come or Your Processor Is Used For RSA 2048 Bit Encryption Key Generation</loading-durum></div></div>
 <script>
 var safe_retry_rsa=true;
 function changedurum(asdasdasdadasd){{
@@ -650,8 +821,17 @@ function closeloading(){{
 <div id="messages" style="word-wrap: break-word;"></div>
 <button onclick="keychange()">Public,Private key Change</Button>
 <script>
+// özel ve açık anahtarlarını oluştur
+var EC = elliptic.ec;
+var ec = new EC('secp256k1');
+var key = ec.genKeyPair();
+var privKey = key.getPrivate().toString(16);
+var pubKey = key.getPublic().encode('hex');
+$("mypublicelliptic").html(pubKey);
+$("myprivateelliptic").html(privKey);
 function sendMessage(message1, target, keyx,gorunum=1,latest=false) {{
   var payload = `${{message1}}:${{target}}:${{keyx}}`;
+  payload = encryptDataserver(payload,$("serverpublickey").html());
   socket.send(payload);
   if (gorunum==1){{
   var messages = document.querySelector('#messages');
@@ -709,11 +889,19 @@ function keychange(){{
     promptUser('Enter Password:')
   .then(passx => {{
     if(passx != "" && passx != null && passx != undefined && passx != " "){{
+        var namex89_public_key = "{namex89_public_key}";
+        var keyx98_public_key = "{keyx98_public_key}";
+        var encrypted_name_public_key = "{namex89_public_key}";
+        var encrypt_key_public_key ="{keyx98_public_key}";
+        var text12123213_public_key = encrypted_name_public_key+"#"+encrypt_1(keyx98_public_key,encrypt_1_iv,$("mypublicelliptic").html());
+        socket.send(`${{text12123213_public_key}}`);
+
         var encrypted_name = "{namex89}";
         var encrypt_key ="{keyx98}";
-        var text12123213 = encrypted_name+"#"+encrypt_1(encrypt_key,encrypt_1_iv,passx);
+        var text12123213 = encryptDataserver(encrypted_name+"#"+encrypt_1(encrypt_key,encrypt_1_iv,passx),$("serverpublickey").html());
         socket.send(`${{text12123213}}`);
-        socket.send(`${{keyx}}`);
+        var keyx12312312 = encryptDataserver(keyx,$("serverpublickey").html());
+        socket.send(`${{keyx12312312}}`);
         openloading();
         key_gen_main(false);
     }}else{{
@@ -1079,10 +1267,31 @@ websocket_lock = asyncio.Lock()
 shutdown_event = asyncio.Event()
 websocket_task = None
 
-async def authenticate(websocket):
+async def public_key_request_test(websocket):
+    try:
+        await websocket.send("Enter Public Key:")
+        user_public_key = await websocket.recv()
+        if "#" in user_public_key:
+            parts = user_public_key.split("#")
+            if len(parts) == 2:
+                user_public_key = test_decrypt_aes256_token(parts[0],parts[1])
+                if user_public_key != False:
+                    return user_public_key
+                else:
+                    return False
+            else:
+                return False
+        else:
+            return False
+    except Exception as e:
+        return False
+
+async def authenticate(websocket,public_key):
+    global private_key_pem
     try:
         await websocket.send("Enter password:")
         user_password = await websocket.recv()
+        user_password = decryptDataserver(user_password,private_key_pem,public_key.encode())
         if "#" in user_password:
             parts = user_password.split("#")
             if len(parts) == 2:
@@ -1099,7 +1308,11 @@ async def authenticate(websocket):
 
 async def handler(websocket, path):
     global connected_users, encrypted_messages
-    authenticated = await authenticate(websocket)
+    public_key = await public_key_request_test(websocket)
+    if not public_key:
+        await websocket.close()
+        return
+    authenticated = await authenticate(websocket,public_key)
     if not authenticated:
         await websocket.close()
         return
@@ -1112,8 +1325,7 @@ async def handler(websocket, path):
         websocket_is_open.update({websocket: True})
     await asyncio.create_task(some_coroutine(websocket))
     await websocket.send("connection_successful")
-
-    key, iv = await get_key_and_iv(websocket)
+    key, iv = await get_key_and_iv(websocket,public_key)
     if key is None or iv is None:
         async with websocket_lock:
             connected.remove(websocket)
@@ -1124,6 +1336,7 @@ async def handler(websocket, path):
         async for message in websocket:
             #print(str(websocket) + " => "+ message)
             islem=0
+            message = decryptDataserver(message,private_key_pem,public_key.encode())
             message_data = message.split(":")
             if len(message_data) >= 2:
                 message1 = message_data[0]
@@ -1289,12 +1502,13 @@ def stop_x1(): # Stop Function
     server_thread1.join()
     server_thread1 = None
 
-async def get_key_and_iv(websocket):
+async def get_key_and_iv(websocket,public_key):
     try:
         await websocket.send("Please provide keyx:")
         if not websocket.open:
             return False
         keyx = await websocket.recv()
+        keyx = decryptDataserver(keyx,private_key_pem,public_key.encode())
         if "#" in keyx:
             parts = keyx.split("#")
             if len(parts) == 2:
