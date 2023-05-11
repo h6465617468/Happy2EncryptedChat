@@ -1408,7 +1408,10 @@ async def handler(websocket, path):
                 return
     finally:
         async with websocket_lock:
-            connected.remove(websocket)
+            try:
+                connected.remove(websocket)
+            except:
+                pass
             websocket_is_open.pop(websocket, None)
             connected_users -= 1
             if __process_close__ == 0:
