@@ -142,7 +142,7 @@ function base64_decode(str) {
         // Eğer dataasdasdas içinde veri varsa
         if (dataasdasdas.length > 10) {
           // Ekrana merhaba yazdır
-          console.log("Bağlandı");
+          console.log("Key Success");
           // Verinin geldiğini belirt
           veriGeldi = true;
         }
