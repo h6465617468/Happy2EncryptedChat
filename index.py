@@ -118,14 +118,14 @@ def banner():
     print('''
 
                    ...
-                 ;::::;              E2EE Chat
+                 ;::::;              
                ;::::; :;             
-             ;:::::'   :;            Usage : start -s 127.0.0.1 -p 80
-            ;:::::;     ;.                   stop
-           ,:::::'       ;           OOO\    exit
-           ::::::;       ;          OOOOO\         data -k (key)
-           ;:::::;       ;         OOOOOOOO        key
-          ,;::::::;     ;'         / OOOOOOO       token
+             ;:::::'   :;            
+            ;:::::;     ;.                   
+           ,:::::'       ;           OOO\    
+           ::::::;       ;          OOOOO\         
+           ;:::::;       ;         OOOOOOOO        
+          ,;::::::;     ;'         / OOOOOOO       
         ;:::::::::`. ,,,;.        /  / DOOOOOO
       .';:::::::::::::::::;,     /  /     DOOOO
      ,::::::;::::::;;;;::::;,   /  /        DOOO
