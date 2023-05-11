@@ -3,7 +3,7 @@
 
 # Features
 - End-To-End Encryption
-- RSA Key Exchange, RSA Signature, RSA Encryption, AES 256 Encryption
+- Elliptic Curve SECP256k1 Signature, RSA Signature, RSA Key Exchange, RSA Encryption, AES 256 Encryption
 - Data is kept in memory
 - Provides high security if used mirrored on the Tor network
 ```
