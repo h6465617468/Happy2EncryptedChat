@@ -34,6 +34,8 @@ pip install pycryptodomex
 pip install websockets
 pip install requests
 pip install beautifulsoup4
+pip install ecdsa
+pip install elliptic
 ```
 ### 3- Run cmd or Powershell
 ```cmd
