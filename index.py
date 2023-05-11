@@ -1409,7 +1409,7 @@ async def handler(websocket, path):
     finally:
         try:
             async with websocket_lock:
-                    connected.remove(websocket)
+                connected.remove(websocket)
                 websocket_is_open.pop(websocket, None)
                 connected_users -= 1
                 if __process_close__ == 0:
