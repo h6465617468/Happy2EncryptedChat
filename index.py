@@ -1407,28 +1407,28 @@ async def handler(websocket, path):
                 __process_close__ = 0
                 return
     finally:
-        async with websocket_lock:
-            try:
-                connected.remove(websocket)
-            except:
-                pass
-            websocket_is_open.pop(websocket, None)
-            connected_users -= 1
-            if __process_close__ == 0:
-                __process_close__ = 1
-                # Tüm soketleri kapatmak için önce kapatılabileceklerini kapatın
-                tasks = [websocket.close() for websocket in connected if not websocket.closed]
-                await asyncio.gather(*tasks, return_exceptions=True)
-                # Kapatılamayan soketler için bekleyin
-                for websocket in connected:
-                    if not websocket.closed:
-                        try:
-                            await asyncio.wait_for(websocket.wait_closed(), timeout=2)
-                        except asyncio.TimeoutError:
-                            await websocket.close()
-                encrypted_messages = []
-                __process_close__ = 0
-                return
+        try:
+            async with websocket_lock:
+                    connected.remove(websocket)
+                websocket_is_open.pop(websocket, None)
+                connected_users -= 1
+                if __process_close__ == 0:
+                    __process_close__ = 1
+                    # Tüm soketleri kapatmak için önce kapatılabileceklerini kapatın
+                    tasks = [websocket.close() for websocket in connected if not websocket.closed]
+                    await asyncio.gather(*tasks, return_exceptions=True)
+                    # Kapatılamayan soketler için bekleyin
+                    for websocket in connected:
+                        if not websocket.closed:
+                            try:
+                                await asyncio.wait_for(websocket.wait_closed(), timeout=2)
+                            except asyncio.TimeoutError:
+                                await websocket.close()
+                    encrypted_messages = []
+                    __process_close__ = 0
+                    return
+        except:
+            pass
 async def broadcast(message, sender, key, iv):
     global encrypted_messages
     messages = return_broadcast_messages(key, iv)
