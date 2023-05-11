@@ -154,7 +154,7 @@ def str_splitx(string, splitLength):
         pos += splitLength
     return chunks
 
-def encryptDataserver(cache_x_RSA, target_public_x_key,ec_private_key):
+async def encryptDataserver(cache_x_RSA, target_public_x_key,ec_private_key):
     cache_signp = ""
     cache_109 = str_splitx(cache_x_RSA, 128) # I assume this is a custom function to split a string into chunks of 128 characters
     crypted0193 = []
