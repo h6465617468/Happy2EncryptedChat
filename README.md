@@ -19,7 +19,7 @@ UseBridges 1
 - Uses Websocket
 
 # Public/Private Keys
-![alt text](https://raw.githubusercontent.com/h6465617468/Happy2EncryptedChat/main/Screenshot_16.png?raw=true)
+![alt text](https://raw.githubusercontent.com/h6465617468/Happy2EncryptedChat/main/testa0b5c3.png?raw=true)
 
 # Note
 ### I wrote these codes with the help of ChatGPT
