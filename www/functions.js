@@ -89,6 +89,7 @@ function base64_decode(str) {
   }
   
   // SCRIPT 1 START
+  var veriGeldi = false;
   function decryptserverlatest(){
     var token1 = generateToken();
     var dataasdasdas="";
@@ -136,12 +137,14 @@ function base64_decode(str) {
   if (response.ok) {
     dataasdasdas = await response.text();
       // Verinin gelip gelmediğini kontrol etmek için bir değişken tanımla
-      var veriGeldi = false;
+      veriGeldi = false;
       // Her saniye verinin gelip gelmediğini kontrol et
       var myTimeout = setTimeout(function(){
         clearInterval(interval);
         myStopFunction();
-        decryptserverlatest();
+        if(veriGeldi == false){
+          decryptserverlatest();
+        }
         return false;
       }, 4000);
 
