@@ -19,44 +19,73 @@ MgHF41mrveMxCOfoYG8m6ew8JK36TXLwgSDZeMC4RDHnOTDTsbeceg==
 # Private key in PEM format
 private_key_pem = b"""
 -----BEGIN RSA PRIVATE KEY-----
-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
+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
 -----END RSA PRIVATE KEY-----
 """
 
 # Public key in PEM format
 public_key_pem = b"""
 -----BEGIN PUBLIC KEY-----
-MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAgCefTYtrrjBS7uR+cgx6
-MUACqoPBUD3Wr8kYE2NdEqbE5FJjrvQlaR/GHozeHTppCLJStbFzbSeT/RYNimzR
-GB35/tzVvxjVUILRZxRqtiYV2rLC/daWlYdseC++PAWArHm4pWPhuFiVuGWvGNTS
-zWrdhjJRrIkbAzSwrdz8oJtNvH8OspXBEUJD7fhWs472cgN+gqv0u0PYrozwtwNR
-uztXyp4PXTidONAAodWMEvvfE1MjGObsFqyUz3vBEpUgST5AnCVMyRdjeJcQX+Up
-1Do7ADMCTIGQQEb4FxhaK4qP5spgf2ByLM8Lc5JIM/uVDm+ZYiDS392ctym4zSry
-NwIDAQAB
+MIICITANBgkqhkiG9w0BAQEFAAOCAg4AMIICCQKCAgB7/3o2EI0vYMc6WUMmZGla
+SZZ3w8WMRTdl6Z1RoKiyBPFY9jmyGrbismvx7Vj/jRNt6aCKM1N83WkXNIEwCpOg
+WK1BoM7CaNu+VDr/bVd9UoAqYcdQuA4383hlAoTenln2t42Rk0sV9HsVa9uo6ZDT
+GURdbE79lrKxkwwM5p2La+8RtVWTZ+k4VOfIbOvurwN6Ovct2RG03FB2URfAqY6G
+N/5WnCcFKWTO/tn/Bm6wLh6xGmBSSjA8OUDYl5PE4EaxrmODnf+L7nOjIGpOGZ6c
+YkE9XhOjjr+1IOzv3OoKTYyn9Odu6+jbV0lPksbnYFxG0kuFZIirt5EwEH+juaXs
+GoxGiqP6hTZEocMAHomEzabDNY1B9Y+3YhyC4RP59ifd8fo/uD7DGQvxRgO9dGpw
+prTZfKrPxFCT9p17vw8/rOY88CqbdczF7BoMiLolKDq4YVxOhYreKj3NTyqrV5+x
+EuqfmTFJ6D/uEMAGnSRYMQneBJICwn1j0G78jkn8aMQcTofEOXG1UjDMKKvjfNfK
+4lLNB2VJzx6o/zd/vUYTjqYAotV0dRrPPUJYXjWd0ZDL6PruQMW88gLfLJrV8WMY
+NgfV1A/YrJ2TrM+goS2aAYQ+gIPmUgmgZSigqTDOV5ELz/JFTJ3/dMD5kg+rEBJY
+pwMSluAcoe/e+puxkA3PYwIDAQAB
 -----END PUBLIC KEY-----
 """
 
@@ -157,7 +186,7 @@ def str_splitx(string, splitLength):
 
 async def encryptDataserver(cache_x_RSA, target_public_x_key,ec_private_key):
     cache_signp = ""
-    cache_109 = str_splitx(cache_x_RSA, 128) # I assume this is a custom function to split a string into chunks of 128 characters
+    cache_109 = str_splitx(cache_x_RSA, 256) # I assume this is a custom function to split a string into chunks of 128 characters
     crypted0193 = []
     asjdasjdajs = []
     for data5 in cache_109:
@@ -176,7 +205,7 @@ async def encryptDataserver(cache_x_RSA, target_public_x_key,ec_private_key):
         asjdasjdajs.append({"text": fsdkjf34o2it2.decode(), "sign": cache_signp.hex()}) # Append the data and the signature to the list
     cache_123123 = json.dumps(asjdasjdajs) # Convert the list to JSON string
     cryptedasdasdas1111 = []
-    cache_12312asdasdas3 = str_splitx(cache_123123, 128) # Split the JSON string into chunks of 128 characters
+    cache_12312asdasdas3 = str_splitx(cache_123123, 256) # Split the JSON string into chunks of 128 characters
     for data10 in cache_12312asdasdas3:
         # Encrypt the data with public key
         crypt = RSA.import_key(target_public_x_key.strip()) # Import the public key from PEM format
