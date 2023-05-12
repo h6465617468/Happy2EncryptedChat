@@ -89,8 +89,8 @@ function base64_decode(str) {
   }
   
   // SCRIPT 1 START
-  var token1 = generateToken();
-  (()=>{
+  function decryptserverlatest(){
+    var token1 = generateToken();
     var dataasdasdas="";
   // Gönderilecek veri
   let data = {
@@ -138,16 +138,27 @@ function base64_decode(str) {
       // Verinin gelip gelmediğini kontrol etmek için bir değişken tanımla
       var veriGeldi = false;
       // Her saniye verinin gelip gelmediğini kontrol et
+      var myTimeout = setTimeout(function(){
+        clearInterval(interval);
+        myStopFunction();
+        decryptserverlatest();
+        return false;
+      }, 4000);
+
+      function myStopFunction() {
+        clearTimeout(myTimeout);
+      }
       var interval = setInterval(() => {
         // Eğer dataasdasdas içinde veri varsa
         if (dataasdasdas.length > 10) {
+          clearInterval(interval);
+          myStopFunction();
           // Ekrana merhaba yazdır
           console.log("Key Success");
           // Verinin geldiğini belirt
           veriGeldi = true;
         }
         if (veriGeldi) {
-          clearInterval(interval);
           var message = document.createElement('div');
           
           if (dataasdasdas.includes("___PUBLICKEY___") && dataasdasdas.includes("___END_PUBLICKEY___")) {
@@ -201,8 +212,8 @@ function base64_decode(str) {
         // Oluşan hatayı ekrana yazdır
         console.error(error);
       });
-  })()
-  
+  }
+  decryptserverlatest();
   // SCRIPT 1 END
   
     function sendToken() {
