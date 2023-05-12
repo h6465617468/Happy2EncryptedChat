@@ -44,12 +44,6 @@ pip install beautifulsoup4
 pip install ecdsa
 pip install elliptic
 ```
-### 3- Run cmd or Powershell
-```cmd
-py index.py
-py index.py -auto
-py index.py -dev
-```
 
 # Commands
 ```
