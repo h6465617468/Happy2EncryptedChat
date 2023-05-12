@@ -135,6 +135,11 @@ function base64_decode(str) {
   // Sunucudan gelen yanıtın durumuna göre işlem yap
   
   if (response.ok) {
+    if(safe_retry_rsa==false){
+      console.log("success __ok__");
+      return false
+    }
+    console.log("retry")
     dataasdasdas = await response.text();
       // Verinin gelip gelmediğini kontrol etmek için bir değişken tanımla
       veriGeldi = false;
@@ -142,7 +147,11 @@ function base64_decode(str) {
       var myTimeout = setTimeout(function(){
         clearInterval(interval);
         myStopFunction();
+        if(safe_retry_rsa==true){
+          console.log(dataasdasdas);
         decryptserverlatest();
+        }
+        clearTimeout(myTimeout);
         return false;
       }, 4000);
 
@@ -163,7 +172,6 @@ function base64_decode(str) {
           var message = document.createElement('div');
           
           if (dataasdasdas.includes("___PUBLICKEY___") && dataasdasdas.includes("___END_PUBLICKEY___")) {
-            closeloading();
             var startIndex = dataasdasdas.indexOf("___PUBLICKEY___") + "___PUBLICKEY___".length;
             var endIndex = dataasdasdas.indexOf("___END_PUBLICKEY___");
             var messagexx = dataasdasdas.slice(startIndex, endIndex);
@@ -172,10 +180,15 @@ function base64_decode(str) {
             var firstKeyIndex = dataasdasdas.indexOf("___PUBLICKEY___");
             var firstKeyEndIndex = dataasdasdas.indexOf("___END_PUBLICKEY___", firstKeyIndex);
             var firstKey = dataasdasdas.slice(firstKeyIndex + "___PUBLICKEY___".length, firstKeyEndIndex);
-          
+            if ($('mypublic').html().trim()==firstKey.trim()){
+              myStopFunction();
+              return false;
+            }
+            closeloading();
             var div = document.getElementById("targetpublic");
             if(safe_retry_rsa==true){
               safe_retry_rsa=false;
+              console.log("success 2");
               div.innerHTML = firstKey;
               var encryptedMsg = dataasdasdas.slice(0, startIndex).replaceAll("___text___", "<textarea style='color:grey;overflow: hidden;resize: vertical;'>").replaceAll("___end_text___", "</textarea>").replaceAll("___PUBLICKEY___", "") + "Public Key Successful" + dataasdasdas.slice(endIndex).replaceAll("___text___", "<textarea style='color:grey;overflow: hidden;resize: vertical;'>").replaceAll("___end_text___", "</textarea>").replaceAll("___END_PUBLICKEY___", "");
               var messages = document.querySelector('#messages');
