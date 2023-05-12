@@ -142,9 +142,7 @@ function base64_decode(str) {
       var myTimeout = setTimeout(function(){
         clearInterval(interval);
         myStopFunction();
-        if(veriGeldi == false){
-          decryptserverlatest();
-        }
+        decryptserverlatest();
         return false;
       }, 4000);
 
