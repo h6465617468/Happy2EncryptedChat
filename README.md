@@ -18,7 +18,6 @@ bwxxrajkvaykw2lsrovajjd54aam2cpw4ffdgxvtvb3cgncwkesstxyd.onion
 - Network security: the process of securing the network traffic and preventing network surveillance, such as:
   - Tor network mirroring: a technique that uses the Tor network, a decentralized network of servers that route the data through multiple hops, making it difficult to trace the source or destination of the communication
   - HTTPS protocol optional: a technique that allows the system to operate even without HTTPS protocol, a secure version of HTTP protocol that encrypts the data in transit between the client and the server
-- Chatbot integration: the process of integrating a chatbot, a software program that simulates human conversation using natural language processing and artificial intelligence, which can provide automated responses and assistance to the users
 - Communication protocol: the set of rules and standards that enable real-time and bidirectional communication between the client and the server, such as:
   - WebSocket protocol: a web technology that allows a persistent connection between the client and the server, enabling fast and efficient data transfer
 
