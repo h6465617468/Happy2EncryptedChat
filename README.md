@@ -1,6 +1,9 @@
 # Happy2EncryptedChat Beta Release
 This is a secure messaging app that uses end-to-end encryption. Your messages are deleted from the server as soon as they are sent. You can also chat with a Chatbot if you want. This app allows only 2 people to chat at a time. The app works with websocket technology.
 
+# Download For Windows
+[ https://github.com/h6465617468/Happy2EncryptedChat/tree/windows](https://github.com/h6465617468/Happy2EncryptedChat/tree/windows)
+
 # Features
 - End-To-End Encryption
 - Elliptic Curve SECP256k1 Signature, RSA Signature, RSA Key Exchange, RSA Encryption, AES 256 Encryption
