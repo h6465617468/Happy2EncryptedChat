@@ -8,6 +8,8 @@ This project is a web application that lurks in the shadows of an onion site. An
 
 ### [ Download For Windows](https://github.com/h6465617468/Happy2EncryptedChat/tree/windows)
 
+### [ Download Tor Browser](https://www.torproject.org/download/)
+
 # Features
 - Secure communication system with end-to-end encryption: a technique that encrypts data and information as it passes from device to device, so that only the sender and the receiver can see the original contents1
 - Cryptographic techniques: various mathematical algorithms that ensure the confidentiality, integrity and authenticity of the data, such as:
