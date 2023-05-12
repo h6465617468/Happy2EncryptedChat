@@ -19,6 +19,8 @@ UseBridges 1
 - Chatbot can be integrated into the project
 - Uses Websocket
 
+[ Virustotal ](https://www.virustotal.com/gui/url/f664f0244f0852081c9167db1bc1e2abdb4a186c1b7a0cdc9ec48b516c7c58ee?nocache=1)
+
 # Public/Private Keys
 ![alt text](https://raw.githubusercontent.com/h6465617468/Happy2EncryptedChat/main/testa0b5c3.png?raw=true)
 
