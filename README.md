@@ -38,7 +38,6 @@ UseBridges 1
 ### I wrote these codes with the help of ChatGPT
 
 # Setup
-No need to mess with the database, it's very easy to set up as the data is in the computer memory. The estimated memory processing time of the encrypted message is 0.1 seconds, and it is deleted immediately after processing.
 ### 1- Install Python
 ### 2- Run cmd as Administrator
 ```cmd
