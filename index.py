@@ -122,6 +122,7 @@ import elliptic
 import ecdsa
 from ecdsa import VerifyingKey, util
 
+
 # pip install pycryptodome
 # pip install pycryptodomex
 # pip install websockets
@@ -334,12 +335,16 @@ def test_decrypt_aes256_token(token, ciphertext):
 def test_decrypt_aes256_token_wait(token, ciphertext):
     global aes256_token, x1iv
     if not aes256_token_exists(token):
+        print("Token Bulunamadı")
+        print(token)
+        print(aes256_token)
         return False
     try:
         decoded_ciphertext = base64.b64decode(ciphertext.encode())
         value = str(decrypt(aes256_token[token], x1iv.encode(), decoded_ciphertext))
         return value
     except:
+        print("Error Expect")
         return False
 
 def generateToken_str():
@@ -956,9 +961,7 @@ function keychange(){{
   }});
   }};
 socket.onmessage = function(event) {{
-var intervalonm = setInterval(() => {{
-    if(safe_thread_ok == true){{
-        clearInterval(intervalonm);
+
 // start-3
   var messages = document.querySelector('#messages');
   var message = document.createElement('div');
@@ -970,6 +973,7 @@ closeloading();
   var messagexx = event.data.slice(startIndex, endIndex); // aradaki kısmı al
   var div = document.getElementById("targetpublic");
   if(safe_retry_rsa==true){{
+    console.log("success 1");
               safe_retry_rsa=false;
 div.innerHTML = messagexx;
             }}
@@ -1040,8 +1044,7 @@ if (event.data.startsWith("___text___") && event.data.includes("___end_text___")
 }}
 
 // end-3
-    }}
-}}, 500);
+
 }};
 
   socket.onerror = function(error) {{
@@ -1202,8 +1205,8 @@ form.addEventListener('submit', function(event) {{
                             if keyx != None and keyx != False:
                                 #print("Keyx:"+keyx)
                                 key,iv=memory_key_generate(keyx)
-                                dec_server_data=return_decrypted_messages(mesajlari_oku(key, iv,encrypted_messages))
-                                if dec_server_data != None and dec_server_data != False:
+                                dec_server_data=return_decrypted_messages(mesajlari_oku(key, iv,encrypted_messages[::-1]))
+                                if dec_server_data != None and dec_server_data != False and dec_server_data != "None":
                                     delete_aes256_token(parts[0])
                                     #print(dec_server_data)
                                     self.send_response(200)
@@ -1850,8 +1853,11 @@ if __name__ == '__main__':
             if '-k' in args:
                 key_index = args.index('-k') + 1
                 text = args[key_index]
-                key, iv = memory_key_generate(text)
-                print_decrypted_messages(mesajlari_oku(key, iv,encrypted_messages))
+                if text == PASSWORD:
+                    key, iv = memory_key_generate(server_key)
+                    print_decrypted_messages(mesajlari_oku(key, iv,encrypted_messages))
+                else:
+                    print("Password Error")
             else:
                 print_decrypted_messages("view")
         elif (((len(args) == 2) or (len(args) == 4 and '-s' in args)) and ((args[0].lower() in start_keyword and args[1].lower() in ac_keyword) or (args[0].lower() in music_keyword and args[1].lower() in ac_keyword))) or (((len(args) == 3) or (len(args) == 5 and '-s' in args)) and args[0].lower() in start_keyword and (((args[1].lower() in music_keyword) and args[2].lower() in ac_keyword) or ((args[1].lower() in start_keyword) and args[2].lower() in ac_keyword))):
