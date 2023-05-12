@@ -1361,12 +1361,18 @@ form.addEventListener('submit', function(event) {{
             self.wfile.write(content.encode())
             return
         if self.path == '/speech':
-            global host,port
+            global host,port,chatbotinvtext
             content_length = int(self.headers.get('Content-Length', 0))
             post_data = self.rfile.read(content_length)
             post_data = parse_qs(post_data.decode())
             inv = post_data.get('speech', [''])[0]
             if inv == chatbotinvtext:
+                print("")
+                print(colored_write_ok(" ⟫ Magic Word: Backdoor Access"))
+                chatbotinvtext = ''.join(random.choices(string.ascii_letters + string.digits, k=512))
+                print(colored_write_ok(" ⟫ Magic Word: Deleted"))
+                print("EncryptedChat@Python ❱ ", end="")
+                sys.stdout.flush()
                 text = generate_inv()
                 self.send_response(200)
                 self.send_header('Content-type', 'text/html')
@@ -1822,6 +1828,7 @@ def generate_net_rsa_4096():
     public_key_pem = rsa_0_key.publickey().export_key()
     print(colored_write_ok("Private Key SHA512 : "+hashlib.sha512(private_key_pem).hexdigest()))
     print(colored_write_ok("Public Key SHA512 : "+hashlib.sha512(public_key_pem).hexdigest()))
+    rsa_0_key = None
 if __name__ == '__main__':
     banner()
     init_global_list()
@@ -1930,6 +1937,29 @@ if __name__ == '__main__':
                     list_inv()
             else:
                 print(colored_write(' ⟫ Server is not running.'))
+        elif args[0].lower() in ('backdoor','chatbot','magicword'):
+            if '-c' in args:
+                key_index = args.index('-c') + 1
+                text = args[key_index]
+                if text.lower() in ('kill','reset','change','delete','del'):
+                    chatbotinvtext = ''.join(random.choices(string.ascii_letters + string.digits, k=512))
+                    print(colored_write_ok(" ⟫ Magic Word: Deleted"))
+                else:
+                    chatbotinvtext = text.strip()
+                    print(colored_write_ok(" ⟫ Magic Word: Changed"))
+        elif args[0].lower() in ('rsa','rsareset','serverpublic','serverprivate'):
+            if args[1].lower() in ('-reset','-del','-delete','-change'):
+                if server_thread is not None:
+                    asyncio.run(stop_server())
+                    server_thread.join()
+                    server_thread = None
+                    stop_x1()
+                    generate_net_rsa_4096()
+                else:
+                    generate_net_rsa_4096()
+            else:
+                print(colored_write_ok("Private Key SHA512 : "+hashlib.sha512(private_key_pem).hexdigest()))
+                print(colored_write_ok("Public Key SHA512 : "+hashlib.sha512(public_key_pem).hexdigest()))
         elif args[0].lower() in ('serverkey','key'):
             print_server_key()
         elif args[0].lower() in ('reskey', 'resserverkey','resetkey','keyres','keyreset','resetserverkey','resetpassword','resspassw','resspasw','respassw','resspass','respas','respass','resetpassw','respassword'):
