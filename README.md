@@ -28,8 +28,6 @@ HiddenServicePort 5678 127.0.0.1:5678
 UseBridges 1
 ```
 
-This project is a secure communication system that uses end-to-end encryption to protect the data from unauthorized access. The system employs various cryptographic techniques, such as elliptic curve SECP256k1 signature, RSA signature, RSA key exchange, RSA encryption and AES 256 encryption, to ensure the confidentiality, integrity and authenticity of the data. The data is stored in memory and encrypted multiple times before being sent to the server. The system also provides high security if used mirrored on the Tor network, which anonymizes the traffic and prevents network surveillance. The system does not keep any logs of the communication, which enhances the privacy of the users. The system can operate even without HTTPS protocol, which adds another layer of security. The system also allows the integration of a chatbot, which can provide automated responses and assistance to the users. The system uses WebSocket protocol, which enables real-time and bidirectional communication between the client and the server.
-
 # Public/Private Keys
 ![alt text](https://raw.githubusercontent.com/h6465617468/Happy2EncryptedChat/main/testa0b5c3.png?raw=true)
 
