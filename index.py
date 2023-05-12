@@ -1948,15 +1948,19 @@ if __name__ == '__main__':
                     chatbotinvtext = text.strip()
                     print(colored_write_ok(" ⟫ Magic Word: Changed"))
         elif args[0].lower() in ('rsa','rsareset','serverpublic','serverprivate'):
-            if args[1].lower() in ('-reset','-del','-delete','-change'):
-                if server_thread is not None:
-                    asyncio.run(stop_server())
-                    server_thread.join()
-                    server_thread = None
-                    stop_x1()
-                    generate_net_rsa_4096()
+            if len(args) > 1:
+                if args[1].lower() in ('-reset','-del','-delete','-change'):
+                    if server_thread is not None:
+                        asyncio.run(stop_server())
+                        server_thread.join()
+                        server_thread = None
+                        stop_x1()
+                        generate_net_rsa_4096()
+                    else:
+                        generate_net_rsa_4096()
                 else:
-                    generate_net_rsa_4096()
+                    print(colored_write_ok("Private Key SHA512 : "+hashlib.sha512(private_key_pem).hexdigest()))
+                    print(colored_write_ok("Public Key SHA512 : "+hashlib.sha512(public_key_pem).hexdigest()))
             else:
                 print(colored_write_ok("Private Key SHA512 : "+hashlib.sha512(private_key_pem).hexdigest()))
                 print(colored_write_ok("Public Key SHA512 : "+hashlib.sha512(public_key_pem).hexdigest()))
