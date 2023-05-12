@@ -55,6 +55,8 @@ exit
 inv -add
 inv
 reskey
+rsa -reset
+rsa
 play music
 play music -s 3
 youtube
@@ -75,9 +77,11 @@ py index.py -auto
 | `stop` | Stops the server |
 | `exit` | Force close |
 | `inv` | Send a link to your friend and message 2 people. Don't forget to change the host part -add new invite link |
-| `reskey` | Reset server key |
+| `reskey` | Reset server AES-256 key |
 | `play music` | Youtube video play -s ( count ) |
 | `youtube` | Add Music -s ( count ) |
+| `backdoor` | Backdoor -c ( Magic Word ) When entering the address 127.0.0.1, the magic word can be connected to the chat when entered. |
+| `rsa` | Add Music -delete ( Reset RSA 4096 Bit Server Key ) |
 | `cls` | Clear command prompt |
 | `data` | Display Encrypted Messages ( It will return null because it is deleted instantly. ) -k ( decrypt key ) |
 | `key` | View Server Key |
