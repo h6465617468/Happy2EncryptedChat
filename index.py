@@ -331,6 +331,17 @@ def test_decrypt_aes256_token(token, ciphertext):
     except:
         return False
 
+def test_decrypt_aes256_token_wait(token, ciphertext):
+    global aes256_token, x1iv
+    if not aes256_token_exists(token):
+        return False
+    try:
+        decoded_ciphertext = base64.b64decode(ciphertext.encode())
+        value = str(decrypt(aes256_token[token], x1iv.encode(), decoded_ciphertext))
+        return value
+    except:
+        return False
+
 def generateToken_str():
     now = datetime.datetime.now()
     year = str(now.year)
@@ -386,6 +397,7 @@ def token_login(token_string):
     
     # If the token is not in the list, return False
     return False
+
 def list_tokens():
     global tokens
     print(" ⟫ Token list:")
@@ -1186,23 +1198,39 @@ form.addEventListener('submit', function(event) {{
                     if "#" in keyx:
                         parts = keyx.split("#")
                         if len(parts) == 2:
-                            keyx = test_decrypt_aes256_token(parts[0],parts[1])
-                            if keyx:
+                            keyx = test_decrypt_aes256_token_wait(parts[0],parts[1])
+                            if keyx != None and keyx != False:
                                 #print("Keyx:"+keyx)
                                 key,iv=memory_key_generate(keyx)
                                 dec_server_data=return_decrypted_messages(mesajlari_oku(key, iv,encrypted_messages))
-                                #print(dec_server_data)
+                                if dec_server_data != None and dec_server_data != False:
+                                    delete_aes256_token(parts[0])
+                                    #print(dec_server_data)
+                                    self.send_response(200)
+                                    self.send_header('Content-type', 'text/html')
+                                    self.send_header('Cache-Control', 'no-cache, no-store, must-revalidate')
+                                    self.send_header('Expires', '0')
+                                    self.send_header('Pragma', 'no-cache')
+                                    self.end_headers()
+                                    self.wfile.write(dec_server_data.encode())
+                                    return
+                                else:
+                                    self.send_response(200)
+                                    self.send_header('Content-type', 'text/html')
+                                    self.send_header('Cache-Control', 'no-cache, no-store, must-revalidate')
+                                    self.send_header('Expires', '0')
+                                    self.send_header('Pragma', 'no-cache')
+                                    self.end_headers()
+                                    self.wfile.write("None".encode())
+                                    return
+                            else:
                                 self.send_response(200)
                                 self.send_header('Content-type', 'text/html')
                                 self.send_header('Cache-Control', 'no-cache, no-store, must-revalidate')
                                 self.send_header('Expires', '0')
                                 self.send_header('Pragma', 'no-cache')
                                 self.end_headers()
-                                self.wfile.write(dec_server_data.encode())
-                                return
-                            else:
-                                print("hata 1")
-                                self.send_response(404)
+                                self.wfile.write("None".encode())
                                 return
                         else:
                             print("hata 2")
