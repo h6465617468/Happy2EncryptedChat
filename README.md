@@ -4,8 +4,7 @@ We are a project that provides a secure and private messaging service that works
 ## Your site looks like this:
 bwxxrajkvaykw2lsrovajjd54aam2cpw4ffdgxvtvb3cgncwkesstxyd.onion
 
-# Download For Windows
-[ https://github.com/h6465617468/Happy2EncryptedChat/tree/windows](https://github.com/h6465617468/Happy2EncryptedChat/tree/windows)
+### [ Download For Windows](https://github.com/h6465617468/Happy2EncryptedChat/tree/windows)
 
 # Features
 - Secure communication system with end-to-end encryption: a technique that encrypts data and information as it passes from device to device, so that only the sender and the receiver can see the original contents1
