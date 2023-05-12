@@ -6,7 +6,7 @@ bwxxrajkvaykw2lsrovajjd54aam2cpw4ffdgxvtvb3cgncwkesstxyd.onion
 
 This project is a web application that lurks in the shadows of an onion site. An onion site is a website on the dark web that uses the “.onion” top-level domain to conceal its true identity and purpose. Onion sites use The Onion Router (Tor) software to encrypt their connections and evade detection. They also obscure their location, ownership, and other traces . To access an onion site, you need to use a Tor browser, which is a modified version of Firefox that connects to websites through the Tor network. The Tor network is a secretive network of servers that route the data through multiple hops, making it impossible to track the source or destination of the communication. This is a cryptic domain name that is generated randomly and cannot be altered. To visit this site, you need to copy and paste this address into your Tor browser’s address bar. But beware, you never know what you might find on the dark web.
 
-### [ Download For Windows](https://github.com/h6465617468/Happy2EncryptedChat/tree/windows) - [ Download Tor Browser](https://www.torproject.org/download/)
+### [ Download For Windows](https://github.com/h6465617468/Happy2EncryptedChat/archive/refs/heads/windows.zip) - [ Download Tor Browser](https://www.torproject.org/download/)
 
 # Features
 - Secure communication system with end-to-end encryption: a technique that encrypts data and information as it passes from device to device, so that only the sender and the receiver can see the original contents1
