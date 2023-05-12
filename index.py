@@ -251,6 +251,9 @@ async def decryptDataserver(encryptedData, myprivate,ec_public_key):
 
 data = None
 
+with open("cb1.json", "r", encoding="utf-8") as f:
+    data = json.load(f)
+
 def multi_thread(text):
     global data
     cevap = ""
@@ -309,8 +312,6 @@ def single_thread(text):
 
 def cevapla(metin):
     global data
-    with open("cb1.json", "r", encoding="utf-8") as f:
-        data = json.load(f)
     cevap = ""
     test = single_thread(metin)
     if test is not None:
