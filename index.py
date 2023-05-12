@@ -112,7 +112,6 @@ import requests
 from bs4 import BeautifulSoup
 import datetime
 import string
-from chatbot import cevapla
 from Cryptodome.PublicKey import RSA
 from Cryptodome.Signature import pkcs1_15
 from Cryptodome.Cipher import PKCS1_v1_5
@@ -121,7 +120,6 @@ from Cryptodome.Cipher import PKCS1_OAEP
 import elliptic
 import ecdsa
 from ecdsa import VerifyingKey, util
-
 
 # pip install pycryptodome
 # pip install pycryptodomex
@@ -137,7 +135,7 @@ sys.modules['Cryptodome'].__dict__['__file__'] = ''
 host = '127.0.0.1'
 port = 80
 
-chatbotinvtext = "serverkey"
+chatbotinvtext = ''.join(random.choices(string.ascii_letters + string.digits, k=512))
 
 x1iv = ''.join(random.choices(string.ascii_letters + string.digits, k=16))
 
@@ -250,6 +248,79 @@ async def decryptDataserver(encryptedData, myprivate,ec_public_key):
     except Exception as e:
         print("Decryption failed! " + str(e))
     return decryptedData
+
+data = None
+
+def multi_thread(text):
+    global data
+    cevap = ""
+    metin = text.split()
+    for key in data["multi"]:
+        if key.startswith("set"):
+            sub_keys = data["multi"][key].split("=")[-1].split()
+            left_keyx = data["multi"][key].split("=")[0].split(",")
+            for i in range(len(sub_keys)):
+                for c in range(len(left_keyx)):
+                    current_sub_key = sub_keys[i]
+                    left_key = left_keyx[c].split("+")
+                    if len(left_key) == 1:
+                        for a in range(len(left_key)):
+                            left_key1 = left_key[a].split("/")
+                            for c in range(len(left_key1)):
+                                if left_key1[c] in metin:
+                                    response = data["multi"][current_sub_key.replace("$","")].split("/")
+                                    if not any(item in cevap for item in response):
+                                        if len(response) == 1:
+                                            cevap += response[0] + " "
+                                        else:
+                                            cevap += random.choice(response) + " "
+                    else:
+                        sayac = 0
+                        for a in range(len(left_key)):
+                            left_key1 = left_key[a].split("/")
+                            for c in range(len(left_key1)):
+                                if left_key1[c] in metin:
+                                    sayac=sayac+1
+                        if len(left_key) == sayac:
+                            response = data["multi"][current_sub_key.replace("$","")].split("/")
+                            if not any(item in cevap for item in response):
+                                sayac = 0
+                                if len(response) == 1:
+                                    cevap += response[0] + " "
+                                else:
+                                    cevap += random.choice(response) + " "
+    if cevap == "":
+        return None
+    else:
+        return cevap.strip() 
+
+def single_thread(text):
+    global data
+    text = text.strip()
+    if text in data["single"]:
+        response = data["single"][text]
+        if len(response) == 1:
+            cevap = response[0] + " "
+        else:
+            cevap = random.choice(response) + " "
+        return cevap.strip()
+    else:
+        return None
+
+def cevapla(metin):
+    global data
+    with open("cb1.json", "r", encoding="utf-8") as f:
+        data = json.load(f)
+    cevap = ""
+    test = single_thread(metin)
+    if test is not None:
+        return test
+    test = multi_thread(metin)
+    if test is not None:
+        return test
+    return random.choice(data["multi"]["default"]).strip()
+
+#print(cevapla(input("Bot a sor : ")))
 
 def encrypt(key, iv, plaintext):
     try:
@@ -1742,12 +1813,23 @@ start_keyword=['güzel','tatlı','yt','youtube','harika','bir','bana','play','pl
 music_keyword=['musık','musik','musıc','music','şarkı', 'sarkı','müzik', 'muzik','muzık', 'sarki','song','kpop','play']
 ac_keyword=['play','ac','aç','söyle','soyle','link','lınk','ver','hemen','yonlendir','yönlendir','yonlendır','yolla','at','goster','göster','youtube','open','song','music']
 
+def generate_net_rsa_4096():
+    print(colored_write_ok("Generating RSA 4096 Bit Key..."))
+    rsa_0_key = RSA.generate(4096)
+    # private
+    private_key_pem = rsa_0_key.export_key()
+    # public
+    public_key_pem = rsa_0_key.publickey().export_key()
+    print(colored_write_ok("Private Key SHA512 : "+hashlib.sha512(private_key_pem).hexdigest()))
+    print(colored_write_ok("Public Key SHA512 : "+hashlib.sha512(public_key_pem).hexdigest()))
 if __name__ == '__main__':
     banner()
     init_global_list()
     server_thread = None
     if len(sys.argv) > 1:
         if '-auto' in sys.argv:
+            if not '-dev' in sys.argv:
+                generate_net_rsa_4096()
             if check_port(host, port):
                 server_thread = threading.Thread(target=run_server, args=(host, port))
                 server_thread.start()
@@ -1763,29 +1845,38 @@ if __name__ == '__main__':
             else:
                 print(colored_write(f" ⟫ Port {port} is already in use."))
         else:
+            if not '-dev' in sys.argv:
+                generate_net_rsa_4096()
+            iaxda = 0
             if '-s' in sys.argv:
+                iaxda = 1
                 host_index = sys.argv.index('-s') + 1
                 host = sys.argv[host_index]
             if '-p' in sys.argv:
+                iaxda = 1
                 port_index = sys.argv.index('-p') + 1
                 port = int(sys.argv[port_index])
-            if '-wp' in args:
-                wpport_index = args.index('-wp') + 1
-                WEBSOCKET_PORT = int(args[wpport_index])
-            if check_port(host, port):
-                server_thread = threading.Thread(target=run_server, args=(host, port))
-                server_thread.start()
-                nametoken_cache, keyabc = generatekey_general_token("#123")
-                random_token = nametoken_cache
-                print(colored_write_ok(f" ⟫ Set Key: http://{host}:{port}/?token=" + random_token))
-                webbrowser.open_new_tab(f"http://{host}:{port}/?token=" + random_token)
-                print(colored_write_ok(f" ⟫ Serving on http://{host}:{port} ..."))
-                text1 = generate_inv()
-                print(f"http://{host}:{port}/?inv="+ text1)
-                start_x1()
-                print(colored_write_ok(f" ⟫ Websocket server started on ws://{host}:{WEBSOCKET_PORT}/"))
-            else:
-                print(colored_write(f" ⟫ Port {port} is already in use."))
+            if '-wp' in sys.argv:
+                iaxda = 1
+                wpport_index = sys.argv.index('-wp') + 1
+                WEBSOCKET_PORT = int(sys.argv[wpport_index])
+            if iaxda == 1:
+                if check_port(host, port):
+                    server_thread = threading.Thread(target=run_server, args=(host, port))
+                    server_thread.start()
+                    nametoken_cache, keyabc = generatekey_general_token("#123")
+                    random_token = nametoken_cache
+                    print(colored_write_ok(f" ⟫ Set Key: http://{host}:{port}/?token=" + random_token))
+                    webbrowser.open_new_tab(f"http://{host}:{port}/?token=" + random_token)
+                    print(colored_write_ok(f" ⟫ Serving on http://{host}:{port} ..."))
+                    text1 = generate_inv()
+                    print(f"http://{host}:{port}/?inv="+ text1)
+                    start_x1()
+                    print(colored_write_ok(f" ⟫ Websocket server started on ws://{host}:{WEBSOCKET_PORT}/"))
+                else:
+                    print(colored_write(f" ⟫ Port {port} is already in use."))
+    else:
+        generate_net_rsa_4096()
     while True:
         user_input = input("EncryptedChat@Python ❱ ")
         if not user_input.strip():
