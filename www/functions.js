@@ -172,8 +172,8 @@ function base64_decode(str) {
             }
             dataasdasdas="";
           } else {
-            console.log("TARGET PUBLIC KEY ERROR:")
-            console.log(dataasdasdas)
+            console.log("TARGET PUBLIC KEY ERROR:");
+            console.log(dataasdasdas);
             var messages = document.querySelector('#messages');
             message.innerHTML = dataasdasdas;
             messages.insertBefore(message, messages.firstChild);
@@ -395,7 +395,7 @@ function encryptDataserver(cache_x_RSA,target_public_x_key){
   var EC = elliptic.ec;
 var ec = new EC('secp256k1');
   var cache_signp="";
-  var cache_109=str_splitx(cache_x_RSA,128);
+  var cache_109=str_splitx(cache_x_RSA,256);
   var crypted0193=[];
   var asjdasjdajs=[];
   cache_109.forEach(function(data5) {
@@ -411,7 +411,7 @@ var ec = new EC('secp256k1');
   });
   var cache_123123=JSON.stringify(asjdasjdajs);
   var cryptedasdasdas1111=[];
-  cache_12312asdasdas3=str_splitx(cache_123123,128);
+  cache_12312asdasdas3=str_splitx(cache_123123,256);
   cache_12312asdasdas3.forEach(function(data10, index1) {
     var crypt = new JSEncrypt();
     crypt.setPublicKey(target_public_x_key.trim());
