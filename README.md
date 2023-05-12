@@ -6,7 +6,7 @@ This is a secure messaging app that uses end-to-end encryption. Your messages ar
 - Elliptic Curve SECP256k1 Signature, RSA Signature, RSA Key Exchange, RSA Encryption, AES 256 Encryption
 - Data is kept in memory
 - Data is encrypted multiple times before being sent to the server.
-- Normally, RSA 2048 bits is recommended, with a maximum of RSA 4096 bits recommended. RSA 8192 bits can be very slow.
+- Minimum, RSA 4096 bits is recommended, with a maximum of RSA 8192 bits recommended. RSA 8192 bits can be very slow.
 - When you send 1 message, it encrypts it more than 16 times with RSA.
 - Provides high security if used mirrored on the Tor network
 ```
