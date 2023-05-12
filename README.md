@@ -42,6 +42,7 @@ pip install elliptic
 ```cmd
 py index.py
 py index.py -auto
+py index.py -dev
 ```
 
 # Commands
