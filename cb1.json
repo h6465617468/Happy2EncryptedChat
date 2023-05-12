@@ -7,7 +7,7 @@
     "selam":["As"]
   },
   "multi" : {
-    "set1": "merhaba/nasılsın/iyimisin/naber=$sc1",
+    "set1": "merhaba/nasılsın/iyimisin/naber/meraba=$sc1",
     "sc1": "İyiyim Sen Nasılsın?/Naaptın?/Bugün Keyifler Nasıl?",
     "set2": "ad/adın/soyadın+ne=$sc2",
     "sc2": "Bilmiyorum",
