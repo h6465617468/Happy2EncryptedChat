@@ -1,6 +1,8 @@
 # Happy2EncryptedChat Beta Release
 We are a project that provides a secure and private messaging service that works on the tor network. The tor network is a decentralized network that protects your identity and location from prying eyes by routing your traffic through multiple servers around the world. Our app uses end-to-end encryption to ensure that no one can access your messages except you and your chat partner. Our app also deletes your messages from the server as soon as they are sent, so there is no trace of your communication. Our app works with websocket technology, which enables reliable data transfer. Our mission is to offer a simple and easy-to-use messaging app that respects your privacy and freedom of expression.
 
+This project is a web application that lurks in the shadows of an onion site. An onion site is a website on the dark web that uses the “.onion” top-level domain to conceal its true identity and purpose. Onion sites use The Onion Router (Tor) software to encrypt their connections and evade detection. They also obscure their location, ownership, and other traces . To access an onion site, you need to use a Tor browser, which is a modified version of Firefox that connects to websites through the Tor network. The Tor network is a secretive network of servers that route the data through multiple hops, making it impossible to track the source or destination of the communication. This is a cryptic domain name that is generated randomly and cannot be altered. To visit this site, you need to copy and paste this address into your Tor browser’s address bar. But beware, you never know what you might find on the dark web.
+
 ## Your site looks like this:
 bwxxrajkvaykw2lsrovajjd54aam2cpw4ffdgxvtvb3cgncwkesstxyd.onion
 
