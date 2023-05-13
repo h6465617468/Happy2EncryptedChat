@@ -5,7 +5,7 @@ We are a project that provides a secure and private messaging service that works
 bwxxrajkvaykw2lsrovajjd54aam2cpw4ffdgxvtvb3cgncwkesstxyd.onion
 
 - The Tor network provides anonymity and privacy against government surveillance, but it does not guarantee immunity from criminal investigations. For instance, a computer expert may be able to detect that you are using this application, but they will never be able to decrypt your messages. However, the inability to decrypt the messages is not a valid defense in court, and the mere usage of this application may be considered as suspicious or incriminating. Therefore, you should use this application with caution and responsibility.
-  - But this solution might work, but still can't completely cover the blame :
+  * But this solution might work, but still can't completely cover the blame :
    - This command is used to remove data from available unused disk space on a volume. If you don't know exactly what it does, don't use it.
    - [ https://learn.microsoft.com/en-us/windows-server/administration/windows-commands/cipher](https://learn.microsoft.com/en-us/windows-server/administration/windows-commands/cipher)
 ```cmd
