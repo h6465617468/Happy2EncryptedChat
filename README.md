@@ -4,7 +4,7 @@ We are a project that provides a secure and private messaging service that works
 ## Your site looks like this:
 bwxxrajkvaykw2lsrovajjd54aam2cpw4ffdgxvtvb3cgncwkesstxyd.onion
 
-This project is a web application that lurks in the shadows of an onion site. An onion site is a website on the dark web that uses the “.onion” top-level domain to conceal its true identity and purpose. Onion sites use The Onion Router (Tor) software to encrypt their connections and evade detection. They also obscure their location, ownership, and other traces . To access an onion site, you need to use a Tor browser, which is a modified version of Firefox that connects to websites through the Tor network. The Tor network is a secretive network of servers that route the data through multiple hops, making it impossible to track the source or destination of the communication. This is a cryptic domain name that is generated randomly and cannot be altered. To visit this site, you need to copy and paste this address into your Tor browser’s address bar. But beware, you never know what you might find on the dark web.
+The Tor network provides anonymity and privacy against government surveillance, but it does not guarantee immunity from criminal investigations. For instance, a computer expert may be able to detect that you are using this application, but they will never be able to decrypt your messages. However, the inability to decrypt the messages is not a valid defense in court, and the mere usage of this application may be considered as suspicious or incriminating. Therefore, you should use this application with caution and responsibility.
 
 ### It is very easy to open a site on the Tor network.
 ### Create this folder here
