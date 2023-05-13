@@ -23,6 +23,9 @@ This project is a web application that lurks in the shadows of an onion site. An
 - Communication protocol: the set of rules and standards that enable real-time and bidirectional communication between the client and the server, such as:
   - WebSocket protocol: a web technology that allows a persistent connection between the client and the server, enabling fast and efficient data transfer
 
+This project shows the encrypted messages that come from the browser to the server side. The encrypted messages are created using end-to-end encryption technique to protect the data from unauthorized access. The encrypted messages are stored in memory and encrypted multiple times before being sent to the server.
+![alt text](https://raw.githubusercontent.com/h6465617468/Happy2EncryptedChat/main/Screenshot_7.png?raw=true)
+
 ```
 # C:\Users\(name)\Desktop\Tor Browser\Browser\TorBrowser\Data\Tor\torrc
 HiddenServiceDir C:\Users\(name)\Desktop\Tor Browser\hidden_service
@@ -110,6 +113,3 @@ cipher /w:C:\
 http://(host):(port)/?inv=Kr9CBrwYElMND8cEHdUL5r5OWY5coXNMQzto1O_EWlods51yTmN7gzhexG7fvU03
 
 ![alt text](https://raw.githubusercontent.com/h6465617468/Happy2EncryptedChat/main/test0x1cvx0.png?raw=true)
-
-# Browser To Server
-![alt text](https://raw.githubusercontent.com/h6465617468/Happy2EncryptedChat/main/Screenshot_7.png?raw=true)
