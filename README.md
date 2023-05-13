@@ -5,6 +5,12 @@ We are a project that provides a secure and private messaging service that works
 bwxxrajkvaykw2lsrovajjd54aam2cpw4ffdgxvtvb3cgncwkesstxyd.onion
 
 The Tor network provides anonymity and privacy against government surveillance, but it does not guarantee immunity from criminal investigations. For instance, a computer expert may be able to detect that you are using this application, but they will never be able to decrypt your messages. However, the inability to decrypt the messages is not a valid defense in court, and the mere usage of this application may be considered as suspicious or incriminating. Therefore, you should use this application with caution and responsibility.
+### But this solution might work:
+If you don't know exactly what it does, don't use it.
+[ https://learn.microsoft.com/en-us/windows-server/administration/windows-commands/cipher](https://learn.microsoft.com/en-us/windows-server/administration/windows-commands/cipher)
+```cmd
+cipher /w:C:\
+```
 
 ### It is very easy to open a site on the Tor network.
 ### Create this folder here
@@ -103,13 +109,6 @@ py index.py -auto
 | `data` | Display Encrypted Messages ( It will return null because it is deleted instantly. ) -k ( decrypt key ) |
 | `key` | View Server Key |
 | `token` | Display Tokens ( It will return null because it is deleted instantly. ) |
-
-### When you're done, you can run the command that shreds the free space on this disk
-If you don't know exactly what it does, don't use it.
-[ https://learn.microsoft.com/en-us/windows-server/administration/windows-commands/cipher](https://learn.microsoft.com/en-us/windows-server/administration/windows-commands/cipher)
-```cmd
-cipher /w:C:\
-```
 
 # Example
 ### This link provides a direct link. It cannot be reused.
