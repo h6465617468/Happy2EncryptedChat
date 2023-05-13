@@ -34,9 +34,6 @@ HiddenServicePort 5678 127.0.0.1:5678
 UseBridges 1
 ```
 
-# Public/Private Keys
-![alt text](https://raw.githubusercontent.com/h6465617468/Happy2EncryptedChat/main/testa0b5c3.png?raw=true)
-
 # Note
 ### I wrote these codes with the help of ChatGPT
 
@@ -113,3 +110,6 @@ cipher /w:C:\
 http://(host):(port)/?inv=Kr9CBrwYElMND8cEHdUL5r5OWY5coXNMQzto1O_EWlods51yTmN7gzhexG7fvU03
 
 ![alt text](https://raw.githubusercontent.com/h6465617468/Happy2EncryptedChat/main/test0x1cvx0.png?raw=true)
+
+# Public/Private Keys
+![alt text](https://raw.githubusercontent.com/h6465617468/Happy2EncryptedChat/main/testa0b5c3.png?raw=true)
