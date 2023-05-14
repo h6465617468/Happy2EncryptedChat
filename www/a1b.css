@@ -3,3 +3,47 @@
 .rg{text-align:right;padding-right:15px;font-variant: small-caps;}
 .lf{text-align:left;padding-left:15px;font-variant: small-caps;}
 #f1{color:#838383 !important;font-size:24px;font-variant: small-caps;}
+.textareaxx {
+    color:#838383;
+    overflow-x: hidden;
+    overflow-y: auto;
+    resize: vertical;
+    border:none;
+    min-height:59px; /* En az 59 piksel yükseklik */
+    scrollbar-width: thin;
+    scrollbar-color: grey;
+    line-height: 25px; /* Bir satırın yüksekliği */
+}
+textarea:focus {
+    outline: none;
+  }
+/* Kaydırma çubuğunu 10 piksel genişliğinde ve gri yap */
+::-webkit-scrollbar {
+    width: 10px!important;
+    background-color: transparent!important;
+  }
+  
+  /* Kaydırma çubuğunun başındaki ve sonundaki okları gizle */
+  ::-webkit-scrollbar-button {
+    display: none!important;
+  }
+  
+  /* Kaydırma çubuğunun tutamaçını gri yap */
+  ::-webkit-scrollbar-thumb {
+    background-color: grey!important;
+  }
+  ::-webkit-scrollbar-track {
+    background-color: transparent!important;
+  }
+/* Textareanın scrollbarını ince ve gri yap */
+.textareaxx::-webkit-scrollbar {
+    width: 10px!important;
+    background-color: transparent!important;
+  }
+  
+  /* Textareanın scrollbar track kısmını gri yap */
+  .textareaxx::-webkit-scrollbar-track {
+    background-color: transparent!important;
+  }
+  textarea::-webkit-resizer { background-color: black!important; border:none;border-right: 2px solid grey!important;border-bottom: 2px solid grey!important; border-top-left-radius: 50%!important; border-bottom-right-radius: 50%!important; transform: rotate(45deg)!important; }
+  .asdas1c::-webkit-resizer {border:none!important;}
