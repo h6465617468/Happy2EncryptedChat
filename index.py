@@ -120,6 +120,8 @@ from Cryptodome.Cipher import PKCS1_OAEP
 import elliptic
 import ecdsa
 from ecdsa import VerifyingKey, util
+import colorama
+colorama.init()
 
 # pip install pycryptodome
 # pip install pycryptodomex
@@ -935,11 +937,30 @@ function closeloading(){{
 <mypublic style='display:none'></mypublic>
 <myprivate style='display:none'></myprivate>
 <targetpublic id='targetpublic' style='display:none'></targetpublic>
-<form id="message-form"><input type="text" id="message-input" placeholder="Send Message" style="padding:15px;margin:0;font-size:16px;font-weight:1000;width:80%;border:0;background-color:transparent;margin-right:0;max-width:600px;height:auto;border:0;margin-right:0;border-bottom:2.5px solid dimgrey;margin:0;padding:16px;color:white!important;" autocomplete="off" autofocus required><input type="submit" value="❱" style="padding:16px;margin:0;font-size:16px;font-weight:1000;width:%5;border:0;background-color:transparent;margin-left:0;border-bottom:2.5px solid dimgrey;padding:16px;margin:0;color:white!important;">
+<form id="message-form">
+<div id="asdasds" style="display: flex; align-items: center; width: 600px;">
+<textarea spellcheck='false' type="text" id="message-input" class="textareaxx asdas1c" placeholder="Send Message" style="height:59px;display:block;font-size:16px;font-weight:1000;width:100%;border:0;background-color:transparent;border:0;margin:0;border-bottom:2.5px solid dimgrey;padding:16px;color:white!important;resize: vertical!important;" autocomplete="off" autofocus required></textarea>
+<input type="submit" id="message-submit" value=">" style="margin:0;font-size:16px;font-weight:1000;width:40px;border:0;background-color:transparent;border-bottom:2.5px solid dimgrey;padding:16px;color:white!important;height:59px!important;">
+</div>
 <input type="text" id="target-input" value="a" style="display:none" required></form>
 <div id="messages" style="word-wrap: break-word;"></div>
 <button onclick="keychange()">Public,Private key Change</Button>
 <script>
+$(document).ready (function() {{
+    console.log('x1');
+
+var submit = document.getElementById("message-submit");
+
+var textarea = document.getElementById("message-input");
+var height = textarea.clientHeight;
+textarea.addEventListener("mouseup", function() {{
+  if (height != textarea.clientHeight) {{
+    submit.style.setProperty("height", (textarea.clientHeight+2) + "px", "important");
+  }}
+  height = textarea.clientHeight;
+}});
+
+}});
 // özel ve açık anahtarlarını oluştur
 var EC = elliptic.ec;
 var ec = new EC('secp256k1');
@@ -957,9 +978,9 @@ function sendMessage(message1, target, keyx,gorunum=1,latest=false) {{
   var messagex = document.createElement('div');
   messagex.style.display = "block";
   //message1="(Encrypted)";
-  //messagex.innerHTML = "Mesaj Gönderildi => <textarea style='color:grey;overflow: hidden;resize: vertical;'>"+message1+"</textarea> "+getCurrentTime()+" ID: "+target;
+  //messagex.innerHTML = "Mesaj Gönderildi => <textarea spellcheck='false' style='color:grey;overflow: hidden;resize: vertical;'>"+message1+"</textarea> "+getCurrentTime()+" ID: "+target;
   if(latest!=false){{
-  messagex.innerHTML = "<p class='a lf'><label id='f1'>"+"You : " + latest + "</label></p><p class='rg' style='color:grey;border:none!important;z-index:2;'>" + getCurrentTime()+" ID: "+target+"</p>";
+  messagex.innerHTML = "<p class='a lf'><label id='f1'>"+"You : " + "<textarea spellcheck='false' class='textareaxx'>"+ latest + "</textarea>"  + "</label></p><p class='rg' style='color:grey;border:none!important;z-index:2;'>" + getCurrentTime()+" ID: "+target+"</p>";
   }}else{{
   messagex.innerHTML = "Mesaj Gönderildi " + getCurrentTime()+" ID: "+target;
   }}
@@ -1104,14 +1125,14 @@ if (event.data.startsWith("___text___") && event.data.includes("___end_text___")
     }}
   }}else{{
     var messagecbbtbtnrte = decryptData(messagexx,$('targetpublic').html(),$('myprivate').html());
-    message.innerHTML = "<p class='a rg'><label id='f1'>"+messagecbbtbtnrte+"</label></p><p class='rg' style='color:grey;border:none!important;z-index:2;'>"+sonradata+"</p>";
+    message.innerHTML = "<p class='a rg'><label id='f1'>"+"<textarea spellcheck='false' class='textareaxx'>"+messagecbbtbtnrte+"</textarea>"+"</label></p><p class='rg' style='color:grey;border:none!important;z-index:2;'>"+sonradata+"</p>";
     messages.insertBefore(message, messages.firstChild);    
   }}
 
 
   }}else{{
-  message.textContent = event.data;
-  messages.insertBefore(message, messages.firstChild);
+    message.innerHTML = "<textarea spellcheck='false' class='textareaxx'>"+event.data+"</textarea>";
+    messages.insertBefore(message, messages.firstChild);
   }}
 }}
 
@@ -1162,10 +1183,10 @@ form.addEventListener('submit', function(event) {{
   <div id="resulttoken"></div>
   <form onsubmit="return sendRSA();">
     <label for="myrsapublic">My Public Key:</label><br>
-    <textarea name="myrsapublic" id="myrsapublic"></textarea>
+    <textarea spellcheck='false' name="myrsapublic" id="myrsapublic"></textarea>
     <br>
     <label for="myrsaprivate">My Private Key:</label><br>
-    <textarea name="myrsaprivate" id="myrsaprivate"></textarea>
+    <textarea spellcheck='false' name="myrsaprivate" id="myrsaprivate"></textarea>
     <button type="submit">Submit</button>
   </form>
   <div id="resultrsa"></div>
@@ -1372,7 +1393,7 @@ form.addEventListener('submit', function(event) {{
                 print(colored_write_ok(" ⟫ Magic Word: Backdoor Access"))
                 chatbotinvtext = ''.join(random.choices(string.ascii_letters + string.digits, k=512))
                 print(colored_write_ok(" ⟫ Magic Word: Deleted"))
-                print("EncryptedChat@Python ❱ ", end="")
+                print("EncryptedChat@Python > ", end="")
                 sys.stdout.flush()
                 text = generate_inv()
                 self.send_response(200)
@@ -1408,7 +1429,6 @@ websocket_task = None
 
 async def public_key_request_test(websocket):
     try:
-        await websocket.send("Enter Public Key:")
         user_public_key = await websocket.recv()
         if "#" in user_public_key:
             parts = user_public_key.split("#")
@@ -1428,7 +1448,6 @@ async def public_key_request_test(websocket):
 async def authenticate(websocket,public_key):
     global private_key_pem
     try:
-        await websocket.send("Enter password:")
         user_password = await websocket.recv()
         user_password = await decryptDataserver(user_password,private_key_pem,public_key.encode())
         if "#" in user_password:
@@ -1659,7 +1678,6 @@ def stop_x1(): # Stop Function
 
 async def get_key_and_iv(websocket,public_key):
     try:
-        await websocket.send("Please provide keyx:")
         if not websocket.open:
             return False
         keyx = await websocket.recv()
@@ -1684,8 +1702,10 @@ async def get_key_and_iv(websocket,public_key):
 
 def colored_write(text):
     return '\033[31m' + text + '\033[0m'
+    return colorama.Fore.RED + text + colorama.Style.RESET_ALL
 def colored_write_ok(text):
     return '\033[32m' + text + '\033[0m'
+    return colorama.Fore.GREEN + text + colorama.Style.RESET_ALL
 
 
 global_list = {}
@@ -1886,7 +1906,7 @@ if __name__ == '__main__':
     else:
         generate_net_rsa_4096()
     while True:
-        user_input = input("EncryptedChat@Python ❱ ")
+        user_input = input("EncryptedChat@Python > ")
         if not user_input.strip():
             continue
         args = user_input.split()
@@ -2029,7 +2049,7 @@ if __name__ == '__main__':
                     default_link_count=20
                 sayac = 0
                 while True:
-                    link = input("Youtube Link ❱ ")
+                    link = input("Youtube Link > ")
                     if link.strip():
                         sayac+=1
                         if is_youtube_link(link):
