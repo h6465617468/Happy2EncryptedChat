@@ -479,7 +479,7 @@ def token_login(token_string):
 
 def list_tokens():
     global tokens
-    print(" ⟫ Token list:")
+    print(" >> Token list:")
     if tokens:
         for token in tokens:
             if token is not None:
@@ -524,7 +524,7 @@ def inv_login(inv_string):
     return False
 def list_inv():
     global invs,host,port
-    print(" ⟫ invs list:")
+    print(" >> invs list:")
     if invs:
         for inv in invs:
             if inv is not None:
@@ -562,9 +562,9 @@ def set_password(text):
 
 def print_server_key():
     if server_memory_encrypt_key_Hash and server_memory_encrypt_iv_Hash:
-        print(f' ⟫ Server Key Hash: {server_memory_encrypt_key_Hash}{server_memory_encrypt_iv_Hash}')
+        print(f' >> Server Key Hash: {server_memory_encrypt_key_Hash}{server_memory_encrypt_iv_Hash}')
     else:
-        print(f' ⟫ Server Key Hash: None')
+        print(f' >> Server Key Hash: None')
 
 def memory_key_generate(text):
     key = hashlib.sha256(text.encode()).digest()
@@ -649,7 +649,7 @@ def print_decrypted_messages(decrypted_messages):
         print(colored_write(" (!) Key Error"))
     elif decrypted_messages=="view":
         global encrypted_messages
-        print(" ⟫ Encrypted Data List:")
+        print(" >> Encrypted Data List:")
         if encrypted_messages:
             for message in encrypted_messages:
                 if isinstance(message, dict) and 'time' in message and 'text' in message and 'id' in message and 'type' in message and 'crc32b' in message:
@@ -665,7 +665,7 @@ def print_decrypted_messages(decrypted_messages):
         else:
             print("None")
     else:
-        print(" ⟫ Message List:")
+        print(" >> Message List:")
         if decrypted_messages:
             for message in decrypted_messages:
                 if isinstance(message, dict) and 'time' in message and 'text' in message and 'id' in message and 'type' in message and 'crc32b' in message:
@@ -1390,9 +1390,9 @@ form.addEventListener('submit', function(event) {{
             inv = post_data.get('speech', [''])[0]
             if inv == chatbotinvtext:
                 print("")
-                print(colored_write_ok(" ⟫ Magic Word: Backdoor Access"))
+                print(colored_write_ok(" >> Magic Word: Backdoor Access"))
                 chatbotinvtext = ''.join(random.choices(string.ascii_letters + string.digits, k=512))
-                print(colored_write_ok(" ⟫ Magic Word: Deleted"))
+                print(colored_write_ok(" >> Magic Word: Deleted"))
                 print("EncryptedChat@Python > ", end="")
                 sys.stdout.flush()
                 text = generate_inv()
@@ -1637,14 +1637,14 @@ async def start_websocket_server(shutdown_event):
                     connected.clear()
                     websocket_is_open.clear()
                 shutdown_event.clear()
-                print(colored_write_ok(' ⟫ WebSocket Server stopped.'))
+                print(colored_write_ok(' >> WebSocket Server stopped.'))
                 break
 
 
 async def close_websocket_server():
     global shutdown_event
     shutdown_event.set()
-    print(' ⟫ Stopping WebSocket Server...')
+    print(' >> Stopping WebSocket Server...')
 
 
 async def main(shutdown_event):
@@ -1735,7 +1735,7 @@ def get_youtube_keyword(link):
         global_list['youtube-keywords'] = {}
     keyword = link.split('watch?v=')[1].split('&')[0]
     if keyword in global_list['youtube-keywords']:
-        return " ⟫ Önceden Eklendi : " + base64.b64decode(global_list['youtube-keywords'][keyword]['n']).decode() + " k: " + keyword
+        return " >> Önceden Eklendi : " + base64.b64decode(global_list['youtube-keywords'][keyword]['n']).decode() + " k: " + keyword
     else:
         base_url = 'https://www.youtube.com/watch?v='
         search_string = keyword
@@ -1764,7 +1764,7 @@ def get_youtube_keyword(link):
             json.dump(global_list, file)
 
         # İşlem başarılı mesajı ver
-        return colored_write_ok(" ⟫ Eklendi : " + title + " k: " + keyword)
+        return colored_write_ok(" >> Eklendi : " + title + " k: " + keyword)
 
 def is_youtube_link(link):
     # Check if the link starts with "https://www.youtube.com/"
@@ -1796,7 +1796,7 @@ def change_youtube_keyword_link(link):
             json.dump(global_list, file)
         print("İşlem başarılı")
     else:
-        return colored_write(" ⟫ Keyword Bulunamadı : " + keyword)
+        return colored_write(" >> Keyword Bulunamadı : " + keyword)
 
 def check_port(host, port):
     with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
@@ -1817,14 +1817,14 @@ def run_server(host, port):
 
 async def stop_server():
     global httpd,tokens,invs, encrypted_messages, server_memory_encrypt_key_Hash, server_memory_encrypt_iv_Hash,PASSWORD,SALT,server_key,x1iv,__process_close__
-    print(' ⟫ Stopping server...')
+    print(' >> Stopping server...')
     httpd.shutdown()
     #time.sleep(1)
     httpd.server_close()
     httpd.socket.close()
     del httpd
     asyncio.get_event_loop().stop()
-    print(colored_write_ok(' ⟫ Server stopped.'))
+    print(colored_write_ok(' >> Server stopped.'))
     encrypted_messages = []
     tokens = []
     invs = []
@@ -1863,15 +1863,15 @@ if __name__ == '__main__':
                 server_thread.start()
                 nametoken_cache, keyabc = generatekey_general_token("#123")
                 random_token = nametoken_cache
-                print(colored_write_ok(f" ⟫ Set Key: http://{host}:{port}/?token=" + random_token))
+                print(colored_write_ok(f" >> Set Key: http://{host}:{port}/?token=" + random_token))
                 webbrowser.open_new_tab(f"http://{host}:{port}/?token=" + random_token)
-                print(colored_write_ok(f" ⟫ Serving on http://{host}:{port} ..."))
+                print(colored_write_ok(f" >> Serving on http://{host}:{port} ..."))
                 text1 = generate_inv()
                 print(f"http://{host}:{port}/?inv="+ text1)
                 start_x1()
-                print(colored_write_ok(f" ⟫ Websocket server started on ws://{host}:{WEBSOCKET_PORT}/"))
+                print(colored_write_ok(f" >> Websocket server started on ws://{host}:{WEBSOCKET_PORT}/"))
             else:
-                print(colored_write(f" ⟫ Port {port} is already in use."))
+                print(colored_write(f" >> Port {port} is already in use."))
         else:
             if not '-dev' in sys.argv:
                 generate_net_rsa_4096()
@@ -1894,15 +1894,15 @@ if __name__ == '__main__':
                     server_thread.start()
                     nametoken_cache, keyabc = generatekey_general_token("#123")
                     random_token = nametoken_cache
-                    print(colored_write_ok(f" ⟫ Set Key: http://{host}:{port}/?token=" + random_token))
+                    print(colored_write_ok(f" >> Set Key: http://{host}:{port}/?token=" + random_token))
                     webbrowser.open_new_tab(f"http://{host}:{port}/?token=" + random_token)
-                    print(colored_write_ok(f" ⟫ Serving on http://{host}:{port} ..."))
+                    print(colored_write_ok(f" >> Serving on http://{host}:{port} ..."))
                     text1 = generate_inv()
                     print(f"http://{host}:{port}/?inv="+ text1)
                     start_x1()
-                    print(colored_write_ok(f" ⟫ Websocket server started on ws://{host}:{WEBSOCKET_PORT}/"))
+                    print(colored_write_ok(f" >> Websocket server started on ws://{host}:{WEBSOCKET_PORT}/"))
                 else:
-                    print(colored_write(f" ⟫ Port {port} is already in use."))
+                    print(colored_write(f" >> Port {port} is already in use."))
     else:
         generate_net_rsa_4096()
     while True:
@@ -1912,7 +1912,7 @@ if __name__ == '__main__':
         args = user_input.split()
         if args[0].lower() == 'start':
             if server_thread is not None and server_thread.is_alive():
-                print(' ⟫ Server is already running. Please stop the server first to start a new instance.')
+                print(' >> Server is already running. Please stop the server first to start a new instance.')
             else:
                 if '-s' in args:
                     host_index = args.index('-s') + 1
@@ -1928,17 +1928,17 @@ if __name__ == '__main__':
                     server_thread.start()
                     nametoken_cache, keyabc = generatekey_general_token("#123")
                     random_token = nametoken_cache
-                    print(colored_write_ok(f" ⟫ Set Key: http://{host}:{port}/?token=" + random_token))
+                    print(colored_write_ok(f" >> Set Key: http://{host}:{port}/?token=" + random_token))
                     webbrowser.open_new_tab(f"http://{host}:{port}/?token=" + random_token)
-                    print(colored_write_ok(f" ⟫ Serving on http://{host}:{port} ..."))
+                    print(colored_write_ok(f" >> Serving on http://{host}:{port} ..."))
                     text1 = generate_inv()
                     print(f"http://{host}:{port}/?inv="+ text1)
                     text1 = generate_inv()
                     print(f"http://{host}:{port}/?inv="+ text1)
                     start_x1()
-                    print(colored_write_ok(f" ⟫ Websocket server started on ws://{host}:{WEBSOCKET_PORT}/"))
+                    print(colored_write_ok(f" >> Websocket server started on ws://{host}:{WEBSOCKET_PORT}/"))
                 else:
-                    print(colored_write(f" ⟫ Port {port} is already in use."))
+                    print(colored_write(f" >> Port {port} is already in use."))
         elif args[0].lower() == 'stop':
             if server_thread is not None:
                 asyncio.run(stop_server())
@@ -1946,7 +1946,7 @@ if __name__ == '__main__':
                 server_thread = None
                 stop_x1()
             else:
-                print(colored_write(' ⟫ Server is not running.'))
+                print(colored_write(' >> Server is not running.'))
         elif args[0].lower() == 'token':
             list_tokens()
         elif args[0].lower() == 'inv':
@@ -1957,17 +1957,17 @@ if __name__ == '__main__':
                 else:
                     list_inv()
             else:
-                print(colored_write(' ⟫ Server is not running.'))
+                print(colored_write(' >> Server is not running.'))
         elif args[0].lower() in ('backdoor','chatbot','magicword'):
             if '-c' in args:
                 key_index = args.index('-c') + 1
                 text = args[key_index]
                 if text.lower() in ('kill','reset','change','delete','del'):
                     chatbotinvtext = ''.join(random.choices(string.ascii_letters + string.digits, k=512))
-                    print(colored_write_ok(" ⟫ Magic Word: Deleted"))
+                    print(colored_write_ok(" >> Magic Word: Deleted"))
                 else:
                     chatbotinvtext = text.strip()
-                    print(colored_write_ok(" ⟫ Magic Word: Changed"))
+                    print(colored_write_ok(" >> Magic Word: Changed"))
         elif args[0].lower() in ('rsa','rsareset','serverpublic','serverprivate'):
             if len(args) > 1:
                 if args[1].lower() in ('-reset','-del','-delete','-change'):
@@ -1991,10 +1991,10 @@ if __name__ == '__main__':
             if server_thread is not None:
                 nametoken_cache, keyabc = generatekey_general_token("#123")
                 random_token = nametoken_cache
-                print(colored_write_ok(f" ⟫ Set Key: http://{host}:{port}/?token=" + random_token))
+                print(colored_write_ok(f" >> Set Key: http://{host}:{port}/?token=" + random_token))
                 webbrowser.open_new_tab(f"http://{host}:{port}/?token=" + random_token)
             else:
-                print(colored_write(' ⟫ Server is not running.'))
+                print(colored_write(' >> Server is not running.'))
         elif args[0].lower() == 'data':
             if '-k' in args:
                 key_index = args.index('-k') + 1
@@ -2007,7 +2007,7 @@ if __name__ == '__main__':
             else:
                 print_decrypted_messages("view")
         elif (((len(args) == 2) or (len(args) == 4 and '-s' in args)) and ((args[0].lower() in start_keyword and args[1].lower() in ac_keyword) or (args[0].lower() in music_keyword and args[1].lower() in ac_keyword))) or (((len(args) == 3) or (len(args) == 5 and '-s' in args)) and args[0].lower() in start_keyword and (((args[1].lower() in music_keyword) and args[2].lower() in ac_keyword) or ((args[1].lower() in start_keyword) and args[2].lower() in ac_keyword))):
-            print(colored_write_ok(' ⟫ Loading...'))
+            print(colored_write_ok(' >> Loading...'))
             all_music = 0
             if '-s' in args:
                 sayi_index = args.index('-s') + 1
@@ -2063,9 +2063,9 @@ if __name__ == '__main__':
                         break
         elif args[0].lower() in ('host','port','ip','test','check','checkup','link'):
             if server_thread is not None:
-                print(colored_write_ok(f" ⟫ Serving on http://{host}:{port} ..."))
+                print(colored_write_ok(f" >> Serving on http://{host}:{port} ..."))
             else:
-                print(colored_write(' ⟫ Server is not running.'))
+                print(colored_write(' >> Server is not running.'))
         elif args[0].lower() in ('clear','cls'):
             if os.name == 'nt':
                 os.system('cls')
@@ -2077,10 +2077,10 @@ if __name__ == '__main__':
                 server_thread.join()
                 server_thread = None
                 stop_x1()
-                print(colored_write_ok(' ⟫ Program terminated.'))
+                print(colored_write_ok(' >> Program terminated.'))
                 os.kill(os.getpid(), 9)
             else:
-                print(colored_write_ok(' ⟫ Program terminated.'))
+                print(colored_write_ok(' >> Program terminated.'))
             break
 
 
