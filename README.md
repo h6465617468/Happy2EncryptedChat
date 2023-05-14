@@ -71,6 +71,9 @@ py index.py -dev
 
 # Commands
 ```
+Python To Exe
+pyinstaller.exe --onefile index.py --uac-admin --add-data "www;www" --add-data "cb1.json;." --add-data "data.json;."
+
 start
 start -auto
 start -s 127.0.0.1 -p 80 -wp 5678
