@@ -71,7 +71,7 @@ pip install colorama
 # Commands
 ```
 Python To Exe
-pyinstaller.exe --onefile index.py --uac-admin --add-data "www;www" --add-data "cb1.json;." --add-data "data.json;."
+pyinstaller.exe --onefile index.py --add-data "www;www" --add-data "cb1.json;." --add-data "data.json;." --manifest myapp.manifest
 
 start
 start -auto
