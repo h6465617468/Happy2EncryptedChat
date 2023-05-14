@@ -60,6 +60,7 @@ pip install requests
 pip install beautifulsoup4
 pip install ecdsa
 pip install elliptic
+pip install colorama
 ```
 ### 3- Run cmd or Powershell
 ```cmd
