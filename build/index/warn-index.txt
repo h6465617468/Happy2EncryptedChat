@@ -19,7 +19,7 @@ missing module named 'org.python' - imported by copy (optional), xml.sax (delaye
 missing module named org - imported by pickle (optional)
 missing module named _frozen_importlib_external - imported by importlib._bootstrap (delayed), importlib (optional), importlib.abc (optional), zipimport (top-level)
 excluded module named _frozen_importlib - imported by importlib (optional), importlib.abc (optional), zipimport (top-level)
-missing module named posix - imported by os (conditional, optional), posixpath (optional), shutil (conditional), importlib._bootstrap_external (conditional)
+missing module named posix - imported by posixpath (optional), shutil (conditional), importlib._bootstrap_external (conditional), os (conditional, optional)
 missing module named resource - imported by posix (top-level)
 missing module named pyparsing - imported by pkg_resources._vendor.pyparsing.diagram (top-level), setuptools._vendor.pyparsing.diagram (top-level)
 missing module named railroad - imported by pkg_resources._vendor.pyparsing.diagram (top-level), setuptools._vendor.pyparsing.diagram (top-level)
