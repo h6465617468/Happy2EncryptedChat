@@ -118,7 +118,7 @@ py index.py -auto
 ### This link provides a direct link. It cannot be reused.
 http://(host):(port)/?inv=Kr9CBrwYElMND8cEHdUL5r5OWY5coXNMQzto1O_EWlods51yTmN7gzhexG7fvU03
 
-![alt text](https://raw.githubusercontent.com/h6465617468/Happy2EncryptedChat/main/test0x1cvx0.png?raw=true)
+[![Watch the video](https://raw.githubusercontent.com/h6465617468/SilverCipher/main/images/Screenshot_30.png)](https://github.com/h6465617468/SilverCipher/raw/main/video/scm_promotion.mp4)
 
 # Public/Private Keys
 ![alt text](https://raw.githubusercontent.com/h6465617468/Happy2EncryptedChat/main/testa0b5c3.png?raw=true)
