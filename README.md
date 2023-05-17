@@ -48,7 +48,7 @@ This project shows the encrypted messages that come from the browser to the serv
 ![alt text](https://raw.githubusercontent.com/h6465617468/Happy2EncryptedChat/main/Screenshot_7.png?raw=true)
 
 # Source Codes
-[ https://github.com/h6465617468/Happy2EncryptedChat](https://github.com/h6465617468/Happy2EncryptedChat)
+[ https://github.com/h6465617468/Happy2EncryptedChat/tree/main](https://github.com/h6465617468/Happy2EncryptedChat/tree/main)
 
 # Note
 ### I wrote these codes with the help of ChatGPT
