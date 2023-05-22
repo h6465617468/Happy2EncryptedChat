@@ -354,8 +354,61 @@ function str_splitx (string, splitLength) {
   }
   return chunks
 }
+function encryptData_FLEXMODE(cache_x_RSA,key,myprivate)
+  {
+    var cache_signp="";
+    var sava1sf = "";
+    try {
+      var crypt123123123 = new JSEncrypt();
+    crypt123123123.setPrivateKey(myprivate.trim());
+    cache_signp=crypt123123123.sign(cache_x_RSA, CryptoJS.SHA256, "sha256");
+    var cache_109=str_splitx(cache_x_RSA,128);
+    // döngüdeki son elemanın indeksini bul
+    var lastIndex = cache_109.length - 1;
+    cache_109.forEach(function(data5, index) {
+      var crypt = new JSEncrypt();
+      crypt.setPublicKey(key.trim());
+      var hjd = crypt.encrypt(data5);
+      // eğer son eleman ise # eklemeyi atla
+      if (index == lastIndex) {
+        sava1sf=sava1sf+hjd;
+      } else {
+        sava1sf=sava1sf+hjd+"#";
+      }
+    });
 
-  function encryptData(cache_x_RSA,key,myprivate){
+    } catch (e) {return "";}
+    return sava1sf+"#"+cache_signp;
+  }
+          function decryptData_FLEXMODE(encryptedData, key, myprivate) {
+            var asdasdasd="";
+            try {
+// encryptedData değerini # ile böl
+var parts = encryptedData.split("#");
+// son parçayı signature değerine ata
+var signature = parts.pop();
+            
+parts.forEach(function(data10) {
+            var crypt = new JSEncrypt();
+            crypt.setPrivateKey(myprivate.trim());
+            var decryptedData1 = crypt.decrypt(data10);
+            asdasdasd=asdasdasd+decryptedData1;
+            delete decryptedData1;
+            });
+            var crypt123123123 = new JSEncrypt();
+            crypt123123123.setPublicKey(key.trim());
+            var isSignatureValid = crypt123123123.verify(asdasdasd, signature, CryptoJS.SHA256);
+            if (isSignatureValid) {
+            } else {
+           return "";
+            }
+          } catch (e) {return "";}
+
+            return asdasdasd;
+            }
+// SIGN-MIX-DUAL
+/*
+  function encryptData(cache_x_RSA,target_public_encrypt_key,myprivate){
     var cache_signp="";
       var cache_109=str_splitx(cache_x_RSA,128);
       var crypted0193=[];
@@ -373,14 +426,14 @@ function str_splitx (string, splitLength) {
                 cache_12312asdasdas3=str_splitx(cache_123123,128);
                 cache_12312asdasdas3.forEach(function(data10, index1) {
                   var crypt = new JSEncrypt();
-                  crypt.setPublicKey(key.trim());
+                  crypt.setPublicKey(target_public_encrypt_key.trim());
                   cryptedasdasdas1111.push(Base64.encode(crypt.encrypt(data10)));
                 });
                 crypted0193.push(Base64.encode(JSON.stringify(cryptedasdasdas1111)));
       delete cache_109;
            return Base64.encode(JSON.stringify(crypted0193));
           }
-          function decryptData(encryptedData, key, myprivate) {
+          function decryptData(encryptedData, verify_key, myprivate) {
             var decryptedData = "";
             try {
             var crypted0193 = JSON.parse(Base64.decode(encryptedData));
@@ -397,7 +450,7 @@ function str_splitx (string, splitLength) {
             asjdasjdajs = asjdasjdajs.concat(JSON.parse(asdasdasd));
             asjdasjdajs.forEach(function(data5) {
             var crypt123123123 = new JSEncrypt();
-            crypt123123123.setPublicKey(key.trim());
+            crypt123123123.setPublicKey(verify_key.trim());
             var signature = data5.sign;
             var plaintext = data5.text;
             var isSignatureValid = crypt123123123.verify(plaintext, signature, CryptoJS.SHA256);
@@ -413,40 +466,36 @@ function str_splitx (string, splitLength) {
             }
             return decryptedData;
             }
+*/
 ////////////////////////////
 
-
+// SIGN-FLEX-DUAL
 function encryptDataserver(cache_x_RSA,target_public_x_key){
+  // Sign
   var EC = elliptic.ec;
-var ec = new EC('secp256k1');
-  var cache_signp="";
-  var cache_109=str_splitx(cache_x_RSA,256);
-  var crypted0193=[];
-  var asjdasjdajs=[];
-  cache_109.forEach(function(data5) {
-    var fsdkjf34o2it2 = Base64.encode(data5);
-    var privKeyHex = ec.keyFromPrivate($("myprivateelliptic").html().trim()).getPrivate().toString(16);
-    var cache_signp = ec.sign(CryptoJS.SHA256(fsdkjf34o2it2).toString(), privKeyHex);
-    var rHex = cache_signp.r.toString(16);
-    var sHex = cache_signp.s.toString(16);
-    var signatureHex = rHex.padStart(64, '0') + sHex.padStart(64, '0');
-    var signatureBytes = Buffer.from(signatureHex, 'hex').toString('hex');
-    asjdasjdajs.push({ "text": fsdkjf34o2it2, "sign": signatureBytes });
-    delete fsdkjf34o2it2;
-  });
-  var cache_123123=JSON.stringify(asjdasjdajs);
-  var cryptedasdasdas1111=[];
-  cache_12312asdasdas3=str_splitx(cache_123123,256);
+  var ec = new EC('secp256k1');
+  var privKeyHex = ec.keyFromPrivate($("myprivateelliptic").html().trim()).getPrivate().toString(16);
+  var cache_signp = ec.sign(CryptoJS.SHA256(cache_x_RSA).toString(), privKeyHex);
+  var rHex = cache_signp.r.toString(16);
+  var sHex = cache_signp.s.toString(16);
+  var signatureHex = rHex.padStart(64, '0') + sHex.padStart(64, '0');
+  var signatureBytes = Buffer.from(signatureHex, 'hex').toString('hex');
+  // Encrypt
+  var add_data="";
+  var _data_encrypted="";
+  cache_12312asdasdas3=str_splitx(cache_x_RSA,256);
   cache_12312asdasdas3.forEach(function(data10, index1) {
     var crypt = new JSEncrypt();
     crypt.setPublicKey(target_public_x_key.trim());
-    cryptedasdasdas1111.push(Base64.encode(crypt.encrypt(data10)));
+    add_data = crypt.encrypt(data10);
+    _data_encrypted = _data_encrypted + add_data + "#";
   });
-  crypted0193.push(Base64.encode(JSON.stringify(cryptedasdasdas1111)));
-  delete cache_109;
-  return Base64.encode(JSON.stringify(crypted0193));
+  _data_encrypted = _data_encrypted + signatureBytes;
+  console.log(_data_encrypted);
+  return _data_encrypted;
 }
-//
+// Geliştirilme aşamasında
+/*
 function decryptDataserver(encryptedData,myprivate) {
   var EC = elliptic.ec;
 var ec = new EC('secp256k1');
@@ -468,7 +517,7 @@ var ec = new EC('secp256k1');
   //var crypt123123123 = new JSEncrypt(); // RSA ile imzalamayı kaldır
   //crypt123123123.setPublicKey(key); // RSA ile imzalamayı kaldır
   var signature = data5.sign;
-  signature = Buffer.from(signature, 'base64'); // base64 değerini Buffer nesnesine dönüştür
+  signature = Buffer.from(signature, 'hex'); // base64 değerini Buffer nesnesine dönüştür
   var plaintext = data5.text;
   //var isSignatureValid = crypt123123123.verify(plaintext, signature, CryptoJS.SHA256); // RSA ile imzalamayı kaldır
   var pubKeyPEM = ec.keyFromPublic($("mypublicelliptic").html().trim()).getPublicPEM();
@@ -485,10 +534,79 @@ var ec = new EC('secp256k1');
   }
   return decryptedData;
   }
+*/
 
+  // SIGN-MIX-DUAL
 
-
-
+  // function encryptDataserver(cache_x_RSA,target_public_x_key){
+  //   var EC = elliptic.ec;
+  // var ec = new EC('secp256k1');
+  //   var cache_signp="";
+  //   var cache_109=str_splitx(cache_x_RSA,256);
+  //   var crypted0193=[];
+  //   var asjdasjdajs=[];
+  //   cache_109.forEach(function(data5) {
+  //     var fsdkjf34o2it2 = Base64.encode(data5);
+  //     var privKeyHex = ec.keyFromPrivate($("myprivateelliptic").html().trim()).getPrivate().toString(16);
+  //     var cache_signp = ec.sign(CryptoJS.SHA256(fsdkjf34o2it2).toString(), privKeyHex);
+  //     var rHex = cache_signp.r.toString(16);
+  //     var sHex = cache_signp.s.toString(16);
+  //     var signatureHex = rHex.padStart(64, '0') + sHex.padStart(64, '0');
+  //     var signatureBytes = Buffer.from(signatureHex, 'hex').toString('hex');
+  //     asjdasjdajs.push({ "text": fsdkjf34o2it2, "sign": signatureBytes });
+  //     delete fsdkjf34o2it2;
+  //   });
+  //   var cache_123123=JSON.stringify(asjdasjdajs);
+  //   var cryptedasdasdas1111=[];
+  //   cache_12312asdasdas3=str_splitx(cache_123123,256);
+  //   cache_12312asdasdas3.forEach(function(data10, index1) {
+  //     var crypt = new JSEncrypt();
+  //     crypt.setPublicKey(target_public_x_key.trim());
+  //     cryptedasdasdas1111.push(Base64.encode(crypt.encrypt(data10)));
+  //   });
+  //   crypted0193.push(Base64.encode(JSON.stringify(cryptedasdasdas1111)));
+  //   delete cache_109;
+  //   return Base64.encode(JSON.stringify(crypted0193));
+  // }
+  // //
+  // function decryptDataserver(encryptedData,myprivate) {
+  //   var EC = elliptic.ec;
+  // var ec = new EC('secp256k1');
+  //   var decryptedData = "";
+  //   try {
+  //   var crypted0193 = JSON.parse(Base64.decode(encryptedData));
+  //   var cryptedasdasdas1111 = JSON.parse(Base64.decode(crypted0193[0]));
+  //   var asjdasjdajs = [];
+  //   var asdasdasd="";
+  //   cryptedasdasdas1111.forEach(function(data10, index1) {
+  //   var crypt = new JSEncrypt();
+  //   crypt.setPrivateKey(myprivate.trim());
+  //   var decryptedData1 = crypt.decrypt(Base64.decode(data10));
+  //   asdasdasd=asdasdasd+decryptedData1;
+  //   delete decryptedData1;
+  //   });
+  //   asjdasjdajs = asjdasjdajs.concat(JSON.parse(asdasdasd));
+  //   asjdasjdajs.forEach(function(data5) {
+  //   //var crypt123123123 = new JSEncrypt(); // RSA ile imzalamayı kaldır
+  //   //crypt123123123.setPublicKey(key); // RSA ile imzalamayı kaldır
+  //   var signature = data5.sign;
+  //   signature = Buffer.from(signature, 'base64'); // base64 değerini Buffer nesnesine dönüştür
+  //   var plaintext = data5.text;
+  //   //var isSignatureValid = crypt123123123.verify(plaintext, signature, CryptoJS.SHA256); // RSA ile imzalamayı kaldır
+  //   var pubKeyPEM = ec.keyFromPublic($("mypublicelliptic").html().trim()).getPublicPEM();
+  //   var isSignatureValid = ec.verify(plaintext, signature, pubKeyPEM); // eliptik eğri ile imzala
+  //   if (isSignatureValid) {
+  //   decryptedData += Base64.decode(plaintext);
+  //   } else {
+  //   throw new Error("Invalid signature!");
+  //   }
+  //   delete signature, plaintext;
+  //   });
+  //   } catch (e) {
+  //   //throw new Error("Decryption failed! " + e.message);
+  //   }
+  //   return decryptedData;
+  //   }
 
 
 
