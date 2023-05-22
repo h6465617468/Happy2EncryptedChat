@@ -26,8 +26,8 @@ UseBridges 1
 ### Open Tor Browser and go to any site. If something like this occurs in this folder, then the process is complete. Check inside the "hostname" file.
 ![alt text 3](https://raw.githubusercontent.com/h6465617468/Happy2EncryptedChat/main/images/asdsa123123.png?raw=true)
 
-### [ (New Version) Download Python Code](https://github.com/h6465617468/Happy2EncryptedChat/archive/refs/heads/main.zip)
-### [ (Old Version) Download For Windows](https://github.com/h6465617468/Happy2EncryptedChat/archive/refs/heads/windows.zip)
+### [ Download Python Code (New Version)](https://github.com/h6465617468/Happy2EncryptedChat/archive/refs/heads/main.zip)
+### [ Download For Windows (Old Version)](https://github.com/h6465617468/Happy2EncryptedChat/archive/refs/heads/windows.zip)
 ### [ Download Tor Browser](https://www.torproject.org/download/)
 
 # Features
