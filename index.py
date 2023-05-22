@@ -1183,7 +1183,7 @@ if (event.data.startsWith("___text___") && event.data.includes("___end_text___")
     var messagecbbtbtnrte = decryptData_FLEXMODE(messagexx,$('targetpublic').html(),$('myprivate').html());
     var xid11 = generateToken();
     xid11 = "x"+xid11;
-    message.innerHTML = "<p class='a rg'><label id='f1'>"+"<textarea id='"+xid11+"' spellcheck='false' class='textareaxx rg'>"+messagecbbtbtnrte+"</textarea>"+"</label></p><p class='rg' style='color:grey;border:none!important;z-index:2;'>"+sonradata+"</p>";
+    message.innerHTML = "<p class='a rg'><label id='f1'>"+"<textarea id='"+xid11+"' spellcheck='false' class='textareaxx rg'>"+messagecbbtbtnrte+"</textarea>"+"</label></p><p class='rg' style='color:grey;border:none!important;z-index:2;'>"+sonradata+" <a onclick=\\"document.getElementById('"+xid11+"').select(),document.execCommand('copy')\\">Copy</a></p>";
     messages.insertBefore(message, messages.firstChild);    
     var asdasdasd = document.getElementById(xid11);
     asdasdasd.style.height = "auto"; // yüksekliği sıfırlar
