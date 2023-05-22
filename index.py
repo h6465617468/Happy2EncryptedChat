@@ -974,6 +974,13 @@ function changedurum(asdasdasdadasd){{
   document.querySelector(selector).style.display = visible ? 'block' : 'none';
 }}
 function killpage(){{
+    $('serverpublickey').html('');
+    $('mypublic').html('');
+    $('myprivate').html('');
+    $('targetpublic').html('');
+    $('mypublicelliptic').html('');
+    $('myprivateelliptic').html('');
+    $('#messages').html('');
   setVisible('main', false);
   setVisible('#loading', false);
 setVisible('#deathpage', true);
