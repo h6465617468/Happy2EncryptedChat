@@ -148,7 +148,6 @@ function base64_decode(str) {
         clearInterval(interval);
         myStopFunction();
         if(safe_retry_rsa==true){
-          console.log(dataasdasdas);
         decryptserverlatest();
         }
         clearTimeout(myTimeout);
@@ -491,7 +490,6 @@ function encryptDataserver(cache_x_RSA,target_public_x_key){
     _data_encrypted = _data_encrypted + add_data + "#";
   });
   _data_encrypted = _data_encrypted + signatureBytes;
-  console.log(_data_encrypted);
   return _data_encrypted;
 }
 // Geliştirilme aşamasında
