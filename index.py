@@ -904,7 +904,6 @@ class StaticServer(BaseHTTPRequestHandler):
 <!DOCTYPE html>
 <html>
 <head>
-    <link rel="icon" href="">
     <meta charset="utf-8">
     <title> </title>
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=0">
