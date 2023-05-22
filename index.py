@@ -120,6 +120,7 @@ from Cryptodome.Cipher import PKCS1_OAEP
 import elliptic
 import ecdsa
 from ecdsa import VerifyingKey, util
+import re
 import colorama
 colorama.init()
 
@@ -185,71 +186,126 @@ def str_splitx(string, splitLength):
         pos += splitLength
     return chunks
 
+# SIGN-FLEX-DUAL
+
 async def encryptDataserver(cache_x_RSA, target_public_x_key,ec_private_key):
+    # Get Elliptic Private Key
     cache_signp = ""
-    cache_109 = str_splitx(cache_x_RSA, 256) # I assume this is a custom function to split a string into chunks of 128 characters
-    crypted0193 = []
-    asjdasjdajs = []
-    for data5 in cache_109:
-        fsdkjf34o2it2 = base64.b64encode(data5.encode())
-        if ec_private_key.strip().decode().startswith("-----BEGIN EC PRIVATE KEY-----"):
-            # assume it is PEM format
+    if ec_private_key.strip().decode().startswith("-----BEGIN EC PRIVATE KEY-----"):
             signingKey = ecdsa.SigningKey.from_pem(ec_private_key.strip())
-        else:
-            # assume it is hex format
-            signingKey = ecdsa.SigningKey.from_string(bytes.fromhex(ec_private_key.strip().decode()),curve=ecdsa.SECP256k1)
-        privKeyHex = signingKey.to_string().hex()
-        privKey = int(privKeyHex, 16)
-        signingKey = ecdsa.SigningKey.from_secret_exponent(privKey, curve=ecdsa.SECP256k1, hashfunc=hashlib.sha256)
-        # Veriyi imzalarken hashlib.sha256 fonksiyonunu çağırın
-        cache_signp = signingKey.sign(fsdkjf34o2it2, hashfunc=hashlib.sha256)
-        asjdasjdajs.append({"text": fsdkjf34o2it2.decode(), "sign": cache_signp.hex()}) # Append the data and the signature to the list
-    cache_123123 = json.dumps(asjdasjdajs) # Convert the list to JSON string
-    cryptedasdasdas1111 = []
-    cache_12312asdasdas3 = str_splitx(cache_123123, 256) # Split the JSON string into chunks of 128 characters
+    else:
+        signingKey = ecdsa.SigningKey.from_string(bytes.fromhex(ec_private_key.strip().decode()),curve=ecdsa.SECP256k1)
+    # Sign
+    privKeyHex = signingKey.to_string().hex()
+    privKey = int(privKeyHex, 16)
+    signingKey = ecdsa.SigningKey.from_secret_exponent(privKey, curve=ecdsa.SECP256k1, hashfunc=hashlib.sha256)
+    cache_signp = signingKey.sign(cache_x_RSA.encode(), hashfunc=hashlib.sha256).hex()
+    # Encrypt
+    encryped_data=""
+    cache_12312asdasdas3 = str_splitx(cache_x_RSA, 256)
     for data10 in cache_12312asdasdas3:
-        # Encrypt the data with public key
-        crypt = RSA.import_key(target_public_x_key.strip()) # Import the public key from PEM format
-        cipher = PKCS1_v1_5.new(crypt) # Create a PKCS1_OAEP cipher object
-        cryptedasdasdas1111.append(base64.b64encode(base64.b64encode(cipher.encrypt(data10.encode()))).decode()) # Encrypt and base64 encode the data and append to the list
-    crypted0193.append(base64.b64encode(json.dumps(cryptedasdasdas1111).encode()).decode()) # Convert the list to JSON string and base64 encode and append to the list
-    return base64.b64encode(json.dumps(crypted0193).encode()).decode() # Convert the list to JSON string and base64 encode and return as string
+        crypt = RSA.import_key(target_public_x_key.strip())
+        cipher = PKCS1_v1_5.new(crypt)
+        axxx1 = base64.b64encode(cipher.encrypt(data10.encode()))
+        encryped_data = encryped_data + axxx1.decode() + "#"
+    encryped_data = encryped_data + cache_signp
+    return encryped_data
 
 async def decryptDataserver(encryptedData, myprivate,ec_public_key):
     decryptedData = ""
     try:
-        crypted0193 = json.loads(base64.urlsafe_b64decode(encryptedData)) # Decode and parse the JSON string
-        cryptedasdasdas1111 = json.loads(base64.urlsafe_b64decode(crypted0193[0])) # Decode and parse the JSON string
-        asjdasjdajs = []
-        asdasdasd = ""
-        for data10 in cryptedasdasdas1111:
-            crypt = RSA.import_key(myprivate.strip()) # Import the private key from PEM format
-            cipher = PKCS1_v1_5.new(crypt) # Create a PKCS1_OAEP cipher object
-            decryptedData1 = cipher.decrypt(base64.urlsafe_b64decode(base64.urlsafe_b64decode(data10)),None) # Decode and decrypt the data
-            asdasdasd = asdasdasd + decryptedData1.decode() # Concatenate the decrypted data
-        asjdasjdajs = asjdasjdajs + json.loads(asdasdasd) # Parse the JSON string and append to the list
-        for data5 in asjdasjdajs:
-            # var crypt123123123 = new JSEncrypt(); // RSA ile imzalamayı kaldır
-            # crypt123123123.setPublicKey(key); // RSA ile imzalamayı kaldır
-            signature = data5["sign"]
-            plaintext = data5["text"]
-            if ec_public_key.strip().decode().startswith("-----BEGIN PUBLIC KEY-----"):
-                # assume it is PEM format
-                verifying_key = ecdsa.VerifyingKey.from_pem(ec_public_key.strip())
-                signature_bytes = bytes.fromhex(signature.strip())
-                is_signature_valid = verifying_key.verify(signature_bytes, plaintext.encode(), hashfunc=hashlib.sha256)
-            else:
-                # assume it is hex format
-                verifying_key = ecdsa.VerifyingKey.from_string(bytes.fromhex(ec_public_key.strip().decode()),curve=ecdsa.SECP256k1)
-                signature_bytes = bytes.fromhex(signature.strip())
-                is_signature_valid = verifying_key.verify(signature_bytes, plaintext.encode(), hashfunc=hashlib.sha256)
-            if is_signature_valid:
-                decryptedData += base64.urlsafe_b64decode(plaintext).decode() # Decode and append the plaintext to the decrypted data
-            else:
-                raise Exception("Invalid signature!")
+        parts = re.split("#", encryptedData)
+        # Get Signature
+        signature = parts[-1]
+        # Decrypt
+        for part in parts[:-1]:
+            crypt = RSA.import_key(myprivate.strip())
+            cipher = PKCS1_v1_5.new(crypt)
+            dd1 = cipher.decrypt(base64.urlsafe_b64decode(part),None)
+            decryptedData = decryptedData + dd1.decode()
+        if ec_public_key.strip().decode().startswith("-----BEGIN PUBLIC KEY-----"):
+            # assume it is PEM format
+            verifying_key = ecdsa.VerifyingKey.from_pem(ec_public_key.strip())
+            signature_bytes = bytes.fromhex(signature.strip())
+            is_signature_valid = verifying_key.verify(signature_bytes, decryptedData.encode(), hashfunc=hashlib.sha256)
+        else:
+            # assume it is hex format
+            verifying_key = ecdsa.VerifyingKey.from_string(bytes.fromhex(ec_public_key.strip().decode()),curve=ecdsa.SECP256k1)
+            signature_bytes = bytes.fromhex(signature.strip())
+            is_signature_valid = verifying_key.verify(signature_bytes, decryptedData.encode(), hashfunc=hashlib.sha256)
+        if not is_signature_valid:
+            raise Exception("Invalid signature!")
     except Exception as e:
         print("Decryption failed! " + str(e))
     return decryptedData
+
+# SIGN-MIX-DUAL
+
+# async def encryptDataserver(cache_x_RSA, target_public_x_key,ec_private_key):
+#     cache_signp = ""
+#     cache_109 = str_splitx(cache_x_RSA, 256) # I assume this is a custom function to split a string into chunks of 128 characters
+#     crypted0193 = []
+#     asjdasjdajs = []
+#     for data5 in cache_109:
+#         fsdkjf34o2it2 = base64.b64encode(data5.encode())
+#         if ec_private_key.strip().decode().startswith("-----BEGIN EC PRIVATE KEY-----"):
+#             # assume it is PEM format
+#             signingKey = ecdsa.SigningKey.from_pem(ec_private_key.strip())
+#         else:
+#             # assume it is hex format
+#             signingKey = ecdsa.SigningKey.from_string(bytes.fromhex(ec_private_key.strip().decode()),curve=ecdsa.SECP256k1)
+#         privKeyHex = signingKey.to_string().hex()
+#         privKey = int(privKeyHex, 16)
+#         signingKey = ecdsa.SigningKey.from_secret_exponent(privKey, curve=ecdsa.SECP256k1, hashfunc=hashlib.sha256)
+#         # Veriyi imzalarken hashlib.sha256 fonksiyonunu çağırın
+#         cache_signp = signingKey.sign(fsdkjf34o2it2, hashfunc=hashlib.sha256)
+#         asjdasjdajs.append({"text": fsdkjf34o2it2.decode(), "sign": cache_signp.hex()}) # Append the data and the signature to the list
+#     cache_123123 = json.dumps(asjdasjdajs) # Convert the list to JSON string
+#     cryptedasdasdas1111 = []
+#     cache_12312asdasdas3 = str_splitx(cache_123123, 256) # Split the JSON string into chunks of 128 characters
+#     for data10 in cache_12312asdasdas3:
+#         # Encrypt the data with public key
+#         crypt = RSA.import_key(target_public_x_key.strip()) # Import the public key from PEM format
+#         cipher = PKCS1_v1_5.new(crypt) # Create a PKCS1_OAEP cipher object
+#         cryptedasdasdas1111.append(base64.b64encode(base64.b64encode(cipher.encrypt(data10.encode()))).decode()) # Encrypt and base64 encode the data and append to the list
+#     crypted0193.append(base64.b64encode(json.dumps(cryptedasdasdas1111).encode()).decode()) # Convert the list to JSON string and base64 encode and append to the list
+#     return base64.b64encode(json.dumps(crypted0193).encode()).decode() # Convert the list to JSON string and base64 encode and return as string
+
+# async def decryptDataserver(encryptedData, myprivate,ec_public_key):
+#     decryptedData = ""
+#     try:
+#         crypted0193 = json.loads(base64.urlsafe_b64decode(encryptedData)) # Decode and parse the JSON string
+#         cryptedasdasdas1111 = json.loads(base64.urlsafe_b64decode(crypted0193[0])) # Decode and parse the JSON string
+#         asjdasjdajs = []
+#         asdasdasd = ""
+#         for data10 in cryptedasdasdas1111:
+#             crypt = RSA.import_key(myprivate.strip()) # Import the private key from PEM format
+#             cipher = PKCS1_v1_5.new(crypt) # Create a PKCS1_OAEP cipher object
+#             decryptedData1 = cipher.decrypt(base64.urlsafe_b64decode(base64.urlsafe_b64decode(data10)),None) # Decode and decrypt the data
+#             asdasdasd = asdasdasd + decryptedData1.decode() # Concatenate the decrypted data
+#         asjdasjdajs = asjdasjdajs + json.loads(asdasdasd) # Parse the JSON string and append to the list
+#         for data5 in asjdasjdajs:
+#             # var crypt123123123 = new JSEncrypt(); // RSA ile imzalamayı kaldır
+#             # crypt123123123.setPublicKey(key); // RSA ile imzalamayı kaldır
+#             signature = data5["sign"]
+#             plaintext = data5["text"]
+#             if ec_public_key.strip().decode().startswith("-----BEGIN PUBLIC KEY-----"):
+#                 # assume it is PEM format
+#                 verifying_key = ecdsa.VerifyingKey.from_pem(ec_public_key.strip())
+#                 signature_bytes = bytes.fromhex(signature.strip())
+#                 is_signature_valid = verifying_key.verify(signature_bytes, plaintext.encode(), hashfunc=hashlib.sha256)
+#             else:
+#                 # assume it is hex format
+#                 verifying_key = ecdsa.VerifyingKey.from_string(bytes.fromhex(ec_public_key.strip().decode()),curve=ecdsa.SECP256k1)
+#                 signature_bytes = bytes.fromhex(signature.strip())
+#                 is_signature_valid = verifying_key.verify(signature_bytes, plaintext.encode(), hashfunc=hashlib.sha256)
+#             if is_signature_valid:
+#                 decryptedData += base64.urlsafe_b64decode(plaintext).decode() # Decode and append the plaintext to the decrypted data
+#             else:
+#                 raise Exception("Invalid signature!")
+#     except Exception as e:
+#         print("Decryption failed! " + str(e))
+#     return decryptedData
 
 data = None
 
@@ -939,7 +995,7 @@ function closeloading(){{
 <targetpublic id='targetpublic' style='display:none'></targetpublic>
 <form id="message-form">
 <div id="asdasds" style="display: flex; align-items: center; width: 600px;">
-<textarea spellcheck='false' type="text" id="message-input" class="textareaxx asdas1c" placeholder="Send Message" style="height:59px;display:block;font-size:16px;font-weight:1000;width:100%;border:0;background-color:transparent;border:0;margin:0;border-bottom:2.5px solid dimgrey;padding:16px;color:white!important;resize: vertical!important;" autocomplete="off" autofocus required></textarea>
+<textarea spellcheck='false' type="text" id="message-input" class="textareaxx asdas1c" onkeypress="13===window.event.keyCode&&(event.preventDefault(),document.getElementById('message-submit').click())" placeholder="Send Message" style="height:59px;display:block;font-size:16px;font-weight:1000;width:100%;border:0;background-color:transparent;border:0;margin:0;border-bottom:2.5px solid dimgrey;padding:16px;color:white!important;resize: vertical!important;" autocomplete="off" autofocus required></textarea>
 <input type="submit" id="message-submit" value=">" style="margin:0;font-size:16px;font-weight:1000;width:40px;border:0;background-color:transparent;border-bottom:2.5px solid dimgrey;padding:16px;color:white!important;height:59px!important;">
 </div>
 <input type="text" id="target-input" value="a" style="display:none" required></form>
@@ -1008,7 +1064,7 @@ function keychange(){{
         var interval123 = setInterval(() => {{
         if(keypublic != undefined && keyprivate != undefined){{
             clearInterval(interval123);
-            var securemessage=encryptData(keypublic,$('targetpublic').html(),$('myprivate').html());
+            var securemessage=encryptData_FLEXMODE(keypublic,$('targetpublic').html(),$('myprivate').html());
             sendMessage("___key_change1___"+securemessage+"___end_key_change1___", target, server_key,1,"#Public Key Request");
             var interval1 = setInterval(() => {{
                 if(wait==false){{
@@ -1085,7 +1141,7 @@ if (event.data.startsWith("___text___") && event.data.includes("___end_text___")
     var startIndex2 = messagexx.indexOf("___key_change1___") + "___key_change1___".length;
     var endIndex2 = messagexx.indexOf("___end_key_change1___");
     var messagexx = messagexx.slice(startIndex2, endIndex2);
-    var publickeytargetsadasdas1 = decryptData(messagexx,$('targetpublic').html(),$('myprivate').html());
+    var publickeytargetsadasdas1 = decryptData_FLEXMODE(messagexx,$('targetpublic').html(),$('myprivate').html());
     var targetInput = document.querySelector('#target-input');
     var target = targetInput.value;
     var keypublic;
@@ -1102,7 +1158,7 @@ if (event.data.startsWith("___text___") && event.data.includes("___end_text___")
         var interval12 = setInterval(() => {{
         if(keypublic != undefined && keyprivate != undefined){{
             clearInterval(interval12);
-            var securemessage=encryptData(keypublic,$('targetpublic').html(),$('myprivate').html())
+            var securemessage=encryptData_FLEXMODE(keypublic,$('targetpublic').html(),$('myprivate').html())
             sendMessage("___key_change2___"+securemessage+"___end_key_change2___", target, server_key,1,"#Public Key Request");
             $('myprivate').html(keyprivate);
             $('mypublic').html(keypublic);
@@ -1115,7 +1171,7 @@ if (event.data.startsWith("___text___") && event.data.includes("___end_text___")
     var startIndex3 = event.data.indexOf("___key_change2___") + "___key_change2___".length; // başlangıç kısmının sonundaki indeksi bul
     var endIndex3 = event.data.indexOf("___end_key_change2___"); // bitiş kısmının başındaki indeksi bul
     var messagexx1 = event.data.slice(startIndex3, endIndex3); // aradaki kısmı al
-    var publickeytargetsadasdas1 = decryptData(messagexx1,$('targetpublic').html(),$('myprivate').html());
+    var publickeytargetsadasdas1 = decryptData_FLEXMODE(messagexx1,$('targetpublic').html(),$('myprivate').html());
     var div = document.getElementById("targetpublic");
     if(safe_retry_rsa==true){{
         safe_retry_rsa=false;
@@ -1124,9 +1180,14 @@ if (event.data.startsWith("___text___") && event.data.includes("___end_text___")
         closeloading();
     }}
   }}else{{
-    var messagecbbtbtnrte = decryptData(messagexx,$('targetpublic').html(),$('myprivate').html());
-    message.innerHTML = "<p class='a rg'><label id='f1'>"+"<textarea spellcheck='false' class='textareaxx'>"+messagecbbtbtnrte+"</textarea>"+"</label></p><p class='rg' style='color:grey;border:none!important;z-index:2;'>"+sonradata+"</p>";
+    var messagecbbtbtnrte = decryptData_FLEXMODE(messagexx,$('targetpublic').html(),$('myprivate').html());
+    var xid11 = generateToken();
+    xid11 = "x"+xid11;
+    message.innerHTML = "<p class='a rg'><label id='f1'>"+"<textarea id='"+xid11+"' spellcheck='false' class='textareaxx rg'>"+messagecbbtbtnrte+"</textarea>"+"</label></p><p class='rg' style='color:grey;border:none!important;z-index:2;'>"+sonradata+"</p>";
     messages.insertBefore(message, messages.firstChild);    
+    var asdasdasd = document.getElementById(xid11);
+    asdasdasd.style.height = "auto"; // yüksekliği sıfırlar
+    asdasdasd.style.height = asdasdasd.scrollHeight + "px"; // yüksekliği scrollHeight ile ayarlar
   }}
 
 
@@ -1157,7 +1218,7 @@ form.addEventListener('submit', function(event) {{
   var targetInput = document.querySelector('#target-input');
   var messagex2 = messageInput.value;
   var target = targetInput.value;
-  messagex=encryptData(messagex2,$('targetpublic').html(),$('myprivate').html())
+  messagex=encryptData_FLEXMODE(messagex2,$('targetpublic').html(),$('myprivate').html())
   sendMessage(messagex, target, server_key,1,messagex2);
   messageInput.value = '';
   messagex2="";
