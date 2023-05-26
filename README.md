@@ -31,7 +31,7 @@ UseBridges 1
 ### [ Download Tor Browser](https://www.torproject.org/download/)
 
 # Features
-- Secure communication system with end-to-end encryption: a technique that encrypts data and information as it passes from device to device, so that only the sender and the receiver can see the original contents1
+- Secure communication system with end-to-end encryption: a technique that encrypts data and information as it passes from device to device, so that only the sender and the receiver can see the original contents
 - Cryptographic techniques: various mathematical algorithms that ensure the confidentiality, integrity and authenticity of the data, such as:
   - Elliptic curve SECP256k1 signature: a digital signature scheme based on an elliptic curve that provides high security and fast verification
   - RSA signature: a digital signature scheme based on the RSA algorithm that provides strong authentication and non-repudiation
