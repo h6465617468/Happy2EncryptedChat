@@ -1002,9 +1002,8 @@ function closeloading(){{
 <myprivate style='display:none'></myprivate>
 <targetpublic id='targetpublic' style='display:none'></targetpublic>
 <form id="message-form">
-<div id="asdasds" style="display: flex; align-items: center; width: 600px;">
-<textarea spellcheck='false' type="text" id="message-input" class="textareaxx asdas1c" onkeypress="13===window.event.keyCode&&(event.preventDefault(),document.getElementById('message-submit').click())" placeholder="Send Message" style="height:59px;display:block;font-size:16px;font-weight:1000;width:100%;border:0;background-color:transparent;border:0;margin:0;border-bottom:2.5px solid dimgrey;padding:16px;color:white!important;resize: vertical!important;" autocomplete="off" autofocus required></textarea>
-<input type="submit" id="message-submit" value=">" style="margin:0;font-size:16px;font-weight:1000;width:40px;border:0;background-color:transparent;border-bottom:2.5px solid dimgrey;padding:16px;color:white!important;height:59px!important;">
+<div id="asdasds" style="display: flex; flex-wrap:no-wrap; align-items: center; width:100%;max-width: 600px;">
+<textarea spellcheck='false' type="text" id="message-input" class="textareaxx asdas1c" onkeypress="13===window.event.keyCode&&(event.preventDefault(),document.getElementById('message-submit').click())" placeholder="Send Message" style="height:59px;display:inline-block;font-size:16px;font-weight:1000;width: 100%!important;background-color:transparent;border:0;margin:0;border-bottom:2.5px solid dimgrey;padding:16px;color:white!important;resize: vertical!important;" autocomplete="off" autofocus required></textarea><input type="submit" id="message-submit" value=">" style="margin:0;font-size:16px;font-weight:1000;width:100%!important;max-width:40px;border:0;background-color:transparent;border-bottom:2.5px solid dimgrey;padding:16px;color:white!important;height:59px!important;display:inline-block;">
 </div>
 <input type="text" id="target-input" value="a" style="display:none" required></form>
 <div id="messages" style="word-wrap: break-word;"></div>
