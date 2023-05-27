@@ -138,6 +138,8 @@ sys.modules['Cryptodome'].__dict__['__file__'] = ''
 host = '127.0.0.1'
 port = 80
 
+listen = False
+
 chatbotinvtext = ''.join(random.choices(string.ascii_letters + string.digits, k=512))
 
 x1iv = ''.join(random.choices(string.ascii_letters + string.digits, k=16))
@@ -1042,7 +1044,7 @@ function sendMessage(message1, target, keyx,gorunum=1,latest=false) {{
   //message1="(Encrypted)";
   //messagex.innerHTML = "Mesaj Gönderildi => <textarea spellcheck='false' style='color:grey;overflow: hidden;resize: vertical;'>"+message1+"</textarea> "+getCurrentTime()+" ID: "+target;
   if(latest!=false){{
-  messagex.innerHTML = "<p class='a lf'><label id='f1'>"+"You : " + "<textarea spellcheck='false' class='textareaxx'>"+ latest + "</textarea>"  + "</label></p><p class='rg' style='color:grey;border:none!important;z-index:2;'>" + getCurrentTime()+" ID: "+target+"</p>";
+  messagex.innerHTML = "<p class='a lf'><label id='f1'>"+"Message Sent : " + "<textarea spellcheck='false' class='textareaxx'>"+ latest + "</textarea>"  + "</label></p><p class='rg' style='color:grey;border:none!important;z-index:2;'>" + getCurrentTime()+" ID: "+target+"</p>";
   }}else{{
   messagex.innerHTML = "Mesaj Gönderildi " + getCurrentTime()+" ID: "+target;
   }}
@@ -1234,21 +1236,21 @@ form.addEventListener('submit', function(event) {{
 
 
 
-  <form onsubmit="return decrypt();">
+  <form onsubmit="return decrypt();" style="display:none;">
     <label for="serverkey">Server Key:</label>
     <input type="text" name="serverkey" id="serverkey" value="">
     <br>
     <button type="submit">Submit</button>
   </form>
-  <div id="resultmessage"></div>
-  <form onsubmit="return sendToken();">
+  <div id="resultmessage" style="display:none;"></div>
+  <form onsubmit="return sendToken();" style="display:none;">
     <label for="token">Token:</label>
     <input type="text" name="token" id="token" value="">
     <br>
     <button type="submit">Submit</button>
   </form>
-  <div id="resulttoken"></div>
-  <form onsubmit="return sendRSA();">
+  <div id="resulttoken" style="display:none;"></div>
+  <form onsubmit="return sendRSA();" style="display:none;">
     <label for="myrsapublic">My Public Key:</label><br>
     <textarea spellcheck='false' name="myrsapublic" id="myrsapublic"></textarea>
     <br>
@@ -1256,8 +1258,8 @@ form.addEventListener('submit', function(event) {{
     <textarea spellcheck='false' name="myrsaprivate" id="myrsaprivate"></textarea>
     <button type="submit">Submit</button>
   </form>
-  <div id="resultrsa"></div>
-  <form onsubmit="return sendForm();">
+  <div id="resultrsa" style="display:none;"></div>
+  <form onsubmit="return sendForm();" style="display:none;">
     <label for="message">Mesaj At:</label>
     <input type="text" name="message" id="message">
     <br>
@@ -1273,7 +1275,7 @@ form.addEventListener('submit', function(event) {{
     <br>
     <button type="submit">Submit</button>
   </form>
-  <div id="result"></div>
+  <div id="result" style="display:none;"></div>
   </div>
 </div>
 </main>
@@ -1532,7 +1534,7 @@ async def authenticate(websocket,public_key):
         return False
 
 async def handler(websocket, path):
-    global connected_users, encrypted_messages,__process_close__
+    global connected_users, encrypted_messages, __process_close__, listen
     public_key = await public_key_request_test(websocket)
     if not public_key:
         await websocket.close()
@@ -1559,7 +1561,8 @@ async def handler(websocket, path):
         return
     try:
         async for message in websocket:
-            #print(str(websocket) + " => "+ message)
+            if listen == True:
+                print(colored_write_random("(SHA512)" + hashlib.sha512(message.encode()).hexdigest()) + "\n" + str(websocket) + " => "+ message + "\n")
             islem=0
             message = await decryptDataserver(message,private_key_pem,public_key.encode())
             message_data = message.split(":")
@@ -1768,11 +1771,22 @@ async def get_key_and_iv(websocket,public_key):
 
 
 def colored_write(text):
-    return '\033[31m' + text + '\033[0m'
+    # return '\033[31m' + text + '\033[0m'
     return colorama.Fore.RED + text + colorama.Style.RESET_ALL
 def colored_write_ok(text):
-    return '\033[32m' + text + '\033[0m'
+    # return '\033[32m' + text + '\033[0m'
     return colorama.Fore.GREEN + text + colorama.Style.RESET_ALL
+
+indexcolor = 0
+def random_color():
+  global indexcolor
+  colors = [colorama.Fore.CYAN, colorama.Fore.GREEN, colorama.Fore.YELLOW, colorama.Fore.MAGENTA, colorama.Fore.RED, colorama.Fore.BLUE]
+  color = colors[indexcolor]
+  indexcolor = (indexcolor + 1) % len(colors)
+  return color
+
+def colored_write_random(text):
+    return random_color() + text + colorama.Style.RESET_ALL
 
 
 global_list = {}
@@ -1918,7 +1932,7 @@ def generate_net_rsa_4096():
     print(colored_write_ok("Public Key SHA512 : "+hashlib.sha512(public_key_pem).hexdigest()))
     rsa_0_key = None
 if __name__ == '__main__':
-    banner()
+    # banner()
     init_global_list()
     server_thread = None
     if len(sys.argv) > 1:
@@ -2016,6 +2030,14 @@ if __name__ == '__main__':
                 print(colored_write(' >> Server is not running.'))
         elif args[0].lower() == 'token':
             list_tokens()
+        elif args[0].lower() == 'listen':
+            listen = True
+            while True:
+                    textxxx = input(colored_write_ok("Messages to the server are being listened to...\n"))
+                    args = textxxx.split()
+                    if args[0].lower() in('exit','çık','cık','kapat','cıkıs','çıkıs','cıkış','çıkış'):
+                        listen = False
+                        break
         elif args[0].lower() == 'inv':
             if server_thread is not None:
                 if any(x in ('-new', '-create', '-add') for x in args):
