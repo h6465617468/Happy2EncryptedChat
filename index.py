@@ -359,7 +359,7 @@ def multi_thread(text):
 
 def single_thread(text):
     global data
-    text = text.strip()
+    text = text.strip().lower()
     if text in data["single"]:
         response = data["single"][text]
         if len(response) == 1:
