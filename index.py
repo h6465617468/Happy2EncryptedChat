@@ -372,7 +372,7 @@ def single_thread(text):
 
 def cevapla(metin):
     global data
-    metin = metin.lower()
+    metin = metin.lower().replace("?","").replace("!","")
     cevap = ""
     test = single_thread(metin)
     if test is not None:
