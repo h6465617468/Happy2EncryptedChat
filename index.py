@@ -1195,6 +1195,7 @@ if (event.data.startsWith("___text___") && event.data.includes("___end_text___")
     var asdasdasd = document.getElementById(xid11);
     asdasdasd.style.height = "auto"; // yüksekliği sıfırlar
     asdasdasd.style.height = asdasdasd.scrollHeight + "px"; // yüksekliği scrollHeight ile ayarlar
+    beepx();
   }}
 
 
