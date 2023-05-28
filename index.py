@@ -1043,7 +1043,7 @@ function sendMessage(message1, target, keyx,gorunum=1,latest=false) {{
   //message1="(Encrypted)";
   //messagex.innerHTML = "Mesaj Gönderildi => <textarea spellcheck='false' style='color:grey;overflow: hidden;resize: vertical;'>"+message1+"</textarea> "+getCurrentTime()+" ID: "+target;
   if(latest!=false){{
-  messagex.innerHTML = "<p class='a lf'><label id='f1'>"+"Message Sent : " + "<textarea spellcheck='false' class='textareaxx'>"+ latest + "</textarea>"  + "</label></p><p class='rg' style='color:grey;border:none!important;z-index:2;'>" + getCurrentTime()+" ID: "+target+"</p>";
+  messagex.innerHTML = "<p class='a lf'><label id='f1'>"+"Me : " + "<textarea spellcheck='false' class='textareaxx'>"+ latest + "</textarea>"  + "</label></p><p class='rg' style='color:grey;border:none!important;z-index:2;'>" + getCurrentTime()+" ID: "+target+"</p>";
   }}else{{
   messagex.innerHTML = "Mesaj Gönderildi " + getCurrentTime()+" ID: "+target;
   }}
