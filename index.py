@@ -359,7 +359,7 @@ def multi_thread(text):
 
 def single_thread(text):
     global data
-    text = text.strip().lower()
+    text = text.strip()
     if text in data["single"]:
         response = data["single"][text]
         if len(response) == 1:
@@ -372,6 +372,7 @@ def single_thread(text):
 
 def cevapla(metin):
     global data
+    metin = metin.lower()
     cevap = ""
     test = single_thread(metin)
     if test is not None:
