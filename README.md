@@ -46,8 +46,8 @@ UseBridges 1
   - WebSocket protocol: a web technology that allows a persistent connection between the client and the server, enabling fast and efficient data transfer
 
 This project shows the encrypted messages that come from the browser to the server side. The encrypted messages are created using end-to-end encryption technique to protect the data from unauthorized access. The encrypted messages are stored in memory and encrypted multiple times before being sent to the server.
-![alt text](https://raw.githubusercontent.com/h6465617468/Happy2EncryptedChat/main/Screenshot_7.png?raw=true)
-
+![messaages1](https://raw.githubusercontent.com/h6465617468/Happy2EncryptedChat/main/Screenshot_7.png?raw=true)
+![messaages2](https://raw.githubusercontent.com/h6465617468/Happy2EncryptedChat/main/test0x1cvx0.png?raw=true)
 # Note
 ### I wrote these codes with the help of ChatGPT
 
