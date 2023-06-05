@@ -90,6 +90,7 @@ play music
 play music -s 3
 youtube
 youtube -s 3
+listen
 cls
 data
 data -k (decrypt key)
@@ -110,11 +111,12 @@ py index.py -auto
 | `play music` | Youtube video play -s ( count ) |
 | `youtube` | Add Music -s ( count ) |
 | `backdoor` | Backdoor -c ( Magic Word ) When entering the address 127.0.0.1, the magic word can be connected to the chat when entered. |
-| `rsa` | Add Music -delete ( Reset RSA 4096 Bit Server Key ) |
+| `rsa` | View Rsa Key -delete ( Reset RSA 4096 Bit Server Key ) |
 | `cls` | Clear command prompt |
 | `data` | Display Encrypted Messages ( It will return null because it is deleted instantly. ) -k ( decrypt key ) |
 | `key` | View Server Key |
 | `token` | Display Tokens ( It will return null because it is deleted instantly. ) |
+| `listen` | Monitors server traffic |
 
 # Example
 ### This link provides a direct link. It cannot be reused.
